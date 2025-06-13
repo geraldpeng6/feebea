@@ -1491,35 +1491,50 @@
             // Current quotes displayed in each card
             let currentQuotes = [0, 1, 2];
 
+            // Phoebe easter egg state
+            let phoebeQuoteIndex = 0;
+            let phoebeEasterEggActive = true;
+            let friendsEasterEggTriggered = false;
+            let lastPhoebeTime = 0;
+            let keySequence = [];
+            let keyTimer = null;
+
             // Random Phoebe quotes that appear occasionally
             const phoebeQuotes = [
                 {
                     en: "I don't even have a 'pla'.",
                     zh: "我连计划都没有。",
+                    audio: "do-you-have-a-plan.mp3",
                 },
                 {
                     en: "This is brand new information!",
                     zh: "这是全新的信息！",
+                    audio: "that-is-brand-new-information.mp3",
                 },
                 {
                     en: "Oh, I wish I could, but I don't want to.",
                     zh: "哦，我很想，但我不想。",
+                    audio: "i-wish-i-could.mp3",
                 },
                 {
                     en: "My songs aren't for everyone, but they're for someone.",
                     zh: "我的歌不是为所有人而唱，但总有人会喜欢。",
+                    audio: "smelly_cat.mp3",
                 },
                 {
                     en: "See? He's her lobster!",
                     zh: "看？他是她的龙虾！",
+                    audio: "see-hes-her-lobster.mp3",
                 },
                 {
-                    en: "I'm not great at the advice. Can I interest you in a sarcastic comment?",
-                    zh: "我不太会给建议。要不来点讽刺的评论？",
+                    en: "They Don't Know That We Know They Know We Know.",
+                    zh: "他们不知道我们知道他们知道我们知道。",
+                    audio: "they-dont-know.mp3",
                 },
                 {
-                    en: "Sometimes I wish I was a lesbian.",
-                    zh: "有时我希望我是个女同性恋。",
+                    en: "Who's singing?",
+                    zh: "谁在唱歌？",
+                    audio: "who-singing.mp3",
                 },
             ];
 
@@ -1684,82 +1699,212 @@
             document
                 .querySelector(".color-circle")
                 .addEventListener("click", function () {
+                    if (!phoebeEasterEggActive) return;
+
                     clickCount++;
                     if (clickCount === 7) {
-                        const randomQuote =
-                            phoebeQuotes[
-                                Math.floor(Math.random() * phoebeQuotes.length)
-                            ];
-
-                        // Create a more elegant notification for the quote
-                        const quoteNotification = document.createElement("div");
-
-                        // Different falling animations
-                        const animationType = phoebeAnimationCount % 4;
-                        let animationCSS = "";
-
-                        switch (animationType) {
-                            case 0:
-                                animationCSS =
-                                    "animation: fallFromTop 1s ease-out;";
-                                break;
-                            case 1:
-                                animationCSS =
-                                    "animation: fallFromTopLeft 1s ease-out;";
-                                break;
-                            case 2:
-                                animationCSS =
-                                    "animation: fallFromTopRight 1s ease-out;";
-                                break;
-                            case 3:
-                                animationCSS =
-                                    "animation: fallAndBounce 1.2s ease-out;";
-                                break;
-                        }
-
-                        quoteNotification.style.cssText = `
-                            position: fixed;
-                            top: 50%;
-                            left: 50%;
-                            transform: translate(-50%, -50%);
-                            background: rgba(254, 235, 234, 0.95);
-                            color: #333;
-                            padding: 2rem;
-                            border-radius: 20px;
-                            font-family: 'Dancing Script', cursive;
-                            font-size: 1.2rem;
-                            text-align: center;
-                            max-width: 80vw;
-                            z-index: 2000;
-                            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-                            backdrop-filter: blur(10px);
-                            line-height: 1.6;
-                            ${animationCSS}
-                        `;
-
-                        if (isEnglish) {
-                            quoteNotification.innerHTML = `<strong>Phoebe says:</strong><br>"${randomQuote.en}"`;
-                        } else {
-                            quoteNotification.innerHTML = `<strong>Phoebe says:</strong><br>"${randomQuote.en}"<br><br><strong>菲比说：</strong><br>"${randomQuote.zh}"`;
-                        }
-
-                        document.body.appendChild(quoteNotification);
-                        phoebeAnimationCount++;
-
-                        setTimeout(() => {
-                            quoteNotification.style.opacity = "0";
-                            setTimeout(() => {
-                                if (document.body.contains(quoteNotification)) {
-                                    document.body.removeChild(
-                                        quoteNotification,
-                                    );
-                                }
-                            }, 500);
-                        }, 3000);
-
+                        showPhoebeQuote();
                         clickCount = 0;
                     }
                 });
+
+            function showPhoebeQuote() {
+                if (!phoebeEasterEggActive) return;
+
+                const quote = phoebeQuotes[phoebeQuoteIndex];
+                lastPhoebeTime = Date.now();
+
+                // Create a more elegant notification for the quote
+                const quoteNotification = document.createElement("div");
+
+                // Different falling animations
+                const animationType = phoebeAnimationCount % 4;
+                let animationCSS = "";
+
+                switch (animationType) {
+                    case 0:
+                        animationCSS = "animation: fallFromTop 1s ease-out;";
+                        break;
+                    case 1:
+                        animationCSS =
+                            "animation: fallFromTopLeft 1s ease-out;";
+                        break;
+                    case 2:
+                        animationCSS =
+                            "animation: fallFromTopRight 1s ease-out;";
+                        break;
+                    case 3:
+                        animationCSS =
+                            "animation: fallAndBounce 1.2s ease-out;";
+                        break;
+                }
+
+                quoteNotification.style.cssText = `
+                    position: fixed;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    background: rgba(254, 235, 234, 0.95);
+                    color: #333;
+                    padding: 2rem;
+                    border-radius: 20px;
+                    font-family: 'Dancing Script', cursive;
+                    font-size: 1.2rem;
+                    text-align: center;
+                    max-width: 80vw;
+                    z-index: 2000;
+                    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+                    backdrop-filter: blur(10px);
+                    line-height: 1.6;
+                    ${animationCSS}
+                `;
+
+                if (isEnglish) {
+                    quoteNotification.innerHTML = `<strong>Phoebe says:</strong><br>"${quote.en}"`;
+                } else {
+                    quoteNotification.innerHTML = `<strong>Phoebe says:</strong><br>"${quote.en}"<br><br><strong>菲比说：</strong><br>"${quote.zh}"`;
+                }
+
+                document.body.appendChild(quoteNotification);
+                phoebeAnimationCount++;
+
+                // Play audio
+                const audio = new Audio(`./phoebe/${quote.audio}`);
+                audio.play().catch((e) => console.log("Audio play failed:", e));
+
+                setTimeout(() => {
+                    quoteNotification.style.opacity = "0";
+                    setTimeout(() => {
+                        if (document.body.contains(quoteNotification)) {
+                            document.body.removeChild(quoteNotification);
+                        }
+                    }, 500);
+                }, 3000);
+
+                // Move to next quote, "Who's singing?" is always last
+                phoebeQuoteIndex = (phoebeQuoteIndex + 1) % phoebeQuotes.length;
+
+                // If we just showed "Who's singing?", start listening for "you" input
+                if (quote.en === "Who's singing?") {
+                    startListeningForYou();
+                }
+            }
+
+            function startListeningForYou() {
+                keySequence = [];
+
+                const keyListener = function (e) {
+                    if (friendsEasterEggTriggered) {
+                        document.removeEventListener("keydown", keyListener);
+                        return;
+                    }
+
+                    // Clear sequence if too much time passed
+                    if (keyTimer) clearTimeout(keyTimer);
+
+                    keySequence.push(e.key.toLowerCase());
+
+                    // Keep only last 3 characters
+                    if (keySequence.length > 3) {
+                        keySequence.shift();
+                    }
+
+                    // Check if "you" was typed
+                    if (keySequence.join("") === "you") {
+                        triggerFriendsEasterEgg();
+                        document.removeEventListener("keydown", keyListener);
+                        return;
+                    }
+
+                    // Reset sequence after 2 seconds of inactivity
+                    keyTimer = setTimeout(() => {
+                        keySequence = [];
+                    }, 2000);
+                };
+
+                document.addEventListener("keydown", keyListener);
+
+                // Remove listener after 30 seconds if "you" not typed
+                setTimeout(() => {
+                    document.removeEventListener("keydown", keyListener);
+                }, 30000);
+            }
+
+            function triggerFriendsEasterEgg() {
+                friendsEasterEggTriggered = true;
+                phoebeEasterEggActive = false;
+
+                // Create fullscreen overlay
+                const overlay = document.createElement("div");
+                overlay.style.cssText = `
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100vw;
+                    height: 100vh;
+                    background: #000;
+                    z-index: 10000;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-family: 'Great Vibes', cursive;
+                    font-size: 8rem;
+                    color: #feebea;
+                    text-shadow: 0 0 50px rgba(254, 235, 234, 0.8);
+                `;
+
+                const friendsText = document.createElement("div");
+                friendsText.style.cssText = `
+                    text-align: center;
+                    letter-spacing: 0.5rem;
+                `;
+
+                overlay.appendChild(friendsText);
+                document.body.appendChild(overlay);
+
+                // Play Smelly Cat
+                const audio = new Audio("./phoebe/smelly_cat.mp3");
+                audio.play().catch((e) => console.log("Audio play failed:", e));
+
+                // Type F·R·I·E·N·D·S
+                const letters = [
+                    "F",
+                    "·",
+                    "R",
+                    "·",
+                    "I",
+                    "·",
+                    "E",
+                    "·",
+                    "N",
+                    "·",
+                    "D",
+                    "·",
+                    "S",
+                ];
+                let letterIndex = 0;
+
+                const typeInterval = setInterval(() => {
+                    if (letterIndex < letters.length) {
+                        friendsText.textContent += letters[letterIndex];
+                        letterIndex++;
+                    } else {
+                        clearInterval(typeInterval);
+
+                        // Keep for 5 seconds then fade out
+                        setTimeout(() => {
+                            overlay.style.transition = "opacity 2s ease-out";
+                            overlay.style.opacity = "0";
+
+                            setTimeout(() => {
+                                if (document.body.contains(overlay)) {
+                                    document.body.removeChild(overlay);
+                                }
+                            }, 2000);
+                        }, 5000);
+                    }
+                }, 300);
+            }
 
             // High-performance text splitting utility
             function splitTextIntoLetters(element) {
