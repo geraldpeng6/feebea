@@ -1,0 +1,2092 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>FEEBEA - A Color Story</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&family=Pacifico&family=Great+Vibes&family=Cinzel:wght@400;600&family=Zhi+Mang+Xing&family=Long+Cang&family=Noto+Serif+SC:wght@400;600;700&display=swap"
+            rel="stylesheet"
+        />
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            body {
+                font-family: "Dancing Script", cursive;
+                background: linear-gradient(
+                    135deg,
+                    #0a0a0a 0%,
+                    #1a1a1a 50%,
+                    #2a2a2a 100%
+                );
+                min-height: 100vh;
+                overflow-x: hidden;
+                color: #feebea;
+                transition: all 0.3s ease;
+            }
+
+            .lang-toggle {
+                position: fixed;
+                top: 1rem;
+                left: 1rem;
+                z-index: 1000;
+                background: rgba(254, 235, 234, 0.1);
+                border: 2px solid rgba(254, 235, 234, 0.3);
+                border-radius: 25px;
+                padding: 0.6rem 1.2rem;
+                color: #feebea;
+                font-family: "Dancing Script", cursive;
+                font-size: 1rem;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                backdrop-filter: blur(10px);
+            }
+
+            .lang-toggle:hover {
+                background: rgba(254, 235, 234, 0.2);
+                transform: scale(1.05);
+                box-shadow: 0 0 20px rgba(254, 235, 234, 0.3);
+            }
+
+            .container {
+                max-width: 900px;
+                margin: 0 auto;
+                padding: 2rem 1rem;
+            }
+
+            .header {
+                text-align: center;
+                margin-bottom: 3rem;
+                animation: fadeIn 2s ease-out;
+            }
+
+            .main-title {
+                font-family: "Great Vibes", cursive;
+                font-size: 4rem;
+                font-weight: 400;
+                color: #feebea;
+                text-shadow: 0 0 30px rgba(254, 235, 234, 0.3);
+                margin-bottom: 1rem;
+                letter-spacing: 0.05em;
+            }
+
+            .subtitle {
+                font-family: "Dancing Script", cursive;
+                font-size: 1.4rem;
+                color: #feebea;
+                font-weight: 400;
+                opacity: 0.8;
+                margin-bottom: 1.5rem;
+            }
+
+            .tribute {
+                font-family: "Dancing Script", cursive;
+                font-size: 1rem;
+                color: #888;
+                font-style: italic;
+                opacity: 0.6;
+            }
+
+            /* Chinese fonts - keep Feebea in English */
+            body.chinese .tribute {
+                font-family: "Noto Serif SC", serif;
+                font-size: 0.9rem;
+            }
+
+            body.chinese .meditation-text {
+                font-family: "Noto Serif SC", serif;
+                font-size: 1.3rem;
+                font-weight: 400;
+                line-height: 1.6;
+                text-align: left;
+            }
+
+            body.chinese .essence-title {
+                font-family: "Pacifico", cursive;
+                font-size: 1.8rem;
+            }
+
+            body.chinese .essence-desc {
+                font-family: "Dancing Script", cursive;
+                font-size: 1.1rem;
+            }
+
+            body.chinese .final-text {
+                font-family: "Great Vibes", cursive;
+                font-size: 2.2rem;
+            }
+
+            body.chinese .quote-text {
+                font-family: "Cinzel", serif;
+                font-size: 1.4rem;
+                font-weight: 400;
+            }
+
+            body.chinese .quote-author {
+                font-family: "Dancing Script", cursive;
+            }
+
+            body.chinese .phoebe-title {
+                font-family: "Pacifico", cursive;
+            }
+
+            body.chinese .phoebe-quote {
+                font-family: "Dancing Script", cursive;
+                font-size: 1.2rem;
+                line-height: 1.6;
+                text-align: left;
+            }
+
+            .color-display {
+                display: flex;
+                justify-content: center;
+                margin-bottom: 3rem;
+                animation: pulse 3s infinite ease-in-out;
+            }
+
+            .color-circle {
+                width: 250px;
+                height: 250px;
+                background: #feebea;
+                border-radius: 50%;
+                box-shadow:
+                    0 0 60px rgba(254, 235, 234, 0.4),
+                    0 0 120px rgba(254, 235, 234, 0.2),
+                    inset 0 0 60px rgba(255, 255, 255, 0.1);
+                position: relative;
+                overflow: hidden;
+                cursor: pointer;
+                transition: all 0.5s ease;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .color-circle:hover {
+                transform: scale(1.05);
+                box-shadow:
+                    0 0 80px rgba(254, 235, 234, 0.6),
+                    0 0 160px rgba(254, 235, 234, 0.3);
+            }
+
+            .color-circle::before {
+                content: "";
+                position: absolute;
+                top: -50%;
+                left: -50%;
+                width: 200%;
+                height: 200%;
+                background: linear-gradient(
+                    45deg,
+                    transparent,
+                    rgba(255, 255, 255, 0.1),
+                    transparent
+                );
+                animation: rotate 4s linear infinite;
+                z-index: 1;
+            }
+
+            .zima-square {
+                width: 12px;
+                height: 12px;
+                background: #3187c2;
+                position: fixed;
+                z-index: 9999;
+                box-shadow: 0 0 10px rgba(49, 135, 194, 0.5);
+                opacity: 0;
+                animation: zimaAppear 1s ease-out forwards;
+                pointer-events: none;
+                border-radius: 0;
+            }
+
+            .zima-square-small {
+                width: 8px;
+                height: 8px;
+            }
+
+            .zima-square-large {
+                width: 16px;
+                height: 16px;
+            }
+
+            .zima-square-xl {
+                width: 20px;
+                height: 20px;
+            }
+
+            @keyframes zimaAppear {
+                0% {
+                    opacity: 0;
+                    transform: scale(0);
+                }
+                100% {
+                    opacity: 1;
+                    transform: scale(1);
+                }
+            }
+
+            .color-info {
+                text-align: center;
+                margin-bottom: 3rem;
+            }
+
+            .color-codes {
+                display: inline-block;
+                background: rgba(254, 235, 234, 0.05);
+                border: 1px solid rgba(254, 235, 234, 0.2);
+                border-radius: 20px;
+                padding: 1.5rem;
+                backdrop-filter: blur(10px);
+            }
+
+            .code-item {
+                font-family: "Dancing Script", cursive;
+                font-size: 1.2rem;
+                margin: 0.8rem 0;
+                cursor: pointer;
+                transition: color 0.3s ease;
+                font-weight: 600;
+            }
+
+            .code-item:hover {
+                color: #fff;
+                text-shadow: 0 0 10px rgba(254, 235, 234, 0.5);
+            }
+
+            .quote-section {
+                text-align: center;
+                margin: 4rem 0;
+                padding: 2rem;
+                background: rgba(254, 235, 234, 0.03);
+                border: 1px solid rgba(254, 235, 234, 0.1);
+                border-radius: 20px;
+                backdrop-filter: blur(5px);
+                animation: fadeInUp 2s ease-out 1s both;
+            }
+
+            .quote-text {
+                font-family: "Cinzel", serif;
+                font-size: 1.4rem;
+                line-height: 1.8;
+                color: #feebea;
+                opacity: 0.9;
+                max-width: 600px;
+                margin: 0 auto 1.5rem;
+                font-weight: 400;
+                font-style: italic;
+            }
+
+            .quote-author {
+                font-family: "Dancing Script", cursive;
+                font-size: 1.1rem;
+                color: #feebea;
+                opacity: 0.7;
+            }
+
+            .meditation {
+                text-align: center;
+                margin: 4rem 0;
+                animation: fadeInUp 2s ease-out 1s both;
+            }
+
+            .meditation-text {
+                font-family: "Dancing Script", cursive;
+                font-size: 1.6rem;
+                line-height: 1.8;
+                color: #feebea;
+                opacity: 0.9;
+                max-width: 650px;
+                margin: 0 auto;
+                font-weight: 400;
+                text-align: left;
+            }
+
+            .essence {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+                gap: 1.5rem;
+                margin: 3rem 0;
+            }
+
+            .essence-card {
+                background: rgba(254, 235, 234, 0.03);
+                border: 1px solid rgba(254, 235, 234, 0.1);
+                border-radius: 15px;
+                padding: 1.5rem;
+                text-align: center;
+                backdrop-filter: blur(5px);
+                transition: all 0.3s ease;
+                cursor: pointer;
+                position: relative;
+            }
+
+            .essence-card:hover {
+                background: rgba(254, 235, 234, 0.08);
+                transform: translateY(-5px);
+            }
+
+            .essence-title {
+                font-family: "Pacifico", cursive;
+                font-size: 1.3rem;
+                margin-bottom: 0.8rem;
+                color: #feebea;
+                cursor: text;
+                user-select: text;
+            }
+
+            .essence-desc {
+                font-family: "Dancing Script", cursive;
+                font-size: 1rem;
+                color: #feebea;
+                opacity: 0.8;
+                cursor: text;
+                user-select: text;
+            }
+
+            .quote-clickable {
+                cursor: pointer;
+                user-select: text;
+            }
+
+            .quote-clickable:hover {
+                opacity: 1;
+            }
+
+            .phoebe-section {
+                text-align: center;
+                margin: 4rem 0;
+                padding: 2rem;
+                background: linear-gradient(
+                    45deg,
+                    rgba(254, 235, 234, 0.05),
+                    rgba(254, 235, 234, 0.1)
+                );
+                border-radius: 20px;
+                border: 1px solid rgba(254, 235, 234, 0.2);
+                backdrop-filter: blur(10px);
+            }
+
+            .phoebe-title {
+                font-family: "Pacifico", cursive;
+                font-size: 2rem;
+                color: #feebea;
+                margin-bottom: 1.5rem;
+            }
+
+            .phoebe-quote {
+                font-family: "Dancing Script", cursive;
+                font-size: 1.3rem;
+                color: #feebea;
+                opacity: 0.9;
+                line-height: 1.6;
+                max-width: 450px;
+                margin: 0 auto;
+                font-style: italic;
+            }
+
+            .final-tribute {
+                text-align: center;
+                margin-top: 4rem;
+                padding: 2rem;
+                border-top: 1px solid rgba(254, 235, 234, 0.2);
+            }
+
+            .final-text {
+                font-family: "Great Vibes", cursive;
+                font-size: 2rem;
+                color: #feebea;
+                opacity: 0.7;
+            }
+
+            .copy-notification {
+                position: fixed;
+                top: 1rem;
+                right: 1rem;
+                background: #feebea;
+                color: #333;
+                padding: 0.8rem 1.5rem;
+                border-radius: 25px;
+                font-family: "Dancing Script", cursive;
+                font-size: 1rem;
+                font-weight: 600;
+                opacity: 0;
+                transform: translateY(-20px);
+                transition: all 0.3s ease;
+                z-index: 1000;
+                max-width: 200px;
+                text-align: center;
+            }
+
+            .copy-notification.show {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            .hidden {
+                display: none;
+            }
+
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(50px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            @keyframes fadeInUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(30px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            @keyframes pulse {
+                0%,
+                100% {
+                    transform: scale(1);
+                }
+                50% {
+                    transform: scale(1.02);
+                }
+            }
+
+            @keyframes rotate {
+                0% {
+                    transform: rotate(0deg);
+                }
+                100% {
+                    transform: rotate(360deg);
+                }
+            }
+
+            @keyframes ripple {
+                to {
+                    transform: scale(4);
+                    opacity: 0;
+                }
+            }
+
+            @keyframes fallFromTop {
+                0% {
+                    transform: translate(-50%, -150%);
+                    opacity: 0;
+                }
+                100% {
+                    transform: translate(-50%, -50%);
+                    opacity: 1;
+                }
+            }
+
+            @keyframes fallFromTopLeft {
+                0% {
+                    transform: translate(-150%, -150%);
+                    opacity: 0;
+                }
+                100% {
+                    transform: translate(-50%, -50%);
+                    opacity: 1;
+                }
+            }
+
+            @keyframes fallFromTopRight {
+                0% {
+                    transform: translate(50%, -150%);
+                    opacity: 0;
+                }
+                100% {
+                    transform: translate(-50%, -50%);
+                    opacity: 1;
+                }
+            }
+
+            @keyframes fallAndBounce {
+                0% {
+                    transform: translate(-50%, -150%);
+                    opacity: 0;
+                }
+                70% {
+                    transform: translate(-50%, -45%);
+                    opacity: 1;
+                }
+                85% {
+                    transform: translate(-50%, -52%);
+                }
+                100% {
+                    transform: translate(-50%, -50%);
+                    opacity: 1;
+                }
+            }
+
+            /* High-performance text splitting and portal effects */
+            .rick-portal {
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate3d(-50%, -50%, 0);
+                z-index: 3000;
+                text-align: center;
+                opacity: 0;
+                transition: opacity 1s ease-in;
+                will-change: opacity;
+            }
+
+            .rick-portal.show {
+                opacity: 1;
+            }
+
+            .rick-portal img {
+                width: 300px;
+                height: 300px;
+                animation: portal-fast-spin 0.5s linear infinite;
+                will-change: transform;
+                transform: translateZ(0);
+            }
+
+            .rick-message {
+                font-family: "Dancing Script", cursive;
+                font-size: 2rem;
+                color: #feebea;
+                font-weight: 600;
+                text-shadow: 0 0 20px rgba(254, 235, 234, 0.8);
+                margin-top: 2rem;
+                min-height: 3rem;
+            }
+
+            @keyframes portal-fast-spin {
+                0% {
+                    transform: rotate3d(0, 0, 1, 0deg);
+                }
+                30% {
+                    transform: rotate3d(0, 0, 1, 180deg);
+                }
+                100% {
+                    transform: rotate3d(0, 0, 1, 720deg);
+                }
+            }
+
+            /* Letter splitting and distortion effects */
+            .letter-particle {
+                display: inline-block;
+                position: relative;
+                will-change: transform, opacity;
+                transform-style: preserve-3d;
+                backface-visibility: hidden;
+                transform: translateZ(0);
+            }
+
+            .letter-exploding {
+                animation: letter-explode var(--duration, 2s) var(--delay, 0s)
+                    ease-out forwards;
+            }
+
+            @keyframes letter-explode {
+                0% {
+                    transform: translate3d(0, 0, 0) rotate3d(0, 0, 1, 0deg)
+                        scale3d(1, 1, 1);
+                    opacity: 1;
+                    animation-timing-function: ease-in;
+                }
+                15% {
+                    transform: translate3d(
+                            calc(var(--dx) * 0.1),
+                            calc(var(--dy) * 0.1),
+                            0
+                        )
+                        rotate3d(1, 1, 1, calc(var(--rotation) * 30deg))
+                        scale3d(1.1, 0.9, 1);
+                    opacity: 0.95;
+                    animation-timing-function: ease-in;
+                }
+                35% {
+                    transform: translate3d(
+                            calc(var(--dx) * 0.25),
+                            calc(var(--dy) * 0.25),
+                            0
+                        )
+                        rotate3d(1, 1, 1, calc(var(--rotation) * 150deg))
+                        scale3d(1.3, 0.7, 1);
+                    opacity: 0.85;
+                    animation-timing-function: ease-out;
+                }
+                55% {
+                    transform: translate3d(
+                            calc(var(--dx) * 0.5),
+                            calc(var(--dy) * 0.5),
+                            0
+                        )
+                        rotate3d(1, 1, 1, calc(var(--rotation) * 360deg))
+                        scale3d(0.8, 1.2, 1);
+                    opacity: 0.7;
+                    animation-timing-function: ease-out;
+                }
+                75% {
+                    transform: translate3d(
+                            calc(var(--dx) * 0.75),
+                            calc(var(--dy) * 0.75),
+                            0
+                        )
+                        rotate3d(1, 1, 1, calc(var(--rotation) * 600deg))
+                        scale3d(0.4, 0.4, 1);
+                    opacity: 0.4;
+                    animation-timing-function: ease-in;
+                }
+                90% {
+                    transform: translate3d(
+                            calc(var(--dx) * 0.9),
+                            calc(var(--dy) * 0.9),
+                            0
+                        )
+                        rotate3d(1, 1, 1, calc(var(--rotation) * 900deg))
+                        scale3d(0.15, 0.15, 1);
+                    opacity: 0.15;
+                    animation-timing-function: ease-in;
+                }
+                100% {
+                    transform: translate3d(var(--dx), var(--dy), 0)
+                        rotate3d(1, 1, 1, calc(var(--rotation) * 1200deg))
+                        scale3d(0, 0, 1);
+                    opacity: 0;
+                }
+            }
+
+            /* Element sucking effect with GPU acceleration */
+            .element-sucking {
+                animation: element-suck var(--duration, 2s) var(--delay, 0s)
+                    cubic-bezier(0.4, 0, 1, 1) forwards;
+                will-change: transform, opacity;
+                transform-style: preserve-3d;
+                backface-visibility: hidden;
+            }
+
+            @keyframes element-suck {
+                0% {
+                    transform: translate3d(0, 0, 0) scale3d(1, 1, 1)
+                        rotate3d(0, 0, 1, 0deg);
+                    opacity: 1;
+                    animation-timing-function: ease-in;
+                }
+                25% {
+                    transform: translate3d(
+                            calc(var(--dx) * 0.15),
+                            calc(var(--dy) * 0.15),
+                            0
+                        )
+                        scale3d(0.95, 0.95, 1)
+                        rotate3d(0, 0, 1, calc(var(--rotation, 1) * 90deg));
+                    opacity: 0.9;
+                    animation-timing-function: ease-out;
+                }
+                50% {
+                    transform: translate3d(
+                            calc(var(--dx) * 0.4),
+                            calc(var(--dy) * 0.4),
+                            0
+                        )
+                        scale3d(0.7, 0.7, 1)
+                        rotate3d(0, 0, 1, calc(var(--rotation, 1) * 270deg));
+                    opacity: 0.7;
+                    animation-timing-function: ease-in;
+                }
+                75% {
+                    transform: translate3d(
+                            calc(var(--dx) * 0.75),
+                            calc(var(--dy) * 0.75),
+                            0
+                        )
+                        scale3d(0.3, 0.3, 1)
+                        rotate3d(0, 0, 1, calc(var(--rotation, 1) * 540deg));
+                    opacity: 0.3;
+                    animation-timing-function: ease-in;
+                }
+                100% {
+                    transform: translate3d(var(--dx), var(--dy), 0)
+                        scale3d(0, 0, 1)
+                        rotate3d(0, 0, 1, calc(var(--rotation, 1) * 720deg));
+                    opacity: 0;
+                }
+            }
+
+            .final-background {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100vw;
+                height: 100vh;
+                background: #feebea;
+                z-index: 4000;
+                opacity: 0;
+                transition: opacity 4s ease-in;
+                will-change: opacity;
+                overflow: hidden;
+                margin: 0;
+                padding: 0;
+                border: none;
+                outline: none;
+            }
+
+            .final-background.show {
+                opacity: 1;
+            }
+
+            body.portal-mode {
+                overflow: hidden !important;
+                height: 100vh !important;
+                width: 100vw !important;
+                position: fixed !important;
+                top: 0 !important;
+                left: 0 !important;
+            }
+
+            html.portal-mode {
+                overflow: hidden !important;
+                height: 100% !important;
+                width: 100% !important;
+            }
+
+            body.portal-mode * {
+                scrollbar-width: none !important;
+                -ms-overflow-style: none !important;
+            }
+
+            body.portal-mode *::-webkit-scrollbar {
+                display: none !important;
+                width: 0 !important;
+                height: 0 !important;
+            }
+
+            /* Mobile and Tablet Optimizations */
+            @media (max-width: 1024px) {
+                .container {
+                    max-width: 100%;
+                    padding: 1.5rem 1rem;
+                }
+
+                .main-title {
+                    font-size: 3.5rem;
+                }
+
+                .color-circle {
+                    width: 220px;
+                    height: 220px;
+                }
+
+                .essence {
+                    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+                    gap: 1.2rem;
+                }
+            }
+
+            @media (max-width: 768px) {
+                .container {
+                    padding: 1rem 0.8rem;
+                }
+
+                .main-title {
+                    font-size: 3rem;
+                }
+
+                .subtitle {
+                    font-size: 1.2rem;
+                }
+
+                .color-circle {
+                    width: 180px;
+                    height: 180px;
+                }
+
+                .meditation-text,
+                .quote-text {
+                    font-size: 1.1rem;
+                }
+
+                .meditation-text {
+                    max-width: 90%;
+                }
+
+                .essence {
+                    grid-template-columns: 1fr;
+                    gap: 1rem;
+                }
+
+                .essence-card {
+                    padding: 1.2rem;
+                }
+
+                .phoebe-title {
+                    font-size: 1.6rem;
+                }
+
+                .phoebe-quote {
+                    font-size: 1.1rem;
+                }
+
+                .final-text {
+                    font-size: 1.6rem;
+                }
+
+                .lang-toggle {
+                    padding: 0.5rem 1rem;
+                    font-size: 0.9rem;
+                }
+
+                .copy-notification {
+                    padding: 0.6rem 1.2rem;
+                    font-size: 0.9rem;
+                    max-width: 160px;
+                }
+            }
+
+            @media (max-width: 480px) {
+                .main-title {
+                    font-size: 2.5rem;
+                }
+
+                .color-circle {
+                    width: 150px;
+                    height: 150px;
+                }
+
+                .quote-section,
+                .phoebe-section {
+                    padding: 1.5rem;
+                    margin: 3rem 0;
+                }
+
+                .meditation-text,
+                .quote-text {
+                    font-size: 1.1rem;
+                }
+
+                .essence-title {
+                    font-size: 1.2rem;
+                }
+
+                .essence-desc {
+                    font-size: 0.9rem;
+                }
+
+                .rick-portal img {
+                    width: 150px;
+                    height: 150px;
+                }
+
+                .rick-message {
+                    font-size: 1.2rem;
+                }
+            }
+
+            /* Touch device optimizations */
+            @media (hover: none) and (pointer: coarse) {
+                .code-item:active {
+                    color: #fff;
+                    text-shadow: 0 0 10px rgba(254, 235, 234, 0.5);
+                }
+
+                .essence-card:active {
+                    background: rgba(254, 235, 234, 0.08);
+                    transform: translateY(-2px);
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <button class="lang-toggle" onclick="toggleLanguage()">
+            <span id="langButton">中文</span>
+        </button>
+
+        <div class="copy-notification" id="copyNotification">
+            <span id="copyText">Copied to clipboard</span>
+        </div>
+
+        <div class="container">
+            <!-- English Content -->
+            <div id="englishContent">
+                <header class="header">
+                    <h1 class="main-title">Feebea</h1>
+
+                    <p class="tribute">
+                        In memory of Zima Blue & Phoebe Buffay
+                    </p>
+                </header>
+
+                <section class="color-display">
+                    <div
+                        class="color-circle"
+                        onclick="copyToClipboard('#feebea')"
+                    ></div>
+                </section>
+
+                <section class="color-info">
+                    <div class="color-codes">
+                        <div
+                            class="code-item"
+                            onclick="copyToClipboard('#feebea')"
+                        >
+                            #feebea
+                        </div>
+                        <div
+                            class="code-item"
+                            onclick="copyToClipboard('rgb(254, 235, 234)')"
+                        >
+                            rgb(254, 235, 234)
+                        </div>
+                        <div
+                            class="code-item"
+                            onclick="copyToClipboard('hsl(3, 91%, 96%)')"
+                        >
+                            hsl(3, 91%, 96%)
+                        </div>
+                    </div>
+                </section>
+
+                <section class="quote-section">
+                    <p class="quote-text">
+                        "My search for truth is finished at last. I'm going
+                        home."
+                    </p>
+                    <p class="quote-author">— Zima Blue</p>
+                </section>
+
+                <section class="meditation">
+                    <p class="meditation-text">
+                        "Sometimes, it's difficult even for me<br />
+                        to understand what I've become.<br />
+                        And harder still to remember what I once was.<br />
+                        The blue of the tiles...<br />
+                        Zima Blue, the manufacturer called it.<br />
+                        The first thing I ever saw.<br />
+                        This was where I began.<br />
+                        A crude little machine with<br />
+                        barely enough intelligence to steer itself.<br />
+                        But it was my world.<br />
+                        It was all I knew, all I needed to know.<br />
+                        And now?<br />
+                        I will immerse myself.<br />
+                        And as I do, I will slowly shut down my higher brain
+                        functions...<br />
+                        un-making myself...<br />
+                        leaving just enough to appreciate my surroundings...<br />
+                        to extract some simple pleasure<br />
+                        from the execution of a task well done.<br />
+                        My search for truth is finished at last.<br />
+                        I'm going home."
+                    </p>
+                </section>
+
+                <section class="essence">
+                    <div class="essence-card" onclick="changeQuote(0)">
+                        <h3
+                            class="essence-title quote-clickable"
+                            onclick="event.stopPropagation(); copyQuoteText(this)"
+                        >
+                            Origin
+                        </h3>
+                        <p
+                            class="essence-desc quote-clickable"
+                            onclick="event.stopPropagation(); copyQuoteText(this)"
+                        >
+                            Where it all started
+                        </p>
+                    </div>
+                    <div class="essence-card" onclick="changeQuote(1)">
+                        <h3
+                            class="essence-title quote-clickable"
+                            onclick="event.stopPropagation(); copyQuoteText(this)"
+                        >
+                            Memory
+                        </h3>
+                        <p
+                            class="essence-desc quote-clickable"
+                            onclick="event.stopPropagation(); copyQuoteText(this)"
+                        >
+                            The first color I knew
+                        </p>
+                    </div>
+                    <div class="essence-card" onclick="changeQuote(2)">
+                        <h3
+                            class="essence-title quote-clickable"
+                            onclick="event.stopPropagation(); copyQuoteText(this)"
+                        >
+                            Truth
+                        </h3>
+                        <p
+                            class="essence-desc quote-clickable"
+                            onclick="event.stopPropagation(); copyQuoteText(this)"
+                        >
+                            Simple, perfect beauty
+                        </p>
+                    </div>
+                </section>
+
+                <section class="phoebe-section">
+                    <h2 class="phoebe-title">Phoebe's Wisdom</h2>
+                    <p class="phoebe-quote">
+                        "Maybe this is what's meant to be.<br />
+                        Like, maybe the universe has a plan for us."
+                    </p>
+                </section>
+
+                <footer class="final-tribute">
+                    <p class="final-text">Every color tells a story</p>
+                </footer>
+            </div>
+
+            <!-- Chinese Content -->
+            <div id="chineseContent" class="hidden">
+                <header class="header">
+                    <h1 class="main-title">Feebea</h1>
+
+                    <p class="tribute">致敬齐马蓝与菲比·布菲</p>
+                </header>
+
+                <section class="color-display">
+                    <div
+                        class="color-circle"
+                        onclick="copyToClipboard('#feebea')"
+                    ></div>
+                </section>
+
+                <section class="color-info">
+                    <div class="color-codes">
+                        <div
+                            class="code-item"
+                            onclick="copyToClipboard('#feebea')"
+                        >
+                            #feebea
+                        </div>
+                        <div
+                            class="code-item"
+                            onclick="copyToClipboard('rgb(254, 235, 234)')"
+                        >
+                            rgb(254, 235, 234)
+                        </div>
+                        <div
+                            class="code-item"
+                            onclick="copyToClipboard('hsl(3, 91%, 96%)')"
+                        >
+                            hsl(3, 91%, 96%)
+                        </div>
+                    </div>
+                </section>
+
+                <section class="quote-section">
+                    <p class="quote-text">
+                        "我对真相的探索终于结束了。我要回家了。"
+                    </p>
+                    <p class="quote-author">— 齐马蓝</p>
+                </section>
+
+                <section class="meditation">
+                    <p class="meditation-text">
+                        "Sometimes, it's difficult even for me<br />
+                        有时候 连我自己都很难理解<br />
+                        to understand what I've become.<br />
+                        我到底成为了什么<br />
+                        And harder still to remember what I once was.<br />
+                        更难记清楚我曾经是什么样子<br />
+                        The blue of the tiles...<br />
+                        瓷砖的蓝色<br />
+                        Zima Blue, the manufacturer called it.<br />
+                        齐马蓝 制作商这样称呼<br />
+                        The first thing I ever saw.<br />
+                        我见到的第一件物品<br />
+                        This was where I began.<br />
+                        一切从这里开始<br />
+                        A crude little machine with<br />
+                        一个简陋的小机器<br />
+                        barely enough intelligence to steer itself.<br />
+                        几乎没有足够智能操控自己<br />
+                        But it was my world.<br />
+                        但那是我的世界<br />
+                        It was all I knew, all I needed to know.<br />
+                        是我了解的一切 也是我需要了解的一切<br />
+                        And now?<br />
+                        现在呢<br />
+                        I will immerse myself.<br />
+                        我将浸入泳池<br />
+                        And as I do, I will slowly shut down my higher brain
+                        functions...<br />
+                        与此同时 我会逐渐关闭我的高级脑功能<br />
+                        un-making myself...<br />
+                        拆解自己<br />
+                        leaving just enough to appreciate my surroundings...<br />
+                        只留下必要的组件来欣赏周围环境<br />
+                        to extract some simple pleasure<br />
+                        从高效完成任务中<br />
+                        from the execution of a task well done.<br />
+                        感受简单的愉悦<br />
+                        My search for truth is finished at last.<br />
+                        我对真相的探索终于结束了<br />
+                        I'm going home."<br />
+                        我要回家了
+                    </p>
+                </section>
+
+                <section class="essence">
+                    <div class="essence-card" onclick="changeQuote(0)">
+                        <h3
+                            class="essence-title quote-clickable"
+                            onclick="event.stopPropagation(); copyQuoteText(this)"
+                        >
+                            起源
+                        </h3>
+                        <p
+                            class="essence-desc quote-clickable"
+                            onclick="event.stopPropagation(); copyQuoteText(this)"
+                        >
+                            一切开始的地方
+                        </p>
+                    </div>
+                    <div class="essence-card" onclick="changeQuote(1)">
+                        <h3
+                            class="essence-title quote-clickable"
+                            onclick="event.stopPropagation(); copyQuoteText(this)"
+                        >
+                            记忆
+                        </h3>
+                        <p
+                            class="essence-desc quote-clickable"
+                            onclick="event.stopPropagation(); copyQuoteText(this)"
+                        >
+                            我认识的第一种颜色
+                        </p>
+                    </div>
+                    <div class="essence-card" onclick="changeQuote(2)">
+                        <h3
+                            class="essence-title quote-clickable"
+                            onclick="event.stopPropagation(); copyQuoteText(this)"
+                        >
+                            真理
+                        </h3>
+                        <p
+                            class="essence-desc quote-clickable"
+                            onclick="event.stopPropagation(); copyQuoteText(this)"
+                        >
+                            简单而完美的美
+                        </p>
+                    </div>
+                </section>
+
+                <section class="phoebe-section">
+                    <h2 class="phoebe-title">菲比的智慧</h2>
+                    <p class="phoebe-quote">
+                        "Maybe this is what's meant to be.<br />
+                        也许这就是命中注定的<br />
+                        Like, maybe the universe has a plan for us."<br />
+                        也许宇宙对我们有它的安排
+                    </p>
+                </section>
+
+                <footer class="final-tribute">
+                    <p class="final-text">每种颜色都在诉说故事</p>
+                </footer>
+            </div>
+        </div>
+
+        <script>
+            let isEnglish = true;
+
+            function toggleLanguage() {
+                const englishContent =
+                    document.getElementById("englishContent");
+                const chineseContent =
+                    document.getElementById("chineseContent");
+                const langButton = document.getElementById("langButton");
+                const copyText = document.getElementById("copyText");
+                const body = document.body;
+
+                if (isEnglish) {
+                    englishContent.classList.add("hidden");
+                    chineseContent.classList.remove("hidden");
+                    langButton.textContent = "English";
+                    copyText.textContent = "已复制到剪贴板";
+                    body.classList.add("chinese");
+                    isEnglish = false;
+                } else {
+                    chineseContent.classList.add("hidden");
+                    englishContent.classList.remove("hidden");
+                    langButton.textContent = "中文";
+                    copyText.textContent = "Copied to clipboard";
+                    body.classList.remove("chinese");
+                    isEnglish = true;
+                }
+            }
+
+            function copyToClipboard(text) {
+                navigator.clipboard.writeText(text).then(
+                    function () {
+                        showCopyNotification();
+                    },
+                    function (err) {
+                        console.error("Could not copy text: ", err);
+                        // Fallback for older browsers
+                        const textArea = document.createElement("textarea");
+                        textArea.value = text;
+                        document.body.appendChild(textArea);
+                        textArea.select();
+                        try {
+                            document.execCommand("copy");
+                            showCopyNotification();
+                        } catch (err) {
+                            console.error(
+                                "Fallback: Could not copy text: ",
+                                err,
+                            );
+                        }
+                        document.body.removeChild(textArea);
+                    },
+                );
+            }
+
+            function showCopyNotification() {
+                const notification =
+                    document.getElementById("copyNotification");
+                notification.classList.add("show");
+
+                setTimeout(() => {
+                    notification.classList.remove("show");
+                }, 2000);
+            }
+
+            // Add subtle parallax effect
+            window.addEventListener("scroll", () => {
+                const scrolled = window.pageYOffset;
+                const circles = document.querySelector(".color-circle");
+                if (circles) {
+                    circles.style.transform = `translateY(${scrolled * 0.05}px)`;
+                }
+            });
+
+            // Add click effect to color circle
+            document
+                .querySelector(".color-circle")
+                .addEventListener("click", function (e) {
+                    const ripple = document.createElement("div");
+                    ripple.style.position = "absolute";
+                    ripple.style.borderRadius = "50%";
+                    ripple.style.background = "rgba(255, 255, 255, 0.3)";
+                    ripple.style.transform = "scale(0)";
+                    ripple.style.animation = "ripple 0.6s linear";
+                    ripple.style.left = "50%";
+                    ripple.style.top = "50%";
+                    ripple.style.width = "100px";
+                    ripple.style.height = "100px";
+                    ripple.style.marginLeft = "-50px";
+                    ripple.style.marginTop = "-50px";
+                    ripple.style.zIndex = "0";
+
+                    this.appendChild(ripple);
+
+                    setTimeout(() => {
+                        ripple.remove();
+                    }, 600);
+                });
+
+            // Random quotes from various sources
+            const quotes = [
+                // Zhang Ailing
+                {
+                    en: "Because of understanding, there is compassion",
+                    zh: "因为懂得，所以慈悲",
+                    source: "张爱玲",
+                },
+                {
+                    en: "Life is a beautiful robe crawling with lice",
+                    zh: "人生是一袭华美的袍，爬满了虱子",
+                    source: "张爱玲",
+                },
+                {
+                    en: "Fame should come early",
+                    zh: "出名要趁早",
+                    source: "张爱玲",
+                },
+                {
+                    en: "Meet the person you want to meet among thousands of people",
+                    zh: "于千万人之中遇见你所要遇见的人",
+                    source: "张爱玲",
+                },
+                {
+                    en: "Love is not to look at each other, but together look in the same direction",
+                    zh: "爱不是彼此凝视，而是一起看向同一个方向",
+                    source: "张爱玲",
+                },
+
+                // Wang Xiaobo
+                {
+                    en: "Wisdom itself is good",
+                    zh: "智慧本身就是好的",
+                    source: "王小波",
+                },
+                {
+                    en: "I live to understand truths and encounter interesting things",
+                    zh: "我活在世上，无非想要明白些道理，遇见些有趣的事",
+                    source: "王小波",
+                },
+                {
+                    en: "A person's joy should come from learning",
+                    zh: "一个人倘若需要从思想中得到快乐，那么他的第一个欲望就是学习",
+                    source: "王小波",
+                },
+                {
+                    en: "You are willing, I love you forever; unwilling, I miss you forever",
+                    zh: "你要是愿意，我就永远爱你；你要是不愿意，我就永远相思",
+                    source: "王小波",
+                },
+                {
+                    en: "The silent majority",
+                    zh: "沉默的大多数",
+                    source: "王小波",
+                },
+
+                // The Little Prince
+                {
+                    en: "What is essential is invisible to the eye",
+                    zh: "真正重要的东西是看不见的",
+                    source: "小王子",
+                },
+                {
+                    en: "It is the time you have wasted for your rose that makes your rose so important",
+                    zh: "正是你为你的玫瑰花费的时光使你的玫瑰变得如此重要",
+                    source: "小王子",
+                },
+                {
+                    en: "All grown-ups were once children",
+                    zh: "所有的大人都曾经是小孩",
+                    source: "小王子",
+                },
+                {
+                    en: "The stars are beautiful because of a flower that cannot be seen",
+                    zh: "星星发亮是为了让每一个人有一天都能找到属于自己的星星",
+                    source: "小王子",
+                },
+                {
+                    en: "One sees clearly only with the heart",
+                    zh: "只有用心才能看得清",
+                    source: "小王子",
+                },
+
+                // William Blake
+                {
+                    en: "To see a world in a grain of sand",
+                    zh: "从一粒沙看世界",
+                    source: "威廉·布莱克",
+                },
+                {
+                    en: "The tyger burning bright in the forests of the night",
+                    zh: "老虎在夜晚的森林中燃烧光明",
+                    source: "威廉·布莱克",
+                },
+                {
+                    en: "How do you know but ev'ry bird that cuts the airy way, is an immense world of delight",
+                    zh: "你怎么知道每只划过天空的鸟儿，不是一个巨大的快乐世界",
+                    source: "威廉·布莱克",
+                },
+                {
+                    en: "Energy is eternal delight",
+                    zh: "能量是永恒的快乐",
+                    source: "威廉·布莱克",
+                },
+                {
+                    en: "If the doors of perception were cleansed",
+                    zh: "如果感知之门得到净化",
+                    source: "威廉·布莱克",
+                },
+
+                // Zelda
+                {
+                    en: "Courage need not be remembered, for it is never forgotten",
+                    zh: "勇气无需被铭记，因为它永远不会被遗忘",
+                    source: "塞尔达传说",
+                },
+                {
+                    en: "It's dangerous to go alone",
+                    zh: "独自前行很危险",
+                    source: "塞尔达传说",
+                },
+                {
+                    en: "The flow of time is always cruel",
+                    zh: "时间的流逝总是残酷的",
+                    source: "塞尔达传说",
+                },
+                {
+                    en: "May the way of the Hero lead to the Triforce",
+                    zh: "愿英雄之路通往三角力量",
+                    source: "塞尔达传说",
+                },
+                {
+                    en: "Listen carefully to the wind",
+                    zh: "仔细倾听风的声音",
+                    source: "塞尔达传说",
+                },
+
+                // League of Legends
+                {
+                    en: "Honor is in the heart, not in the name",
+                    zh: "荣誉在心中，不在名字里",
+                    source: "英雄联盟",
+                },
+                {
+                    en: "We are what we overcome",
+                    zh: "我们就是我们所战胜的",
+                    source: "英雄联盟",
+                },
+                {
+                    en: "The will comes from within, not from the blade",
+                    zh: "意志来自内心，而非利刃",
+                    source: "英雄联盟",
+                },
+                {
+                    en: "A true master is an eternal student",
+                    zh: "真正的大师是永恒的学生",
+                    source: "英雄联盟",
+                },
+                {
+                    en: "Experience is the best teacher",
+                    zh: "经验是最好的老师",
+                    source: "英雄联盟",
+                },
+
+                // Game of Thrones
+                {
+                    en: "Winter is coming",
+                    zh: "凛冬将至",
+                    source: "权力的游戏",
+                },
+                {
+                    en: "When you play the game of thrones, you win or you die",
+                    zh: "权力的游戏，不胜即死",
+                    source: "权力的游戏",
+                },
+                {
+                    en: "A mind needs books as a sword needs a whetstone",
+                    zh: "读书如磨剑",
+                    source: "权力的游戏",
+                },
+                {
+                    en: "The night is dark and full of terrors",
+                    zh: "长夜漫漫，处处险恶",
+                    source: "权力的游戏",
+                },
+                {
+                    en: "What is dead may never die",
+                    zh: "逝者不死",
+                    source: "权力的游戏",
+                },
+            ];
+
+            // Current quotes displayed in each card
+            let currentQuotes = [0, 1, 2];
+
+            // Random Phoebe quotes that appear occasionally
+            const phoebeQuotes = [
+                {
+                    en: "I don't even have a 'pla'.",
+                    zh: "我连计划都没有。",
+                },
+                {
+                    en: "This is brand new information!",
+                    zh: "这是全新的信息！",
+                },
+                {
+                    en: "Oh, I wish I could, but I don't want to.",
+                    zh: "哦，我很想，但我不想。",
+                },
+                {
+                    en: "My songs aren't for everyone, but they're for someone.",
+                    zh: "我的歌不是为所有人而唱，但总有人会喜欢。",
+                },
+                {
+                    en: "See? He's her lobster!",
+                    zh: "看？他是她的龙虾！",
+                },
+                {
+                    en: "I'm not great at the advice. Can I interest you in a sarcastic comment?",
+                    zh: "我不太会给建议。要不来点讽刺的评论？",
+                },
+                {
+                    en: "Sometimes I wish I was a lesbian.",
+                    zh: "有时我希望我是个女同性恋。",
+                },
+            ];
+
+            // Function to change quote in a card
+            function changeQuote(cardIndex) {
+                let newQuoteIndex;
+                do {
+                    newQuoteIndex = Math.floor(Math.random() * quotes.length);
+                } while (newQuoteIndex === currentQuotes[cardIndex]);
+
+                currentQuotes[cardIndex] = newQuoteIndex;
+                const quote = quotes[newQuoteIndex];
+
+                // Update both English and Chinese versions
+                const englishCards = document.querySelectorAll(
+                    "#englishContent .essence-card",
+                );
+                const chineseCards = document.querySelectorAll(
+                    "#chineseContent .essence-card",
+                );
+
+                if (englishCards[cardIndex]) {
+                    const titleEl =
+                        englishCards[cardIndex].querySelector(".essence-title");
+                    const descEl =
+                        englishCards[cardIndex].querySelector(".essence-desc");
+                    titleEl.textContent = quote.en;
+                    descEl.textContent = quote.source;
+                }
+
+                if (chineseCards[cardIndex]) {
+                    const titleEl =
+                        chineseCards[cardIndex].querySelector(".essence-title");
+                    const descEl =
+                        chineseCards[cardIndex].querySelector(".essence-desc");
+                    titleEl.textContent = quote.zh;
+                    descEl.textContent = quote.source;
+                }
+            }
+
+            // Function to copy quote text
+            function copyQuoteText(element) {
+                const text = element.textContent;
+                copyToClipboard(text);
+            }
+
+            // Make all text elements clickable for copying
+            function makeTextClickable() {
+                const textSelectors =
+                    ".quote-text, .quote-author, .meditation-text, .phoebe-quote, .phoebe-title, .final-text";
+                document.querySelectorAll(textSelectors).forEach((element) => {
+                    element.addEventListener("click", function () {
+                        copyToClipboard(this.textContent);
+                    });
+                    element.style.cursor = "pointer";
+                    element.style.userSelect = "text";
+                });
+            }
+
+            // Zima Blue squares system
+            let zimaSquares = [];
+            let zimaTimer = null;
+
+            function createZimaSquare() {
+                const square = document.createElement("div");
+
+                // Random size variation
+                const sizeRandom = Math.random();
+                let sizeClass = "zima-square";
+                let squareSize = 12;
+
+                if (sizeRandom < 0.4) {
+                    sizeClass += " zima-square-small";
+                    squareSize = 8;
+                } else if (sizeRandom < 0.8) {
+                    // Default size
+                    squareSize = 12;
+                } else if (sizeRandom < 0.95) {
+                    sizeClass += " zima-square-large";
+                    squareSize = 16;
+                } else {
+                    sizeClass += " zima-square-xl";
+                    squareSize = 20;
+                }
+
+                square.className = sizeClass;
+
+                // Random position on screen, accounting for square size
+                const x = Math.random() * (window.innerWidth - squareSize);
+                const y = Math.random() * (window.innerHeight - squareSize);
+
+                square.style.left = x + "px";
+                square.style.top = y + "px";
+
+                // Slight color variation
+                const blueVariation = Math.random() * 20 - 10; // -10 to +10
+                const alpha = 0.8 + Math.random() * 0.2; // 0.8 to 1.0
+                const hue = 200 + blueVariation; // Around the original blue
+                square.style.background = `hsla(${hue}, 60%, 45%, ${alpha})`;
+
+                document.body.appendChild(square);
+                zimaSquares.push(square);
+
+                // Schedule next square
+                scheduleNextZimaSquare();
+            }
+
+            function scheduleNextZimaSquare() {
+                // Gradually decrease interval as more squares appear
+                const baseInterval = Math.max(
+                    2000,
+                    8000 - zimaSquares.length * 50,
+                );
+                const randomVariation = Math.random() * baseInterval * 0.5;
+                const interval = baseInterval + randomVariation;
+
+                zimaTimer = setTimeout(createZimaSquare, interval);
+            }
+
+            function startZimaBlueSystem() {
+                // Start the first square after a random delay
+                const initialDelay = Math.random() * 10000 + 5000; // 5-15 seconds
+                zimaTimer = setTimeout(createZimaSquare, initialDelay);
+            }
+
+            // Handle window resize to reposition squares if needed
+            window.addEventListener("resize", function () {
+                zimaSquares.forEach((square) => {
+                    const rect = square.getBoundingClientRect();
+                    if (
+                        rect.right > window.innerWidth ||
+                        rect.bottom > window.innerHeight
+                    ) {
+                        const maxX =
+                            window.innerWidth -
+                            parseInt(square.style.width || 12);
+                        const maxY =
+                            window.innerHeight -
+                            parseInt(square.style.height || 12);
+                        square.style.left = Math.min(rect.left, maxX) + "px";
+                        square.style.top = Math.min(rect.top, maxY) + "px";
+                    }
+                });
+            });
+
+            // Initialize quotes and clickable text
+            document.addEventListener("DOMContentLoaded", function () {
+                // Initialize with random quotes
+                for (let i = 0; i < 3; i++) {
+                    changeQuote(i);
+                }
+                makeTextClickable();
+
+                // Start Zima Blue system
+                startZimaBlueSystem();
+            });
+
+            // Easter egg: clicking the circle 7 times shows a Phoebe quote
+            let clickCount = 0;
+            let phoebeAnimationCount = 0;
+
+            document
+                .querySelector(".color-circle")
+                .addEventListener("click", function () {
+                    clickCount++;
+                    if (clickCount === 7) {
+                        const randomQuote =
+                            phoebeQuotes[
+                                Math.floor(Math.random() * phoebeQuotes.length)
+                            ];
+
+                        // Create a more elegant notification for the quote
+                        const quoteNotification = document.createElement("div");
+
+                        // Different falling animations
+                        const animationType = phoebeAnimationCount % 4;
+                        let animationCSS = "";
+
+                        switch (animationType) {
+                            case 0:
+                                animationCSS =
+                                    "animation: fallFromTop 1s ease-out;";
+                                break;
+                            case 1:
+                                animationCSS =
+                                    "animation: fallFromTopLeft 1s ease-out;";
+                                break;
+                            case 2:
+                                animationCSS =
+                                    "animation: fallFromTopRight 1s ease-out;";
+                                break;
+                            case 3:
+                                animationCSS =
+                                    "animation: fallAndBounce 1.2s ease-out;";
+                                break;
+                        }
+
+                        quoteNotification.style.cssText = `
+                            position: fixed;
+                            top: 50%;
+                            left: 50%;
+                            transform: translate(-50%, -50%);
+                            background: rgba(254, 235, 234, 0.95);
+                            color: #333;
+                            padding: 2rem;
+                            border-radius: 20px;
+                            font-family: 'Dancing Script', cursive;
+                            font-size: 1.2rem;
+                            text-align: center;
+                            max-width: 80vw;
+                            z-index: 2000;
+                            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+                            backdrop-filter: blur(10px);
+                            line-height: 1.6;
+                            ${animationCSS}
+                        `;
+
+                        if (isEnglish) {
+                            quoteNotification.innerHTML = `<strong>Phoebe says:</strong><br>"${randomQuote.en}"`;
+                        } else {
+                            quoteNotification.innerHTML = `<strong>Phoebe says:</strong><br>"${randomQuote.en}"<br><br><strong>菲比说：</strong><br>"${randomQuote.zh}"`;
+                        }
+
+                        document.body.appendChild(quoteNotification);
+                        phoebeAnimationCount++;
+
+                        setTimeout(() => {
+                            quoteNotification.style.opacity = "0";
+                            setTimeout(() => {
+                                if (document.body.contains(quoteNotification)) {
+                                    document.body.removeChild(
+                                        quoteNotification,
+                                    );
+                                }
+                            }, 500);
+                        }, 3000);
+
+                        clickCount = 0;
+                    }
+                });
+
+            // High-performance text splitting utility
+            function splitTextIntoLetters(element) {
+                const text = element.textContent || element.innerText;
+                element.innerHTML = "";
+
+                for (let i = 0; i < text.length; i++) {
+                    const letter = text[i];
+                    if (letter === " ") {
+                        element.appendChild(document.createTextNode(" "));
+                    } else {
+                        const span = document.createElement("span");
+                        span.className = "letter-particle";
+                        span.textContent = letter;
+                        span.style.willChange = "transform, opacity";
+                        span.style.transform = "translateZ(0)";
+                        element.appendChild(span);
+                    }
+                }
+            }
+
+            // Advanced Rick Easter egg triggers
+            let konamiCode = [
+                "ArrowUp",
+                "ArrowUp",
+                "ArrowDown",
+                "ArrowDown",
+                "ArrowLeft",
+                "ArrowRight",
+                "ArrowLeft",
+                "ArrowRight",
+                "KeyB",
+                "KeyA",
+            ];
+            let konamiIndex = 0;
+            let secretSequence = [];
+            let lastKeyTime = 0;
+
+            document.addEventListener("keydown", function (e) {
+                const currentTime = Date.now();
+
+                if (currentTime - lastKeyTime > 2000) {
+                    konamiIndex = 0;
+                    secretSequence = [];
+                }
+                lastKeyTime = currentTime;
+
+                // Check Konami code
+                if (e.code === konamiCode[konamiIndex]) {
+                    konamiIndex++;
+                    if (konamiIndex === konamiCode.length) {
+                        triggerRickPortal();
+                        konamiIndex = 0;
+                    }
+                } else {
+                    konamiIndex = 0;
+                }
+
+                // Secret sequence: R-I-C-K
+                if (["KeyR", "KeyI", "KeyC", "KeyK"].includes(e.code)) {
+                    secretSequence.push(e.code);
+                    if (secretSequence.length > 4) {
+                        secretSequence.shift();
+                    }
+                    if (secretSequence.join("") === "KeyRKeyIKeyCKeyK") {
+                        triggerRickPortal();
+                        secretSequence = [];
+                    }
+                } else if (e.code.startsWith("Key")) {
+                    secretSequence = [];
+                }
+            });
+
+            // Mouse pattern detection
+            let mousePositions = [];
+            let isDrawing = false;
+
+            document.addEventListener("mousedown", function (e) {
+                if (e.button === 0) {
+                    isDrawing = true;
+                    mousePositions = [{ x: e.clientX, y: e.clientY }];
+                }
+            });
+
+            document.addEventListener("mousemove", function (e) {
+                if (isDrawing) {
+                    mousePositions.push({ x: e.clientX, y: e.clientY });
+                    if (mousePositions.length > 50) {
+                        mousePositions.shift();
+                    }
+                }
+            });
+
+            document.addEventListener("mouseup", function (e) {
+                if (isDrawing) {
+                    isDrawing = false;
+                    if (isCircularPattern(mousePositions)) {
+                        triggerRickPortal();
+                    }
+                    mousePositions = [];
+                }
+            });
+
+            // Touch support
+            let touchPositions = [];
+            let isTouchDrawing = false;
+
+            document.addEventListener("touchstart", function (e) {
+                e.preventDefault();
+                isTouchDrawing = true;
+                const touch = e.touches[0];
+                touchPositions = [{ x: touch.clientX, y: touch.clientY }];
+            });
+
+            document.addEventListener("touchmove", function (e) {
+                e.preventDefault();
+                if (isTouchDrawing) {
+                    const touch = e.touches[0];
+                    touchPositions.push({ x: touch.clientX, y: touch.clientY });
+                    if (touchPositions.length > 50) {
+                        touchPositions.shift();
+                    }
+                }
+            });
+
+            document.addEventListener("touchend", function (e) {
+                e.preventDefault();
+                if (isTouchDrawing) {
+                    isTouchDrawing = false;
+                    if (isCircularPattern(touchPositions)) {
+                        triggerRickPortal();
+                    }
+                    touchPositions = [];
+                }
+            });
+
+            // Alternative: Quick tap author 6 times
+            let authorTapCount = 0;
+            let lastTapTime = 0;
+
+            document.addEventListener("click", function (e) {
+                if (e.target.classList.contains("author-text")) {
+                    const currentTime = Date.now();
+                    if (currentTime - lastTapTime < 1000) {
+                        authorTapCount++;
+                        if (authorTapCount === 6) {
+                            triggerRickPortal();
+                            authorTapCount = 0;
+                        }
+                    } else {
+                        authorTapCount = 1;
+                    }
+                    lastTapTime = currentTime;
+                }
+            });
+
+            function isCircularPattern(positions) {
+                if (positions.length < 20) return false;
+
+                let centerX =
+                    positions.reduce((sum, p) => sum + p.x, 0) /
+                    positions.length;
+                let centerY =
+                    positions.reduce((sum, p) => sum + p.y, 0) /
+                    positions.length;
+
+                let distances = positions.map((p) =>
+                    Math.sqrt((p.x - centerX) ** 2 + (p.y - centerY) ** 2),
+                );
+                let avgDistance =
+                    distances.reduce((sum, d) => sum + d, 0) / distances.length;
+                let variance =
+                    distances.reduce(
+                        (sum, d) => sum + (d - avgDistance) ** 2,
+                        0,
+                    ) / distances.length;
+
+                return avgDistance > 50 && variance < avgDistance * 0.3;
+            }
+
+            function triggerRickPortal() {
+                // Create portal
+                const portal = document.createElement("div");
+                portal.className = "rick-portal";
+                portal.innerHTML = `
+                    <img src="./phoebe/rickandmorty.png" alt="Rick Portal" />
+                    <div class="rick-message" id="rickMessage"></div>
+                `;
+
+                document.body.appendChild(portal);
+
+                setTimeout(() => {
+                    portal.classList.add("show");
+                }, 100);
+
+                setTimeout(() => {
+                    typeMessage(
+                        "WUBBA LUBBA DUB DUB!",
+                        document.getElementById("rickMessage"),
+                    );
+                }, 2000);
+
+                setTimeout(() => {
+                    startAdvancedSuckingEffect();
+                }, 5000);
+            }
+
+            function typeMessage(text, element) {
+                let index = 0;
+                element.textContent = "";
+
+                function typeChar() {
+                    if (index < text.length) {
+                        element.textContent += text.charAt(index);
+                        index++;
+                        setTimeout(typeChar, 100 + Math.random() * 100);
+                    }
+                }
+                typeChar();
+            }
+
+            function startAdvancedSuckingEffect() {
+                const portalRect = document
+                    .querySelector(".rick-portal img")
+                    .getBoundingClientRect();
+                const portalCenterX = portalRect.left + portalRect.width / 2;
+                const portalCenterY = portalRect.top + portalRect.height / 2;
+
+                // Split all text elements into letters first
+                const textElements = document.querySelectorAll(
+                    "h1, h2, h3, p, span:not(.letter-particle):not(.rick-portal *)",
+                );
+
+                textElements.forEach((element) => {
+                    if (
+                        element.textContent.trim() &&
+                        !element.querySelector(".letter-particle")
+                    ) {
+                        splitTextIntoLetters(element);
+                    }
+                });
+
+                // Animate letters with advanced effects
+                const letters = document.querySelectorAll(".letter-particle");
+                letters.forEach((letter, index) => {
+                    const rect = letter.getBoundingClientRect();
+                    const letterCenterX = rect.left + rect.width / 2;
+                    const letterCenterY = rect.top + rect.height / 2;
+
+                    const dx = portalCenterX - letterCenterX;
+                    const dy = portalCenterY - letterCenterY;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    const rotation = Math.random() * 2 - 1; // -1 to 1
+
+                    letter.style.setProperty("--dx", dx + "px");
+                    letter.style.setProperty("--dy", dy + "px");
+                    letter.style.setProperty("--rotation", rotation);
+                    letter.style.setProperty(
+                        "--duration",
+                        3 + Math.random() * 2 + "s",
+                    );
+                    letter.style.setProperty(
+                        "--delay",
+                        index * 25 + Math.random() * 300 + "ms",
+                    );
+
+                    setTimeout(() => {
+                        letter.classList.add("letter-exploding");
+                    }, index * 25);
+                });
+
+                // Animate other elements
+                const otherElements = document.querySelectorAll(
+                    "*:not(.letter-particle):not(.rick-portal):not(.rick-portal *):not(.final-background)",
+                );
+
+                otherElements.forEach((element, index) => {
+                    if (
+                        element.children.length === 0 ||
+                        element.querySelector(".letter-particle")
+                    ) {
+                        return; // Skip if empty or already processed
+                    }
+
+                    const rect = element.getBoundingClientRect();
+                    const elementCenterX = rect.left + rect.width / 2;
+                    const elementCenterY = rect.top + rect.height / 2;
+
+                    const dx = portalCenterX - elementCenterX;
+                    const dy = portalCenterY - elementCenterY;
+                    const rotation = Math.random() * 2 - 1;
+
+                    element.style.setProperty("--dx", dx + "px");
+                    element.style.setProperty("--dy", dy + "px");
+                    element.style.setProperty("--rotation", rotation);
+                    element.style.setProperty(
+                        "--duration",
+                        3.5 + Math.random() * 1.5 + "s",
+                    );
+                    element.style.setProperty("--delay", index * 50 + "ms");
+
+                    setTimeout(() => {
+                        element.classList.add("element-sucking");
+                    }, index * 50);
+                });
+
+                // Show final background after all elements are absorbed
+                setTimeout(() => {
+                    // Hide scrollbars
+                    document.body.classList.add("portal-mode");
+                    document.documentElement.classList.add("portal-mode");
+
+                    const finalBg = document.createElement("div");
+                    finalBg.className = "final-background";
+                    document.body.appendChild(finalBg);
+
+                    setTimeout(() => {
+                        finalBg.classList.add("show");
+                    }, 200);
+
+                    setTimeout(() => {
+                        if (document.querySelector(".rick-portal")) {
+                            document.querySelector(".rick-portal").remove();
+                        }
+                    }, 4000);
+                }, 5000);
+            }
+        </script>
+    </body>
+</html>
