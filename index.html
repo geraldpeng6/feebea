@@ -93,54 +93,92 @@
                 opacity: 0.6;
             }
 
-            /* Chinese fonts - keep Feebea in English */
+            /* Chinese fonts - keep English fonts for better appearance */
             body.chinese .tribute {
-                font-family: "Noto Serif SC", serif;
+                font-family: "Dancing Script", cursive;
                 font-size: 0.9rem;
             }
 
             body.chinese .meditation-text {
-                font-family: "Noto Serif SC", serif;
-                font-size: 1.3rem;
+                font-family: "Dancing Script", cursive;
+                font-size: 1.6rem;
+                line-height: 1.8;
+                color: #feebea;
+                opacity: 0.9;
+                max-width: 650px;
+                margin: 0 auto;
                 font-weight: 400;
-                line-height: 1.6;
-                text-align: left;
+                text-align: center;
             }
 
             body.chinese .essence-title {
                 font-family: "Pacifico", cursive;
-                font-size: 1.8rem;
+                font-size: clamp(0.9rem, 2.5vw, 1.3rem);
+                margin-bottom: 0.5rem;
+                color: #feebea;
+                cursor: text;
+                user-select: text;
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+                line-height: 1.2;
+                max-width: 100%;
             }
 
             body.chinese .essence-desc {
                 font-family: "Dancing Script", cursive;
-                font-size: 1.1rem;
+                font-size: clamp(0.8rem, 2vw, 1rem);
+                color: #feebea;
+                opacity: 0.8;
+                cursor: text;
+                user-select: text;
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+                line-height: 1.1;
+                max-width: 100%;
             }
 
             body.chinese .final-text {
                 font-family: "Great Vibes", cursive;
-                font-size: 2.2rem;
+                font-size: 2rem;
+                color: #feebea;
+                opacity: 0.7;
             }
 
             body.chinese .quote-text {
                 font-family: "Cinzel", serif;
                 font-size: 1.4rem;
+                line-height: 1.8;
+                color: #feebea;
+                opacity: 0.9;
+                max-width: 600px;
+                margin: 0 auto 1.5rem;
                 font-weight: 400;
+                font-style: italic;
             }
 
             body.chinese .quote-author {
                 font-family: "Dancing Script", cursive;
+                font-size: 1.1rem;
+                color: #feebea;
+                opacity: 0.7;
             }
 
             body.chinese .phoebe-title {
                 font-family: "Pacifico", cursive;
+                font-size: 2rem;
+                color: #feebea;
+                margin-bottom: 1.5rem;
             }
 
             body.chinese .phoebe-quote {
                 font-family: "Dancing Script", cursive;
-                font-size: 1.2rem;
+                font-size: 1.3rem;
+                color: #feebea;
+                opacity: 0.9;
                 line-height: 1.6;
-                text-align: left;
+                max-width: 450px;
+                margin: 0 auto;
+                font-style: italic;
             }
 
             .color-display {
@@ -195,10 +233,10 @@
             .zima-square {
                 width: 12px;
                 height: 12px;
-                background: #3187c2;
+                background: #5bc2e7;
                 position: fixed;
                 z-index: 9999;
-                box-shadow: 0 0 10px rgba(49, 135, 194, 0.5);
+                box-shadow: 0 0 10px rgba(91, 194, 231, 0.5);
                 opacity: 0;
                 animation: zimaAppear 1s ease-out forwards;
                 pointer-events: none;
@@ -268,6 +306,11 @@
                 border-radius: 20px;
                 backdrop-filter: blur(5px);
                 animation: fadeInUp 2s ease-out 1s both;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 1rem;
+                flex-wrap: wrap;
             }
 
             .quote-text {
@@ -276,10 +319,11 @@
                 line-height: 1.8;
                 color: #feebea;
                 opacity: 0.9;
-                max-width: 600px;
-                margin: 0 auto 1.5rem;
                 font-weight: 400;
                 font-style: italic;
+                margin: 0;
+                flex: 1;
+                min-width: 300px;
             }
 
             .quote-author {
@@ -287,6 +331,8 @@
                 font-size: 1.1rem;
                 color: #feebea;
                 opacity: 0.7;
+                margin: 0;
+                white-space: nowrap;
             }
 
             .meditation {
@@ -309,9 +355,10 @@
 
             .essence {
                 display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
                 gap: 1.5rem;
                 margin: 3rem 0;
+                justify-items: center;
             }
 
             .essence-card {
@@ -324,6 +371,12 @@
                 transition: all 0.3s ease;
                 cursor: pointer;
                 position: relative;
+                width: 280px;
+                height: 160px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
             }
 
             .essence-card:hover {
@@ -333,20 +386,28 @@
 
             .essence-title {
                 font-family: "Pacifico", cursive;
-                font-size: 1.3rem;
-                margin-bottom: 0.8rem;
+                font-size: clamp(0.9rem, 2.5vw, 1.3rem);
+                margin-bottom: 0.5rem;
                 color: #feebea;
                 cursor: text;
                 user-select: text;
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+                line-height: 1.2;
+                max-width: 100%;
             }
 
             .essence-desc {
                 font-family: "Dancing Script", cursive;
-                font-size: 1rem;
+                font-size: clamp(0.8rem, 2vw, 1rem);
                 color: #feebea;
                 opacity: 0.8;
                 cursor: text;
                 user-select: text;
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+                line-height: 1.1;
+                max-width: 100%;
             }
 
             .quote-clickable {
@@ -528,6 +589,23 @@
                 100% {
                     transform: translate(-50%, -50%);
                     opacity: 1;
+                }
+            }
+
+            @keyframes glow {
+                0% {
+                    text-shadow:
+                        0 0 20px rgba(254, 235, 234, 0.8),
+                        0 0 40px rgba(254, 235, 234, 0.6),
+                        0 0 80px rgba(254, 235, 234, 0.4),
+                        0 0 120px rgba(254, 235, 234, 0.2);
+                }
+                100% {
+                    text-shadow:
+                        0 0 30px rgba(254, 235, 234, 1),
+                        0 0 60px rgba(254, 235, 234, 0.8),
+                        0 0 120px rgba(254, 235, 234, 0.6),
+                        0 0 180px rgba(254, 235, 234, 0.4);
                 }
             }
 
@@ -785,8 +863,21 @@
                 }
 
                 .essence {
-                    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+                    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
                     gap: 1.2rem;
+                }
+
+                .essence-card {
+                    width: 250px;
+                    height: 140px;
+                }
+
+                .essence-title {
+                    font-size: clamp(0.8rem, 2.2vw, 1.1rem);
+                }
+
+                .essence-desc {
+                    font-size: clamp(0.7rem, 1.8vw, 0.9rem);
                 }
             }
 
@@ -813,6 +904,14 @@
                     font-size: 1.1rem;
                 }
 
+                .quote-section {
+                    gap: 0.8rem;
+                }
+
+                .quote-section .quote-text {
+                    min-width: 250px;
+                }
+
                 .meditation-text {
                     max-width: 90%;
                 }
@@ -820,10 +919,21 @@
                 .essence {
                     grid-template-columns: 1fr;
                     gap: 1rem;
+                    justify-items: center;
                 }
 
                 .essence-card {
-                    padding: 1.2rem;
+                    padding: 1rem;
+                    width: 200px;
+                    height: 110px;
+                }
+
+                .essence-title {
+                    font-size: clamp(0.7rem, 2vw, 1rem);
+                }
+
+                .essence-desc {
+                    font-size: clamp(0.6rem, 1.6vw, 0.8rem);
                 }
 
                 .phoebe-title {
@@ -864,6 +974,13 @@
                 .phoebe-section {
                     padding: 1.5rem;
                     margin: 3rem 0;
+                    flex-direction: column;
+                    gap: 0.5rem;
+                }
+
+                .quote-section .quote-text {
+                    min-width: auto;
+                    text-align: center;
                 }
 
                 .meditation-text,
@@ -918,9 +1035,7 @@
                 <header class="header">
                     <h1 class="main-title">Feebea</h1>
 
-                    <p class="tribute">
-                        In memory of Zima Blue & Phoebe Buffay
-                    </p>
+                    <p class="tribute">致那些我热爱的</p>
                 </header>
 
                 <section class="color-display">
@@ -1041,7 +1156,7 @@
                 </section>
 
                 <footer class="final-tribute">
-                    <p class="final-text">Every color tells a story</p>
+                    <p class="final-text">Peng</p>
                 </footer>
             </div>
 
@@ -1050,7 +1165,7 @@
                 <header class="header">
                     <h1 class="main-title">Feebea</h1>
 
-                    <p class="tribute">致敬齐马蓝与菲比·布菲</p>
+                    <p class="tribute">致那些我热爱的</p>
                 </header>
 
                 <section class="color-display">
@@ -1192,7 +1307,7 @@
                 </section>
 
                 <footer class="final-tribute">
-                    <p class="final-text">每种颜色都在诉说故事</p>
+                    <p class="final-text">Peng</p>
                 </footer>
             </div>
         </div>
@@ -1303,26 +1418,31 @@
                     en: "Because of understanding, there is compassion",
                     zh: "因为懂得，所以慈悲",
                     source: "张爱玲",
+                    sourceEn: "Zhang Ailing",
                 },
                 {
                     en: "Life is a beautiful robe crawling with lice",
                     zh: "人生是一袭华美的袍，爬满了虱子",
                     source: "张爱玲",
+                    sourceEn: "Zhang Ailing",
                 },
                 {
                     en: "Fame should come early",
                     zh: "出名要趁早",
                     source: "张爱玲",
+                    sourceEn: "Zhang Ailing",
                 },
                 {
                     en: "Meet the person you want to meet among thousands of people",
                     zh: "于千万人之中遇见你所要遇见的人",
                     source: "张爱玲",
+                    sourceEn: "Zhang Ailing",
                 },
                 {
                     en: "Love is not to look at each other, but together look in the same direction",
                     zh: "爱不是彼此凝视，而是一起看向同一个方向",
                     source: "张爱玲",
+                    sourceEn: "Zhang Ailing",
                 },
 
                 // Wang Xiaobo
@@ -1330,26 +1450,31 @@
                     en: "Wisdom itself is good",
                     zh: "智慧本身就是好的",
                     source: "王小波",
+                    sourceEn: "Wang Xiaobo",
                 },
                 {
                     en: "I live to understand truths and encounter interesting things",
                     zh: "我活在世上，无非想要明白些道理，遇见些有趣的事",
                     source: "王小波",
+                    sourceEn: "Wang Xiaobo",
                 },
                 {
                     en: "A person's joy should come from learning",
                     zh: "一个人倘若需要从思想中得到快乐，那么他的第一个欲望就是学习",
                     source: "王小波",
+                    sourceEn: "Wang Xiaobo",
                 },
                 {
                     en: "You are willing, I love you forever; unwilling, I miss you forever",
                     zh: "你要是愿意，我就永远爱你；你要是不愿意，我就永远相思",
                     source: "王小波",
+                    sourceEn: "Wang Xiaobo",
                 },
                 {
                     en: "The silent majority",
                     zh: "沉默的大多数",
                     source: "王小波",
+                    sourceEn: "Wang Xiaobo",
                 },
 
                 // The Little Prince
@@ -1357,53 +1482,93 @@
                     en: "What is essential is invisible to the eye",
                     zh: "真正重要的东西是看不见的",
                     source: "小王子",
+                    sourceEn: "The Little Prince",
                 },
                 {
                     en: "It is the time you have wasted for your rose that makes your rose so important",
                     zh: "正是你为你的玫瑰花费的时光使你的玫瑰变得如此重要",
                     source: "小王子",
+                    sourceEn: "The Little Prince",
                 },
                 {
                     en: "All grown-ups were once children",
                     zh: "所有的大人都曾经是小孩",
                     source: "小王子",
+                    sourceEn: "The Little Prince",
                 },
                 {
                     en: "The stars are beautiful because of a flower that cannot be seen",
                     zh: "星星发亮是为了让每一个人有一天都能找到属于自己的星星",
                     source: "小王子",
+                    sourceEn: "The Little Prince",
                 },
                 {
                     en: "One sees clearly only with the heart",
                     zh: "只有用心才能看得清",
                     source: "小王子",
+                    sourceEn: "The Little Prince",
                 },
 
-                // William Blake
+                // Black Books
                 {
-                    en: "To see a world in a grain of sand",
-                    zh: "从一粒沙看世界",
-                    source: "威廉·布莱克",
+                    en: "I'm not a loser! I'm a dreamer!",
+                    zh: "我不是失败者！我是梦想家！",
+                    source: "布莱克书店",
+                    sourceEn: "Black Books",
                 },
                 {
-                    en: "The tyger burning bright in the forests of the night",
-                    zh: "老虎在夜晚的森林中燃烧光明",
-                    source: "威廉·布莱克",
+                    en: "I ate all your bees!",
+                    zh: "我吃了你所有的蜜蜂！",
+                    source: "布莱克书店",
+                    sourceEn: "Black Books",
                 },
                 {
-                    en: "How do you know but ev'ry bird that cuts the airy way, is an immense world of delight",
-                    zh: "你怎么知道每只划过天空的鸟儿，不是一个巨大的快乐世界",
-                    source: "威廉·布莱克",
+                    en: "Right, I'm going to have to ask you to stop being so happy.",
+                    zh: "好吧，我得要求你别再这么快乐了。",
+                    source: "布莱克书店",
+                    sourceEn: "Black Books",
                 },
                 {
-                    en: "Energy is eternal delight",
-                    zh: "能量是永恒的快乐",
-                    source: "威廉·布莱克",
+                    en: "Do you know what breakfast cereal is made of? It's made of all those little curly wooden shavings you find in pencil sharpeners!",
+                    zh: "你知道早餐麦片是什么做的吗？是铅笔刨花器里那些小卷木屑做的！",
+                    source: "布莱克书店",
+                    sourceEn: "Black Books",
                 },
                 {
-                    en: "If the doors of perception were cleansed",
-                    zh: "如果感知之门得到净化",
-                    source: "威廉·布莱克",
+                    en: "I'm a little bit scared of dying. Are you? Oh, well, you wouldn't tell me if you were, would you?",
+                    zh: "我有点害怕死亡。你呢？哦，即使你害怕，你也不会告诉我，对吧？",
+                    source: "布莱克书店",
+                    sourceEn: "Black Books",
+                },
+                {
+                    en: "Wine is fine but whiskey's quicker",
+                    zh: "酒虽好，但威士忌更快",
+                    source: "布莱克书店",
+                    sourceEn: "Black Books",
+                },
+                {
+                    en: "I'm not a people person",
+                    zh: "我不是社交型的人",
+                    source: "布莱克书店",
+                    sourceEn: "Black Books",
+                },
+                {
+                    en: "The world is a beautiful place. We should all just shut up and eat cheese",
+                    zh: "世界是个美丽的地方。我们都应该闭嘴吃奶酪",
+                    source: "布莱克书店",
+                    sourceEn: "Black Books",
+                },
+                {
+                    en: "Books. The best weapons in the world",
+                    zh: "书籍。世界上最好的武器",
+                    source: "布莱克书店",
+                    sourceEn: "Black Books",
+                },
+                {
+                    en: "I have a hangover. A hangover with a hangover",
+                    zh: "我有宿醉。宿醉上的宿醉",
+                    source: "布莱克书店",
+                    sourceEn: "Black Books",
                 },
 
                 // Zelda
@@ -1411,53 +1576,111 @@
                     en: "Courage need not be remembered, for it is never forgotten",
                     zh: "勇气无需被铭记，因为它永远不会被遗忘",
                     source: "塞尔达传说",
+                    sourceEn: "The Legend of Zelda",
                 },
                 {
                     en: "It's dangerous to go alone",
                     zh: "独自前行很危险",
                     source: "塞尔达传说",
+                    sourceEn: "The Legend of Zelda",
                 },
                 {
                     en: "The flow of time is always cruel",
                     zh: "时间的流逝总是残酷的",
                     source: "塞尔达传说",
+                    sourceEn: "The Legend of Zelda",
                 },
                 {
                     en: "May the way of the Hero lead to the Triforce",
                     zh: "愿英雄之路通往三角力量",
                     source: "塞尔达传说",
+                    sourceEn: "The Legend of Zelda",
                 },
                 {
                     en: "Listen carefully to the wind",
                     zh: "仔细倾听风的声音",
                     source: "塞尔达传说",
+                    sourceEn: "The Legend of Zelda",
                 },
 
                 // League of Legends
                 {
-                    en: "Honor is in the heart, not in the name",
-                    zh: "荣誉在心中，不在名字里",
+                    en: "Death is like the wind, always by my side",
+                    zh: "死亡如风，常伴吾身",
                     source: "英雄联盟",
+                    sourceEn: "League of Legends",
                 },
                 {
-                    en: "We are what we overcome",
-                    zh: "我们就是我们所战胜的",
+                    en: "My right arm is a lot stronger than my left arm",
+                    zh: "我的右臂比左臂强壮得多",
                     source: "英雄联盟",
+                    sourceEn: "League of Legends",
                 },
                 {
-                    en: "The will comes from within, not from the blade",
-                    zh: "意志来自内心，而非利刃",
+                    en: "Demacia!",
+                    zh: "德玛西亚！",
                     source: "英雄联盟",
+                    sourceEn: "League of Legends",
                 },
                 {
-                    en: "A true master is an eternal student",
-                    zh: "真正的大师是永恒的学生",
+                    en: "You belong in a museum!",
+                    zh: "你属于博物馆！",
                     source: "英雄联盟",
+                    sourceEn: "League of Legends",
                 },
                 {
-                    en: "Experience is the best teacher",
-                    zh: "经验是最好的老师",
+                    en: "OK",
+                    zh: "好的",
                     source: "英雄联盟",
+                    sourceEn: "League of Legends",
+                },
+                {
+                    en: "Time to troll!",
+                    zh: "是时候开始恶搞了！",
+                    source: "英雄联盟",
+                    sourceEn: "League of Legends",
+                },
+                {
+                    en: "Rock solid",
+                    zh: "坚如磐石",
+                    source: "英雄联盟",
+                    sourceEn: "League of Legends",
+                },
+                {
+                    en: "Captain Teemo on duty!",
+                    zh: "提莫队长正在待命！",
+                    source: "英雄联盟",
+                    sourceEn: "League of Legends",
+                },
+                {
+                    en: "The heart is the strongest muscle",
+                    zh: "心脏是最强的肌肉",
+                    source: "英雄联盟",
+                    sourceEn: "League of Legends",
+                },
+                {
+                    en: "Today is a good day to die",
+                    zh: "今天是死亡的好日子",
+                    source: "英雄联盟",
+                    sourceEn: "League of Legends",
+                },
+                {
+                    en: "I will be the best",
+                    zh: "我会成为最好的",
+                    source: "英雄联盟",
+                    sourceEn: "League of Legends",
+                },
+                {
+                    en: "Balance in all things",
+                    zh: "万物皆有其道",
+                    source: "英雄联盟",
+                    sourceEn: "League of Legends",
+                },
+                {
+                    en: "The cycle of life and death continues",
+                    zh: "生死轮回，生生不息",
+                    source: "英雄联盟",
+                    sourceEn: "League of Legends",
                 },
 
                 // Game of Thrones
@@ -1465,26 +1688,31 @@
                     en: "Winter is coming",
                     zh: "凛冬将至",
                     source: "权力的游戏",
+                    sourceEn: "Game of Thrones",
                 },
                 {
                     en: "When you play the game of thrones, you win or you die",
                     zh: "权力的游戏，不胜即死",
                     source: "权力的游戏",
+                    sourceEn: "Game of Thrones",
                 },
                 {
                     en: "A mind needs books as a sword needs a whetstone",
                     zh: "读书如磨剑",
                     source: "权力的游戏",
+                    sourceEn: "Game of Thrones",
                 },
                 {
                     en: "The night is dark and full of terrors",
                     zh: "长夜漫漫，处处险恶",
                     source: "权力的游戏",
+                    sourceEn: "Game of Thrones",
                 },
                 {
                     en: "What is dead may never die",
                     zh: "逝者不死",
                     source: "权力的游戏",
+                    sourceEn: "Game of Thrones",
                 },
             ];
 
@@ -1515,11 +1743,6 @@
                     en: "Oh, I wish I could, but I don't want to.",
                     zh: "哦，我很想，但我不想。",
                     audio: "i-wish-i-could.mp3",
-                },
-                {
-                    en: "My songs aren't for everyone, but they're for someone.",
-                    zh: "我的歌不是为所有人而唱，但总有人会喜欢。",
-                    audio: "smelly_cat.mp3",
                 },
                 {
                     en: "See? He's her lobster!",
@@ -1562,7 +1785,7 @@
                     const descEl =
                         englishCards[cardIndex].querySelector(".essence-desc");
                     titleEl.textContent = quote.en;
-                    descEl.textContent = quote.source;
+                    descEl.textContent = quote.sourceEn || quote.source;
                 }
 
                 if (chineseCards[cardIndex]) {
@@ -1629,11 +1852,8 @@
                 square.style.left = x + "px";
                 square.style.top = y + "px";
 
-                // Slight color variation
-                const blueVariation = Math.random() * 20 - 10; // -10 to +10
-                const alpha = 0.8 + Math.random() * 0.2; // 0.8 to 1.0
-                const hue = 200 + blueVariation; // Around the original blue
-                square.style.background = `hsla(${hue}, 60%, 45%, ${alpha})`;
+                // Fixed Zima Blue color: RGB(91, 194, 231) = #5BC2E7
+                square.style.background = "#5BC2E7";
 
                 document.body.appendChild(square);
                 zimaSquares.push(square);
@@ -1847,16 +2067,28 @@
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    font-family: 'Great Vibes', cursive;
-                    font-size: 8rem;
-                    color: #feebea;
-                    text-shadow: 0 0 50px rgba(254, 235, 234, 0.8);
                 `;
 
                 const friendsText = document.createElement("div");
                 friendsText.style.cssText = `
                     text-align: center;
-                    letter-spacing: 0.5rem;
+                    font-family: 'Dancing Script', cursive;
+                    font-weight: 700;
+                    color: #feebea;
+                    text-shadow:
+                        0 0 20px rgba(254, 235, 234, 0.8),
+                        0 0 40px rgba(254, 235, 234, 0.6),
+                        0 0 80px rgba(254, 235, 234, 0.4),
+                        0 0 120px rgba(254, 235, 234, 0.2);
+                    line-height: 1;
+                    animation: glow 2s ease-in-out infinite alternate;
+                    padding: 1rem;
+                    box-sizing: border-box;
+                    width: 100%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    min-height: 100vh;
                 `;
 
                 overlay.appendChild(friendsText);
@@ -1865,6 +2097,28 @@
                 // Play Smelly Cat
                 const audio = new Audio("./phoebe/smelly_cat.mp3");
                 audio.play().catch((e) => console.log("Audio play failed:", e));
+
+                // Adjust font size for different screen sizes
+                const screenWidth = window.innerWidth;
+                let fontSize;
+                let letterSpacing;
+
+                if (screenWidth < 480) {
+                    fontSize = "3rem";
+                    letterSpacing = "0.3rem";
+                } else if (screenWidth < 768) {
+                    fontSize = "5rem";
+                    letterSpacing = "0.5rem";
+                } else if (screenWidth < 1024) {
+                    fontSize = "6rem";
+                    letterSpacing = "0.6rem";
+                } else {
+                    fontSize = "8rem";
+                    letterSpacing = "0.8rem";
+                }
+
+                friendsText.style.fontSize = fontSize;
+                friendsText.style.letterSpacing = letterSpacing;
 
                 // Type F·R·I·E·N·D·S
                 const letters = [
