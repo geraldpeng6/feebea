@@ -354,11 +354,13 @@
             }
 
             .essence {
-                display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                display: flex;
+                justify-content: center;
                 gap: 1.5rem;
                 margin: 3rem 0;
-                justify-items: center;
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                padding: 0 1rem;
             }
 
             .essence-card {
@@ -371,12 +373,14 @@
                 transition: all 0.3s ease;
                 cursor: pointer;
                 position: relative;
-                width: 280px;
-                height: 160px;
+                width: 300px;
+                height: 180px;
                 display: flex;
                 flex-direction: column;
                 justify-content: center;
                 align-items: center;
+                flex-shrink: 0;
+                min-width: 300px;
             }
 
             .essence-card:hover {
@@ -386,7 +390,7 @@
 
             .essence-title {
                 font-family: "Pacifico", cursive;
-                font-size: clamp(0.9rem, 2.5vw, 1.3rem);
+                font-size: 1.3rem;
                 margin-bottom: 0.5rem;
                 color: #feebea;
                 cursor: text;
@@ -395,11 +399,17 @@
                 overflow-wrap: break-word;
                 line-height: 1.2;
                 max-width: 100%;
+                width: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+                overflow: hidden;
             }
 
             .essence-desc {
                 font-family: "Dancing Script", cursive;
-                font-size: clamp(0.8rem, 2vw, 1rem);
+                font-size: 1rem;
                 color: #feebea;
                 opacity: 0.8;
                 cursor: text;
@@ -408,6 +418,12 @@
                 overflow-wrap: break-word;
                 line-height: 1.1;
                 max-width: 100%;
+                width: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+                overflow: hidden;
             }
 
             .quote-clickable {
@@ -863,21 +879,22 @@
                 }
 
                 .essence {
-                    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
                     gap: 1.2rem;
+                    padding: 0 0.5rem;
                 }
 
                 .essence-card {
                     width: 250px;
                     height: 140px;
+                    min-width: 250px;
                 }
 
                 .essence-title {
-                    font-size: clamp(0.8rem, 2.2vw, 1.1rem);
+                    font-size: 1.1rem;
                 }
 
                 .essence-desc {
-                    font-size: clamp(0.7rem, 1.8vw, 0.9rem);
+                    font-size: 0.9rem;
                 }
             }
 
@@ -917,23 +934,25 @@
                 }
 
                 .essence {
-                    grid-template-columns: 1fr;
                     gap: 1rem;
-                    justify-items: center;
+                    padding: 0 0.5rem;
+                    overflow-x: auto;
+                    justify-content: flex-start;
                 }
 
                 .essence-card {
                     padding: 1rem;
                     width: 200px;
                     height: 110px;
+                    min-width: 200px;
                 }
 
                 .essence-title {
-                    font-size: clamp(0.7rem, 2vw, 1rem);
+                    font-size: 1rem;
                 }
 
                 .essence-desc {
-                    font-size: clamp(0.6rem, 1.6vw, 0.8rem);
+                    font-size: 0.8rem;
                 }
 
                 .phoebe-title {
@@ -1108,13 +1127,13 @@
                             class="essence-title quote-clickable"
                             onclick="event.stopPropagation(); copyQuoteText(this)"
                         >
-                            Origin
+                            The night is dark and full of terrors
                         </h3>
                         <p
                             class="essence-desc quote-clickable"
                             onclick="event.stopPropagation(); copyQuoteText(this)"
                         >
-                            Where it all started
+                            Game of Thrones
                         </p>
                     </div>
                     <div class="essence-card" onclick="changeQuote(1)">
@@ -1122,13 +1141,13 @@
                             class="essence-title quote-clickable"
                             onclick="event.stopPropagation(); copyQuoteText(this)"
                         >
-                            Memory
+                            I have a hangover. A hangover with a hangover
                         </h3>
                         <p
                             class="essence-desc quote-clickable"
                             onclick="event.stopPropagation(); copyQuoteText(this)"
                         >
-                            The first color I knew
+                            Black Books
                         </p>
                     </div>
                     <div class="essence-card" onclick="changeQuote(2)">
@@ -1136,13 +1155,13 @@
                             class="essence-title quote-clickable"
                             onclick="event.stopPropagation(); copyQuoteText(this)"
                         >
-                            Truth
+                            Life is a beautiful robe crawling with lice
                         </h3>
                         <p
                             class="essence-desc quote-clickable"
                             onclick="event.stopPropagation(); copyQuoteText(this)"
                         >
-                            Simple, perfect beauty
+                            Zhang Ailing
                         </p>
                     </div>
                 </section>
@@ -1257,13 +1276,13 @@
                             class="essence-title quote-clickable"
                             onclick="event.stopPropagation(); copyQuoteText(this)"
                         >
-                            起源
+                            长夜漫漫，处处险恶
                         </h3>
                         <p
                             class="essence-desc quote-clickable"
                             onclick="event.stopPropagation(); copyQuoteText(this)"
                         >
-                            一切开始的地方
+                            权力的游戏
                         </p>
                     </div>
                     <div class="essence-card" onclick="changeQuote(1)">
@@ -1271,13 +1290,13 @@
                             class="essence-title quote-clickable"
                             onclick="event.stopPropagation(); copyQuoteText(this)"
                         >
-                            记忆
+                            我有宿醉。宿醉上的宿醉
                         </h3>
                         <p
                             class="essence-desc quote-clickable"
                             onclick="event.stopPropagation(); copyQuoteText(this)"
                         >
-                            我认识的第一种颜色
+                            布莱克书店
                         </p>
                     </div>
                     <div class="essence-card" onclick="changeQuote(2)">
@@ -1285,13 +1304,13 @@
                             class="essence-title quote-clickable"
                             onclick="event.stopPropagation(); copyQuoteText(this)"
                         >
-                            真理
+                            人生是一袭华美的袍，爬满了虱子
                         </h3>
                         <p
                             class="essence-desc quote-clickable"
                             onclick="event.stopPropagation(); copyQuoteText(this)"
                         >
-                            简单而完美的美
+                            张爱玲
                         </p>
                     </div>
                 </section>
@@ -1332,13 +1351,18 @@
                     body.classList.add("chinese");
                     isEnglish = false;
                 } else {
-                    chineseContent.classList.add("hidden");
                     englishContent.classList.remove("hidden");
+                    chineseContent.classList.add("hidden");
                     langButton.textContent = "中文";
                     copyText.textContent = "Copied to clipboard";
                     body.classList.remove("chinese");
                     isEnglish = true;
                 }
+
+                // Re-adapt font sizes after language change
+                setTimeout(() => {
+                    adaptFontSizeResponsive();
+                }, 100);
             }
 
             function copyToClipboard(text) {
@@ -1377,6 +1401,155 @@
                 }, 2000);
             }
 
+            // Font size adaptation based on text length
+            function adaptFontSize() {
+                const essenceTitles =
+                    document.querySelectorAll(".essence-title");
+                const essenceDescs = document.querySelectorAll(".essence-desc");
+
+                essenceTitles.forEach((title) => {
+                    const textLength = title.textContent.length;
+                    let fontSize;
+
+                    if (textLength <= 8) {
+                        fontSize = "1.3rem";
+                    } else if (textLength <= 12) {
+                        fontSize = "1.1rem";
+                    } else if (textLength <= 16) {
+                        fontSize = "1rem";
+                    } else if (textLength <= 20) {
+                        fontSize = "0.9rem";
+                    } else {
+                        fontSize = "0.8rem";
+                    }
+
+                    title.style.fontSize = fontSize;
+                });
+
+                essenceDescs.forEach((desc) => {
+                    const textLength = desc.textContent.length;
+                    let fontSize;
+
+                    if (textLength <= 6) {
+                        fontSize = "1rem";
+                    } else if (textLength <= 10) {
+                        fontSize = "0.9rem";
+                    } else if (textLength <= 14) {
+                        fontSize = "0.8rem";
+                    } else {
+                        fontSize = "0.7rem";
+                    }
+
+                    desc.style.fontSize = fontSize;
+                });
+            }
+
+            // Responsive font size adaptation for mobile
+            function adaptFontSizeResponsive() {
+                const essenceTitles =
+                    document.querySelectorAll(".essence-title");
+                const essenceDescs = document.querySelectorAll(".essence-desc");
+                const isMobile = window.innerWidth <= 768;
+                const isSmallMobile = window.innerWidth <= 480;
+
+                essenceTitles.forEach((title) => {
+                    const textLength = title.textContent.length;
+                    let fontSize;
+
+                    if (isSmallMobile) {
+                        if (textLength <= 8) {
+                            fontSize = "1rem";
+                        } else if (textLength <= 12) {
+                            fontSize = "0.9rem";
+                        } else if (textLength <= 16) {
+                            fontSize = "0.8rem";
+                        } else if (textLength <= 20) {
+                            fontSize = "0.7rem";
+                        } else {
+                            fontSize = "0.6rem";
+                        }
+                    } else if (isMobile) {
+                        if (textLength <= 8) {
+                            fontSize = "1.1rem";
+                        } else if (textLength <= 12) {
+                            fontSize = "1rem";
+                        } else if (textLength <= 16) {
+                            fontSize = "0.9rem";
+                        } else if (textLength <= 20) {
+                            fontSize = "0.8rem";
+                        } else {
+                            fontSize = "0.7rem";
+                        }
+                    } else {
+                        // Desktop sizes
+                        if (textLength <= 8) {
+                            fontSize = "1.3rem";
+                        } else if (textLength <= 12) {
+                            fontSize = "1.1rem";
+                        } else if (textLength <= 16) {
+                            fontSize = "1rem";
+                        } else if (textLength <= 20) {
+                            fontSize = "0.9rem";
+                        } else {
+                            fontSize = "0.8rem";
+                        }
+                    }
+
+                    title.style.fontSize = fontSize;
+                });
+
+                essenceDescs.forEach((desc) => {
+                    const textLength = desc.textContent.length;
+                    let fontSize;
+
+                    if (isSmallMobile) {
+                        if (textLength <= 6) {
+                            fontSize = "0.8rem";
+                        } else if (textLength <= 10) {
+                            fontSize = "0.7rem";
+                        } else if (textLength <= 14) {
+                            fontSize = "0.6rem";
+                        } else {
+                            fontSize = "0.55rem";
+                        }
+                    } else if (isMobile) {
+                        if (textLength <= 6) {
+                            fontSize = "0.9rem";
+                        } else if (textLength <= 10) {
+                            fontSize = "0.8rem";
+                        } else if (textLength <= 14) {
+                            fontSize = "0.7rem";
+                        } else {
+                            fontSize = "0.65rem";
+                        }
+                    } else {
+                        // Desktop sizes
+                        if (textLength <= 6) {
+                            fontSize = "1rem";
+                        } else if (textLength <= 10) {
+                            fontSize = "0.9rem";
+                        } else if (textLength <= 14) {
+                            fontSize = "0.8rem";
+                        } else {
+                            fontSize = "0.7rem";
+                        }
+                    }
+
+                    desc.style.fontSize = fontSize;
+                });
+            }
+
+            // Initialize font adaptation
+            document.addEventListener("DOMContentLoaded", function () {
+                initializeQuotes();
+                adaptFontSizeResponsive();
+            });
+
+            // Re-adapt font sizes on window resize
+            window.addEventListener("resize", function () {
+                adaptFontSizeResponsive();
+            });
+
             // Add subtle parallax effect
             window.addEventListener("scroll", () => {
                 const scrolled = window.pageYOffset;
@@ -1412,7 +1585,7 @@
                 });
 
             // Random quotes from various sources
-            const quotes = [
+            const quotesData = [
                 // Zhang Ailing
                 {
                     en: "Because of understanding, there is compassion",
@@ -1716,8 +1889,35 @@
                 },
             ];
 
+            // Create structured quotes for each language
+            const quotes = {
+                english: quotesData.map((q) => ({
+                    en: q.en,
+                    zh: q.zh,
+                    source: q.sourceEn || q.source,
+                    sourceEn: q.sourceEn,
+                })),
+                chinese: quotesData.map((q) => ({
+                    en: q.en,
+                    zh: q.zh,
+                    source: q.source,
+                    sourceEn: q.sourceEn,
+                })),
+            };
+
             // Current quotes displayed in each card
             let currentQuotes = [0, 1, 2];
+
+            // Initialize current quotes based on language
+            function initializeQuotes() {
+                // Set initial quote indices to match the hardcoded cards
+                // These correspond to specific quotes in our quotes array
+                const initialIndices = {
+                    english: [83, 89, 1], // Game of Thrones "night is dark", Black Books "hangover", Zhang Ailing "life is a robe"
+                    chinese: [83, 89, 1],
+                };
+                currentQuotes = initialIndices.english; // Start with English indices
+            }
 
             // Phoebe easter egg state
             let phoebeQuoteIndex = 0;
@@ -1763,39 +1963,45 @@
 
             // Function to change quote in a card
             function changeQuote(cardIndex) {
+                const activeQuotes = isEnglish
+                    ? quotes.english
+                    : quotes.chinese;
                 let newQuoteIndex;
                 do {
-                    newQuoteIndex = Math.floor(Math.random() * quotes.length);
+                    newQuoteIndex = Math.floor(
+                        Math.random() * activeQuotes.length,
+                    );
                 } while (newQuoteIndex === currentQuotes[cardIndex]);
 
                 currentQuotes[cardIndex] = newQuoteIndex;
-                const quote = quotes[newQuoteIndex];
+                const quote = activeQuotes[newQuoteIndex];
 
-                // Update both English and Chinese versions
-                const englishCards = document.querySelectorAll(
-                    "#englishContent .essence-card",
-                );
-                const chineseCards = document.querySelectorAll(
-                    "#chineseContent .essence-card",
+                // Update the current language version
+                const currentCards = document.querySelectorAll(
+                    isEnglish
+                        ? "#englishContent .essence-card"
+                        : "#chineseContent .essence-card",
                 );
 
-                if (englishCards[cardIndex]) {
+                if (currentCards[cardIndex]) {
                     const titleEl =
-                        englishCards[cardIndex].querySelector(".essence-title");
+                        currentCards[cardIndex].querySelector(".essence-title");
                     const descEl =
-                        englishCards[cardIndex].querySelector(".essence-desc");
-                    titleEl.textContent = quote.en;
-                    descEl.textContent = quote.sourceEn || quote.source;
+                        currentCards[cardIndex].querySelector(".essence-desc");
+
+                    if (isEnglish) {
+                        titleEl.textContent = quote.en;
+                        descEl.textContent = quote.source;
+                    } else {
+                        titleEl.textContent = quote.zh;
+                        descEl.textContent = quote.source;
+                    }
                 }
 
-                if (chineseCards[cardIndex]) {
-                    const titleEl =
-                        chineseCards[cardIndex].querySelector(".essence-title");
-                    const descEl =
-                        chineseCards[cardIndex].querySelector(".essence-desc");
-                    titleEl.textContent = quote.zh;
-                    descEl.textContent = quote.source;
-                }
+                // Re-adapt font sizes after quote change
+                setTimeout(() => {
+                    adaptFontSizeResponsive();
+                }, 50);
             }
 
             // Function to copy quote text
