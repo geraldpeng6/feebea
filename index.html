@@ -91,6 +91,21 @@
                 color: #feebea; /* Changed from #888 */
                 font-style: italic;
                 opacity: 0.6;
+                transition: all 0.3s ease;
+            }
+
+            .main-title:hover {
+                color: #fff;
+                text-shadow: 0 0 40px rgba(254, 235, 234, 0.6);
+                transform: scale(1.02);
+                transition: all 0.3s ease;
+            }
+
+            .tribute:hover {
+                opacity: 1;
+                color: #fff;
+                transform: scale(1.05);
+                text-shadow: 0 0 20px rgba(254, 235, 234, 0.4);
             }
 
             /* Chinese fonts - keep English fonts for better appearance */
@@ -356,31 +371,33 @@
             .essence {
                 display: flex;
                 justify-content: center;
-                gap: 1.5rem;
-                margin: 3rem 0;
+                gap: 1.2rem;
+                margin: 3rem auto;
                 flex-wrap: nowrap;
                 overflow-x: auto;
                 padding: 0 1rem;
+                max-width: 900px;
             }
 
             .essence-card {
                 background: rgba(254, 235, 234, 0.03);
                 border: 1px solid rgba(254, 235, 234, 0.1);
                 border-radius: 15px;
-                padding: 1.5rem;
+                padding: 1.3rem;
                 text-align: center;
                 backdrop-filter: blur(5px);
                 transition: all 0.3s ease;
                 cursor: pointer;
                 position: relative;
-                width: 300px;
+                width: 270px;
                 height: 180px;
                 display: flex;
                 flex-direction: column;
                 justify-content: center;
                 align-items: center;
                 flex-shrink: 0;
-                min-width: 300px;
+                min-width: 270px;
+                margin-top: 10px;
             }
 
             .essence-card:hover {
@@ -879,13 +896,14 @@
                 }
 
                 .essence {
-                    gap: 1.2rem;
+                    gap: 1rem;
                     padding: 0 0.5rem;
+                    max-width: 100%;
                 }
 
                 .essence-card {
                     width: 250px;
-                    height: 140px;
+                    height: 150px;
                     min-width: 250px;
                 }
 
@@ -934,17 +952,19 @@
                 }
 
                 .essence {
-                    gap: 1rem;
+                    gap: 0.8rem;
                     padding: 0 0.5rem;
                     overflow-x: auto;
                     justify-content: flex-start;
+                    max-width: 90%;
                 }
 
                 .essence-card {
                     padding: 1rem;
-                    width: 200px;
-                    height: 110px;
-                    min-width: 200px;
+                    width: 210px;
+                    height: 130px;
+                    min-width: 210px;
+                    margin-top: 8px;
                 }
 
                 .essence-title {
@@ -1052,9 +1072,21 @@
             <!-- English Content -->
             <div id="englishContent">
                 <header class="header">
-                    <h1 class="main-title">Feebea</h1>
+                    <h1
+                        class="main-title"
+                        onclick="window.open('https://feebea.com', '_blank')"
+                        style="cursor: pointer"
+                    >
+                        Feebea
+                    </h1>
 
-                    <p class="tribute">To Those I Love</p>
+                    <p
+                        class="tribute"
+                        onclick="copyToClipboard('To Those I Love')"
+                        style="cursor: pointer"
+                    >
+                        To Those I Love
+                    </p>
                 </header>
 
                 <section class="color-display">
@@ -1182,9 +1214,21 @@
             <!-- Chinese Content -->
             <div id="chineseContent" class="hidden">
                 <header class="header">
-                    <h1 class="main-title">Feebea</h1>
+                    <h1
+                        class="main-title"
+                        onclick="window.open('https://feebea.com', '_blank')"
+                        style="cursor: pointer"
+                    >
+                        Feebea
+                    </h1>
 
-                    <p class="tribute">致那些我所热爱的</p>
+                    <p
+                        class="tribute"
+                        onclick="copyToClipboard('致那些我所热爱的')"
+                        style="cursor: pointer"
+                    >
+                        致那些我所热爱的
+                    </p>
                 </header>
 
                 <section class="color-display">
@@ -1342,6 +1386,30 @@
                 const langButton = document.getElementById("langButton");
                 const copyText = document.getElementById("copyText");
                 const body = document.body;
+
+                // Handle cumulative click easter egg
+                clickCounters.langToggle++;
+                console.log(
+                    `🌐 Language toggle clicked, cumulative count: ${clickCounters.langToggle}`,
+                );
+                console.log(
+                    "🌐 Current language:",
+                    isEnglish ? "English" : "Chinese",
+                );
+                if (clickCounters.langToggle === 3) {
+                    console.log("🎉 Language toggle easter egg triggered!");
+                    easterEggTriggered.langToggle = true;
+                    setTimeout(() => {
+                        console.log("🎵 About to play they-dont-know.mp3");
+                        playAudio("they-dont-know.mp3");
+                        showEasterEggNotification(
+                            isEnglish
+                                ? "They Don't Know That We Know They Know We Know."
+                                : "他们不知道我们知道他们知道我们知道。",
+                        );
+                    }, 100);
+                    clickCounters.langToggle = 0; // Reset counter after triggering
+                }
 
                 if (isEnglish) {
                     englishContent.classList.add("hidden");
@@ -1919,47 +1987,36 @@
                 currentQuotes = initialIndices.english; // Start with English indices
             }
 
-            // Phoebe easter egg state
-            let phoebeQuoteIndex = 0;
-            let phoebeEasterEggActive = true;
-            let friendsEasterEggTriggered = false;
-            let lastPhoebeTime = 0;
+            // New Phoebe easter egg system
+            // Each easter egg has a permanent state (true once triggered, never resets)
+            let easterEggTriggered = {
+                langToggle: false, // they-dont-know-that-we-know-they-know-we-know
+                pengClick: false, // do-you-have-a-plan-i-dont-even-have-a-pla
+                tributeClick: false, // see-hes-her-lobster
+                essenceCard: false, // that-is-brand-new-information-breaking-news-new-information-expected-not-surprised-phoebe-meme-friends-101soundboards.mp3
+                phoebeWisdom: false, // i-wish-i-could-but-i-dont-want-to-101soundboards.mp3
+            };
+
+            let clickCounters = {
+                langToggle: 0, // cumulative counter
+                pengClick: 0, // rapid click counter
+                tributeClick: 0, // rapid click counter
+                essenceCard: 0, // rapid click counter
+                phoebeWisdom: 0, // rapid click counter
+            };
+
+            let clickTimers = {
+                langToggle: null,
+                pengClick: null,
+                tributeClick: null,
+                essenceCard: null,
+                phoebeWisdom: null,
+            };
+
             let keySequence = [];
             let keyTimer = null;
-
-            // Random Phoebe quotes that appear occasionally
-            const phoebeQuotes = [
-                {
-                    en: "I don't even have a 'pla'.",
-                    zh: "我连计划都没有。",
-                    audio: "do-you-have-a-plan.mp3",
-                },
-                {
-                    en: "This is brand new information!",
-                    zh: "这是全新的信息！",
-                    audio: "that-is-brand-new-information.mp3",
-                },
-                {
-                    en: "Oh, I wish I could, but I don't want to.",
-                    zh: "哦，我很想，但我不想。",
-                    audio: "i-wish-i-could.mp3",
-                },
-                {
-                    en: "See? He's her lobster!",
-                    zh: "看？他是她的龙虾！",
-                    audio: "see-hes-her-lobster.mp3",
-                },
-                {
-                    en: "They Don't Know That We Know They Know We Know.",
-                    zh: "他们不知道我们知道他们知道我们知道。",
-                    audio: "they-dont-know.mp3",
-                },
-                {
-                    en: "Who's singing?",
-                    zh: "谁在唱歌？",
-                    audio: "who-singing.mp3",
-                },
-            ];
+            let whoSingingTimer = null;
+            let isListeningForYou = false;
 
             // Function to change quote in a card
             function changeQuote(cardIndex) {
@@ -2122,161 +2179,367 @@
             let clickCount = 0;
             let phoebeAnimationCount = 0;
 
-            document
-                .querySelector(".color-circle")
-                .addEventListener("click", function () {
-                    if (!phoebeEasterEggActive) return;
+            // Easter egg event listeners - using event delegation for maximum stability
+            let easterEggEventsInitialized = false;
 
-                    clickCount++;
-                    if (clickCount === 7) {
-                        showPhoebeQuote();
-                        clickCount = 0;
+            function initializeEasterEggEvents() {
+                if (easterEggEventsInitialized) return;
+                easterEggEventsInitialized = true;
+
+                console.log(
+                    "🎮 Initializing easter egg events with event delegation...",
+                );
+
+                // Use event delegation on document to catch all events
+                document.addEventListener("click", function (e) {
+                    const target = e.target;
+                    const currentTarget = e.currentTarget;
+
+                    // 2. Peng triple click - target any .final-text element
+                    if (
+                        target.classList.contains("final-text") ||
+                        target.closest(".final-text")
+                    ) {
+                        const pengElement = target.classList.contains(
+                            "final-text",
+                        )
+                            ? target
+                            : target.closest(".final-text");
+                        console.log(
+                            "🐧 Peng clicked! Element:",
+                            pengElement.textContent,
+                        );
+                        e.stopPropagation();
+                        handleTripleClick(
+                            "pengClick",
+                            "do-you-have-a-plan.mp3",
+                            isEnglish
+                                ? "I don't even have a 'pla'."
+                                : "我连计划都没有。",
+                        );
+                        return;
+                    }
+
+                    // 3. Tribute text triple click - target any .tribute element
+                    if (
+                        target.classList.contains("tribute") ||
+                        target.closest(".tribute")
+                    ) {
+                        const tributeElement = target.classList.contains(
+                            "tribute",
+                        )
+                            ? target
+                            : target.closest(".tribute");
+                        console.log(
+                            "💝 Tribute clicked! Element:",
+                            tributeElement.textContent,
+                        );
+                        e.stopPropagation();
+                        handleTripleClick(
+                            "tributeClick",
+                            "see-hes-her-lobster.mp3",
+                            isEnglish
+                                ? "See? He's her lobster!"
+                                : "看？他是她的龙虾！",
+                        );
+                        return;
+                    }
+
+                    // 4. Essence cards triple click
+                    if (
+                        target.classList.contains("essence-card") ||
+                        target.closest(".essence-card")
+                    ) {
+                        // Don't interfere with the original quote change functionality
+                        const isQuoteClick =
+                            target.classList.contains("quote-clickable");
+                        if (!isQuoteClick) {
+                            console.log(
+                                "📝 Essence card clicked for easter egg",
+                            );
+                            handleTripleClick(
+                                "essenceCard",
+                                "that-is-brand-new-information.mp3",
+                                isEnglish
+                                    ? "This is brand new information!"
+                                    : "这是全新的信息！",
+                            );
+                        }
+                        return;
+                    }
+
+                    // 5. Phoebe wisdom section triple click
+                    if (
+                        target.classList.contains("phoebe-title") ||
+                        target.closest(".phoebe-title")
+                    ) {
+                        console.log("👩 Phoebe title clicked!");
+                        handleTripleClick(
+                            "phoebeWisdom",
+                            "i-wish-i-could.mp3",
+                            isEnglish
+                                ? "Oh, I wish I could, but I don't want to."
+                                : "哦，我很想，但我不想。",
+                        );
+                        return;
+                    }
+
+                    // 6. Color circle - final easter egg
+                    if (
+                        target.classList.contains("color-circle") ||
+                        target.closest(".color-circle")
+                    ) {
+                        console.log("🎨 Color circle clicked!");
+                        console.log("🎨 Click target:", target);
+                        console.log("🎨 Target classes:", target.className);
+                        console.log(
+                            "🎨 Closest color-circle:",
+                            target.closest(".color-circle"),
+                        );
+
+                        // Prevent any other click handlers
+                        e.preventDefault();
+                        e.stopPropagation();
+                        e.stopImmediatePropagation();
+
+                        // Small delay to ensure all states are updated
+                        setTimeout(() => {
+                            triggerWhoSinging();
+                        }, 50);
+                        return;
                     }
                 });
+            }
 
-            function showPhoebeQuote() {
-                if (!phoebeEasterEggActive) return;
+            // Initialize easter egg events immediately
+            initializeEasterEggEvents();
 
-                const quote = phoebeQuotes[phoebeQuoteIndex];
-                lastPhoebeTime = Date.now();
+            // Add additional color circle safeguard with direct event listener
+            function addColorCircleSafeguard() {
+                const colorCircle = document.querySelector(".color-circle");
+                if (colorCircle) {
+                    console.log(
+                        "🔧 Adding direct color circle safeguard listener",
+                    );
+                    colorCircle.addEventListener(
+                        "click",
+                        function (e) {
+                            console.log(
+                                "🔧 Direct color circle safeguard triggered",
+                            );
+                            setTimeout(() => {
+                                triggerWhoSinging();
+                            }, 100);
+                        },
+                        true,
+                    ); // Use capture phase
+                }
+            }
 
-                // Create a more elegant notification for the quote
-                const quoteNotification = document.createElement("div");
+            // Add safeguard after a delay to ensure DOM is ready
+            setTimeout(addColorCircleSafeguard, 500);
 
-                // Different falling animations
-                const animationType = phoebeAnimationCount % 4;
-                let animationCSS = "";
+            function handleTripleClick(eggType, audioFile, message) {
+                clickCounters[eggType]++;
+                console.log(
+                    `🎯 ${eggType} clicked, count: ${clickCounters[eggType]}`,
+                );
+                console.log(`🎯 Audio file: ${audioFile}`);
+                console.log(`🎯 Message: ${message}`);
 
-                switch (animationType) {
-                    case 0:
-                        animationCSS = "animation: fallFromTop 1s ease-out;";
-                        break;
-                    case 1:
-                        animationCSS =
-                            "animation: fallFromTopLeft 1s ease-out;";
-                        break;
-                    case 2:
-                        animationCSS =
-                            "animation: fallFromTopRight 1s ease-out;";
-                        break;
-                    case 3:
-                        animationCSS =
-                            "animation: fallAndBounce 1.2s ease-out;";
-                        break;
+                // Reset timer
+                if (clickTimers[eggType]) {
+                    clearTimeout(clickTimers[eggType]);
+                    console.log(`⏰ ${eggType} timer cleared`);
                 }
 
-                quoteNotification.style.cssText = `
+                // Set timer to reset counter after 1 second
+                clickTimers[eggType] = setTimeout(() => {
+                    console.log(`⏰ ${eggType} counter reset to 0 (timeout)`);
+                    clickCounters[eggType] = 0;
+                }, 1000);
+
+                // Check if triple clicked
+                if (clickCounters[eggType] === 3) {
+                    console.log(`🎉 ${eggType} easter egg triggered!`);
+                    easterEggTriggered[eggType] = true;
+                    console.log(`🎵 Playing audio: ${audioFile}`);
+                    playAudio(audioFile);
+                    showEasterEggNotification(message);
+                    clickCounters[eggType] = 0;
+                }
+            }
+
+            function triggerWhoSinging() {
+                console.log("🎨 triggerWhoSinging() called");
+                console.log(
+                    "🌐 Current language:",
+                    isEnglish ? "English" : "Chinese",
+                );
+
+                // Check if all easter eggs have been triggered
+                const eggStates = Object.entries(easterEggTriggered);
+                console.log("🎯 Detailed easter egg states:");
+                eggStates.forEach(([key, value]) => {
+                    console.log(`  ${key}: ${value ? "✅" : "❌"}`);
+                });
+
+                const allTriggered = Object.values(easterEggTriggered).every(
+                    (state) => state,
+                );
+
+                console.log("🎯 All easter eggs triggered:", allTriggered);
+                console.log(
+                    "🎯 Raw easter egg object:",
+                    JSON.stringify(easterEggTriggered),
+                );
+
+                if (allTriggered) {
+                    console.log(
+                        "🎉 ALL CONDITIONS MET! Triggering 'Who's singing?' easter egg",
+                    );
+                    console.log("🎵 About to play who-singing.mp3");
+                    playAudio("who-singing.mp3");
+
+                    const message = isEnglish ? "Who's singing?" : "谁在唱歌？";
+                    console.log("💬 Showing notification:", message);
+                    showEasterEggNotification(message);
+
+                    // Start listening for "you" input
+                    isListeningForYou = true;
+                    keySequence = [];
+                    console.log(
+                        "👂 Now listening for 'you' input for 5 seconds...",
+                    );
+
+                    // Stop listening after 5 seconds
+                    if (whoSingingTimer) {
+                        clearTimeout(whoSingingTimer);
+                    }
+                    whoSingingTimer = setTimeout(() => {
+                        console.log(
+                            "⏰ 'You' input timeout - stopped listening",
+                        );
+                        isListeningForYou = false;
+                        keySequence = [];
+                    }, 5000);
+                } else {
+                    const missingEggs = Object.entries(easterEggTriggered)
+                        .filter(([key, value]) => !value)
+                        .map(([key]) => key);
+                    console.log(
+                        "❌ Not all easter eggs triggered yet. Missing:",
+                        missingEggs,
+                    );
+                    console.log(
+                        `📊 Progress: ${5 - missingEggs.length}/5 easter eggs completed`,
+                    );
+                    console.log(
+                        "💡 You need to trigger these easter eggs first:",
+                        missingEggs.join(", "),
+                    );
+                }
+            }
+
+            function showSmellyCatContent() {
+                console.log("🎵 Showing Smelly Cat content first");
+                playAudio("smelly_cat.mp3");
+
+                // Create Smelly Cat overlay
+                const smellyCatOverlay = document.createElement("div");
+                smellyCatOverlay.style.cssText = `
                     position: fixed;
-                    top: 50%;
-                    left: 50%;
-                    transform: translate(-50%, -50%);
-                    background: rgba(254, 235, 234, 0.95);
-                    color: #333;
-                    padding: 2rem;
-                    border-radius: 20px;
-                    font-family: 'Dancing Script', cursive;
-                    font-size: 1.2rem;
-                    text-align: center;
-                    max-width: 80vw;
-                    z-index: 2000;
-                    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-                    backdrop-filter: blur(10px);
-                    line-height: 1.6;
-                    ${animationCSS}
+                    top: 0;
+                    left: 0;
+                    width: 100vw;
+                    height: 100vh;
+                    background: linear-gradient(45deg,
+                        rgba(255, 192, 203, 0.9),
+                        rgba(254, 235, 234, 0.9),
+                        rgba(255, 255, 255, 0.9)
+                    );
+                    z-index: 20000;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    backdrop-filter: blur(20px);
+                    animation: fadeIn 1s ease-out;
                 `;
 
-                if (isEnglish) {
-                    quoteNotification.innerHTML = `<strong>Phoebe says:</strong><br>"${quote.en}"`;
-                } else {
-                    quoteNotification.innerHTML = `<strong>Phoebe says:</strong><br>"${quote.en}"<br><br><strong>菲比说：</strong><br>"${quote.zh}"`;
-                }
+                const smellyCatContent = document.createElement("div");
+                smellyCatContent.style.cssText = `
+                    text-align: center;
+                    color: #333;
+                    font-family: "Great Vibes", cursive;
+                    max-width: 80vw;
+                `;
 
-                document.body.appendChild(quoteNotification);
-                phoebeAnimationCount++;
+                const smellyCatTitle = "🎵 Smelly Cat 🎵";
+                const smellyCatText = isEnglish
+                    ? "Smelly Cat, smelly cat<br>What are they feeding you?<br>Smelly cat, smelly cat<br>It's not your fault.<br>They won't take you to the vet<br>You're obviously not their favorite pet<br>You may not be a bed of roses<br>And you're no friend to those with noses"
+                    : "臭臭猫啊臭臭猫<br>他们都给你吃什么啊？<br>臭臭猫啊臭臭猫<br>这不是你的错<br>他们不带你看医生<br>很明显你不是他们的最爱<br>你不是一床玫瑰<br>但你也不是这帮长着鼻子的东西的朋友";
 
-                // Play audio
-                const audio = new Audio(`./phoebe/${quote.audio}`);
-                audio.play().catch((e) => console.log("Audio play failed:", e));
+                smellyCatContent.innerHTML = `
+                    <h1 style="font-size: 4rem; margin-bottom: 2rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">
+                        ${smellyCatTitle}
+                    </h1>
+                    <p style="font-family: 'Dancing Script', cursive; font-size: 2rem; line-height: 1.6; margin-bottom: 3rem;">
+                        ${smellyCatText}
+                    </p>
+                    <p style="font-family: 'Dancing Script', cursive; font-size: 1.8rem; margin-top: 2rem; font-weight: bold;">
+                        你找到所有彩蛋了~吗?
+                    </p>
+                `;
 
+                smellyCatOverlay.appendChild(smellyCatContent);
+                document.body.appendChild(smellyCatOverlay);
+
+                // After 5 seconds, transition to Friends typing effect
                 setTimeout(() => {
-                    quoteNotification.style.opacity = "0";
+                    smellyCatOverlay.style.animation =
+                        "fadeOut 1s ease-out forwards";
                     setTimeout(() => {
-                        if (document.body.contains(quoteNotification)) {
-                            document.body.removeChild(quoteNotification);
+                        if (document.body.contains(smellyCatOverlay)) {
+                            document.body.removeChild(smellyCatOverlay);
                         }
+                        showFriendsTypingEffect();
+                    }, 1000);
+                }, 5000);
+
+                // Click to skip to typing effect
+                smellyCatOverlay.addEventListener("click", () => {
+                    smellyCatOverlay.style.animation =
+                        "fadeOut 0.5s ease-out forwards";
+                    setTimeout(() => {
+                        if (document.body.contains(smellyCatOverlay)) {
+                            document.body.removeChild(smellyCatOverlay);
+                        }
+                        showFriendsTypingEffect();
                     }, 500);
-                }, 3000);
-
-                // Move to next quote, "Who's singing?" is always last
-                phoebeQuoteIndex = (phoebeQuoteIndex + 1) % phoebeQuotes.length;
-
-                // If we just showed "Who's singing?", start listening for "you" input
-                if (quote.en === "Who's singing?") {
-                    startListeningForYou();
-                }
+                });
             }
 
-            function startListeningForYou() {
-                keySequence = [];
+            function showFriendsTypingEffect() {
+                console.log("🎭 Starting Friends typing effect");
 
-                const keyListener = function (e) {
-                    if (friendsEasterEggTriggered) {
-                        document.removeEventListener("keydown", keyListener);
-                        return;
-                    }
-
-                    // Clear sequence if too much time passed
-                    if (keyTimer) clearTimeout(keyTimer);
-
-                    keySequence.push(e.key.toLowerCase());
-
-                    // Keep only last 3 characters
-                    if (keySequence.length > 3) {
-                        keySequence.shift();
-                    }
-
-                    // Check if "you" was typed
-                    if (keySequence.join("") === "you") {
-                        triggerFriendsEasterEgg();
-                        document.removeEventListener("keydown", keyListener);
-                        return;
-                    }
-
-                    // Reset sequence after 2 seconds of inactivity
-                    keyTimer = setTimeout(() => {
-                        keySequence = [];
-                    }, 2000);
-                };
-
-                document.addEventListener("keydown", keyListener);
-
-                // Remove listener after 30 seconds if "you" not typed
-                setTimeout(() => {
-                    document.removeEventListener("keydown", keyListener);
-                }, 30000);
-            }
-
-            function triggerFriendsEasterEgg() {
-                friendsEasterEggTriggered = true;
-                phoebeEasterEggActive = false;
-
-                // Create fullscreen overlay
-                const overlay = document.createElement("div");
-                overlay.style.cssText = `
+                // Create fullscreen overlay for typing effect
+                const typingOverlay = document.createElement("div");
+                typingOverlay.style.cssText = `
                     position: fixed;
                     top: 0;
                     left: 0;
                     width: 100vw;
                     height: 100vh;
                     background: #000;
-                    z-index: 10000;
+                    z-index: 25000;
                     display: flex;
                     align-items: center;
                     justify-content: center;
+                    animation: fadeIn 1s ease-out;
                 `;
 
-                const friendsText = document.createElement("div");
-                friendsText.style.cssText = `
+                const typingText = document.createElement("div");
+                typingText.style.cssText = `
                     text-align: center;
                     font-family: 'Dancing Script', cursive;
                     font-weight: 700;
@@ -2292,22 +2555,15 @@
                     box-sizing: border-box;
                     width: 100%;
                     display: flex;
+                    flex-direction: column;
                     align-items: center;
                     justify-content: center;
                     min-height: 100vh;
                 `;
 
-                overlay.appendChild(friendsText);
-                document.body.appendChild(overlay);
-
-                // Play Smelly Cat
-                const audio = new Audio("./phoebe/smelly_cat.mp3");
-                audio.play().catch((e) => console.log("Audio play failed:", e));
-
                 // Adjust font size for different screen sizes
                 const screenWidth = window.innerWidth;
-                let fontSize;
-                let letterSpacing;
+                let fontSize, letterSpacing;
 
                 if (screenWidth < 480) {
                     fontSize = "3rem";
@@ -2323,8 +2579,12 @@
                     letterSpacing = "0.8rem";
                 }
 
-                friendsText.style.fontSize = fontSize;
-                friendsText.style.letterSpacing = letterSpacing;
+                typingText.style.fontSize = fontSize;
+                typingText.style.letterSpacing = letterSpacing;
+
+                // No completion message needed in typing section
+                typingOverlay.appendChild(typingText);
+                document.body.appendChild(typingOverlay);
 
                 // Type F·R·I·E·N·D·S
                 const letters = [
@@ -2346,179 +2606,271 @@
 
                 const typeInterval = setInterval(() => {
                     if (letterIndex < letters.length) {
-                        friendsText.textContent += letters[letterIndex];
+                        typingText.textContent += letters[letterIndex];
                         letterIndex++;
                     } else {
                         clearInterval(typeInterval);
 
-                        // Keep for 5 seconds then fade out
+                        // Keep for 3 seconds then fade out
                         setTimeout(() => {
-                            overlay.style.transition = "opacity 2s ease-out";
-                            overlay.style.opacity = "0";
+                            typingOverlay.style.transition =
+                                "opacity 2s ease-out";
+                            typingOverlay.style.opacity = "0";
 
                             setTimeout(() => {
-                                if (document.body.contains(overlay)) {
-                                    document.body.removeChild(overlay);
+                                if (document.body.contains(typingOverlay)) {
+                                    document.body.removeChild(typingOverlay);
                                 }
                             }, 2000);
-                        }, 5000);
+                        }, 3000);
                     }
                 }, 300);
+
+                // Click to dismiss after typing is complete
+                setTimeout(
+                    () => {
+                        typingOverlay.addEventListener("click", () => {
+                            typingOverlay.style.transition =
+                                "opacity 1s ease-out";
+                            typingOverlay.style.opacity = "0";
+                            setTimeout(() => {
+                                if (document.body.contains(typingOverlay)) {
+                                    document.body.removeChild(typingOverlay);
+                                }
+                            }, 1000);
+                        });
+                    },
+                    letters.length * 300 + 2000,
+                );
             }
 
-            // High-performance text splitting utility
-            function splitTextIntoLetters(element) {
-                const text = element.textContent || element.innerText;
-                element.innerHTML = "";
+            function playAudio(filename) {
+                console.log("🎵 Playing audio:", filename);
 
-                for (let i = 0; i < text.length; i++) {
-                    const letter = text[i];
-                    if (letter === " ") {
-                        element.appendChild(document.createTextNode(" "));
-                    } else {
-                        const span = document.createElement("span");
-                        span.className = "letter-particle";
-                        span.textContent = letter;
-                        span.style.willChange = "transform, opacity";
-                        span.style.transform = "translateZ(0)";
-                        element.appendChild(span);
+                // Try multiple possible paths, prioritizing phoebe folder
+                const paths = [
+                    `./phoebe/${filename}`,
+                    `phoebe/${filename}`,
+                    `./audio/${filename}`,
+                    `audio/${filename}`,
+                    filename,
+                ];
+
+                let currentPathIndex = 0;
+
+                function tryNextPath() {
+                    if (currentPathIndex >= paths.length) {
+                        console.error(
+                            "❌ All audio paths failed for:",
+                            filename,
+                        );
+                        return;
                     }
+
+                    const currentPath = paths[currentPathIndex];
+                    console.log(
+                        `🔄 Trying path ${currentPathIndex + 1}:`,
+                        currentPath,
+                    );
+
+                    const audio = new Audio(currentPath);
+
+                    audio.addEventListener("canplay", () => {
+                        console.log("✅ Audio ready to play:", currentPath);
+                    });
+
+                    audio.addEventListener("ended", () => {
+                        console.log("🎵 Audio finished playing:", currentPath);
+                    });
+
+                    audio
+                        .play()
+                        .then(() => {
+                            console.log(
+                                "🎉 Audio playing successfully:",
+                                currentPath,
+                            );
+                        })
+                        .catch((error) => {
+                            console.warn(
+                                `⚠️ Path ${currentPathIndex + 1} failed:`,
+                                error.message,
+                            );
+                            currentPathIndex++;
+                            tryNextPath();
+                        });
                 }
+
+                tryNextPath();
             }
 
-            // Advanced Rick Easter egg triggers
-            let konamiCode = [
-                "ArrowUp",
-                "ArrowUp",
-                "ArrowDown",
-                "ArrowDown",
-                "ArrowLeft",
-                "ArrowRight",
-                "ArrowLeft",
-                "ArrowRight",
-                "KeyB",
-                "KeyA",
-            ];
-            let konamiIndex = 0;
-            let secretSequence = [];
-            let lastKeyTime = 0;
+            function showEasterEggNotification(message) {
+                const notification = document.createElement("div");
+                const animationType = Math.floor(Math.random() * 4);
+                let animationCSS = "";
 
-            document.addEventListener("keydown", function (e) {
-                const currentTime = Date.now();
-
-                if (currentTime - lastKeyTime > 2000) {
-                    konamiIndex = 0;
-                    secretSequence = [];
+                switch (animationType) {
+                    case 0:
+                        animationCSS = `
+                            @keyframes fallFromLeft {
+                                0% { transform: translateX(-100vw) translateY(-50px); opacity: 0; }
+                                20% { opacity: 1; }
+                                80% { opacity: 1; }
+                                100% { transform: translateX(100vw) translateY(100vh); opacity: 0; }
+                            }
+                            animation: fallFromLeft 4s ease-out forwards;
+                        `;
+                        break;
+                    case 1:
+                        animationCSS = `
+                            @keyframes bounceIn {
+                                0% { transform: scale(0) rotate(0deg); opacity: 0; }
+                                50% { transform: scale(1.2) rotate(180deg); opacity: 1; }
+                                100% { transform: scale(1) rotate(360deg); opacity: 1; }
+                            }
+                            animation: bounceIn 2s ease-out forwards, fadeOut 2s ease-out 2s forwards;
+                        `;
+                        break;
+                    case 2:
+                        animationCSS = `
+                            @keyframes slideUp {
+                                0% { transform: translateY(100vh); opacity: 0; }
+                                20% { opacity: 1; }
+                                80% { opacity: 1; }
+                                100% { transform: translateY(-100vh); opacity: 0; }
+                            }
+                            animation: slideUp 4s ease-out forwards;
+                        `;
+                        break;
+                    case 3:
+                        animationCSS = `
+                            @keyframes spiral {
+                                0% { transform: scale(0) rotate(0deg) translateX(0); opacity: 0; }
+                                25% { transform: scale(1) rotate(90deg) translateX(100px); opacity: 1; }
+                                50% { transform: scale(1.2) rotate(180deg) translateX(0); opacity: 1; }
+                                75% { transform: scale(1) rotate(270deg) translateX(-100px); opacity: 1; }
+                                100% { transform: scale(0) rotate(360deg) translateX(0); opacity: 0; }
+                            }
+                            animation: spiral 3s ease-out forwards;
+                        `;
+                        break;
                 }
-                lastKeyTime = currentTime;
 
-                // Check Konami code
-                if (e.code === konamiCode[konamiIndex]) {
-                    konamiIndex++;
-                    if (konamiIndex === konamiCode.length) {
-                        triggerRickPortal();
-                        konamiIndex = 0;
-                    }
-                } else {
-                    konamiIndex = 0;
-                }
-
-                // Secret sequence: R-I-C-K
-                if (["KeyR", "KeyI", "KeyC", "KeyK"].includes(e.code)) {
-                    secretSequence.push(e.code);
-                    if (secretSequence.length > 4) {
-                        secretSequence.shift();
-                    }
-                    if (secretSequence.join("") === "KeyRKeyIKeyCKeyK") {
-                        triggerRickPortal();
-                        secretSequence = [];
-                    }
-                } else if (e.code.startsWith("Key")) {
-                    secretSequence = [];
-                }
-            });
-
-            // Mouse pattern detection
-            let mousePositions = [];
-            let isDrawing = false;
-
-            document.addEventListener("mousedown", function (e) {
-                if (e.button === 0) {
-                    isDrawing = true;
-                    mousePositions = [{ x: e.clientX, y: e.clientY }];
-                }
-            });
-
-            document.addEventListener("mousemove", function (e) {
-                if (isDrawing) {
-                    mousePositions.push({ x: e.clientX, y: e.clientY });
-                    if (mousePositions.length > 50) {
-                        mousePositions.shift();
-                    }
-                }
-            });
-
-            document.addEventListener("mouseup", function (e) {
-                if (isDrawing) {
-                    isDrawing = false;
-                    if (isCircularPattern(mousePositions)) {
-                        triggerRickPortal();
-                    }
-                    mousePositions = [];
-                }
-            });
-
-            // Touch support
-            let touchPositions = [];
-            let isTouchDrawing = false;
-
-            document.addEventListener("touchstart", function (e) {
-                e.preventDefault();
-                isTouchDrawing = true;
-                const touch = e.touches[0];
-                touchPositions = [{ x: touch.clientX, y: touch.clientY }];
-            });
-
-            document.addEventListener("touchmove", function (e) {
-                e.preventDefault();
-                if (isTouchDrawing) {
-                    const touch = e.touches[0];
-                    touchPositions.push({ x: touch.clientX, y: touch.clientY });
-                    if (touchPositions.length > 50) {
-                        touchPositions.shift();
-                    }
-                }
-            });
-
-            document.addEventListener("touchend", function (e) {
-                e.preventDefault();
-                if (isTouchDrawing) {
-                    isTouchDrawing = false;
-                    if (isCircularPattern(touchPositions)) {
-                        triggerRickPortal();
-                    }
-                    touchPositions = [];
-                }
-            });
-
-            // Alternative: Quick tap author 6 times
-            let authorTapCount = 0;
-            let lastTapTime = 0;
-
-            document.addEventListener("click", function (e) {
-                if (e.target.classList.contains("author-text")) {
-                    const currentTime = Date.now();
-                    if (currentTime - lastTapTime < 1000) {
-                        authorTapCount++;
-                        if (authorTapCount === 6) {
-                            triggerRickPortal();
-                            authorTapCount = 0;
+                notification.innerHTML = `
+                    <style>
+                        ${animationCSS}
+                        @keyframes fadeOut {
+                            0% { opacity: 1; }
+                            100% { opacity: 0; }
                         }
-                    } else {
-                        authorTapCount = 1;
+                    </style>
+                `;
+
+                notification.style.cssText = `
+                    position: fixed;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    background: linear-gradient(45deg, rgba(254, 235, 234, 0.95), rgba(255, 255, 255, 0.95));
+                    color: #333;
+                    padding: 2rem 3rem;
+                    border-radius: 20px;
+                    font-family: "Dancing Script", cursive;
+                    font-size: 1.5rem;
+                    font-weight: bold;
+                    text-align: center;
+                    z-index: 10000;
+                    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+                    border: 2px solid rgba(254, 235, 234, 0.8);
+                    backdrop-filter: blur(10px);
+                    max-width: 80vw;
+                    word-wrap: break-word;
+                `;
+
+                notification.textContent = message;
+                document.body.appendChild(notification);
+
+                // Remove after animation
+                setTimeout(() => {
+                    if (document.body.contains(notification)) {
+                        document.body.removeChild(notification);
                     }
-                    lastTapTime = currentTime;
+                }, 4000);
+            }
+
+            // Keyboard listener for "you" input
+            document.addEventListener("keydown", function (e) {
+                if (isListeningForYou) {
+                    const key = e.key.toLowerCase();
+                    keySequence.push(key);
+
+                    // Keep only last 3 characters
+                    if (keySequence.length > 3) {
+                        keySequence.shift();
+                    }
+
+                    // Check if "you" was typed
+                    if (keySequence.join("") === "you") {
+                        console.log(
+                            "User typed 'you'! Triggering final Friends easter egg!",
+                        );
+                        clearTimeout(whoSingingTimer);
+                        isListeningForYou = false;
+                        keySequence = [];
+                        triggerFinalFriendsEasterEgg();
+                    } else {
+                        console.log(
+                            "Current key sequence:",
+                            keySequence.join(""),
+                        );
+                    }
                 }
+            });
+
+            function triggerFinalFriendsEasterEgg() {
+                console.log(
+                    "🎉 Triggering final Friends easter egg after 'you' input!",
+                );
+                // This triggers when user types "you" after "Who's singing?"
+                // First show Smelly Cat content, then Friends typing effect
+                showSmellyCatContent();
+            }
+
+            // Initialize easter egg system on page load
+            window.addEventListener("load", function () {
+                console.log("🎭 New Phoebe Easter Egg System Loaded!");
+                console.log(
+                    "🎮 Try triple-clicking various elements to discover easter eggs!",
+                );
+                console.log(
+                    "🎯 Easter egg counters initialized:",
+                    clickCounters,
+                );
+                console.log("📊 Easter egg states:", easterEggTriggered);
+
+                // Check if elements exist
+                const pengElements = document.querySelectorAll(".final-text");
+                console.log(`🐧 Found ${pengElements.length} Peng elements`);
+
+                const tributeElements = document.querySelectorAll(".tribute");
+                console.log(
+                    `💝 Found ${tributeElements.length} tribute elements`,
+                );
+
+                const essenceCards = document.querySelectorAll(".essence-card");
+                console.log(`📝 Found ${essenceCards.length} essence cards`);
+
+                const phoebeTitles = document.querySelectorAll(".phoebe-title");
+                console.log(`👩 Found ${phoebeTitles.length} phoebe titles`);
+
+                const colorCircle = document.querySelector(".color-circle");
+                console.log(
+                    `🎨 Found color circle:`,
+                    colorCircle ? "Yes" : "No",
+                );
+
+                // Ensure easter egg events are initialized
+                initializeEasterEggEvents();
             });
 
             function isCircularPattern(positions) {
