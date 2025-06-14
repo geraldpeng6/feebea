@@ -1326,7 +1326,12 @@
                 left: 0;
                 width: 100vw;
                 height: 100vh;
-                background: #feebea;
+                background: linear-gradient(
+                    135deg,
+                    #ff69b4 0%,
+                    #ff1493 50%,
+                    #dc143c 100%
+                );
                 display: flex;
                 justify-content: center;
                 align-items: center;
@@ -3040,19 +3045,14 @@
             }
 
             function stopZimaBlueSystem() {
-                // Clear the timer
+                // Clear the timer to stop generating new squares
                 if (zimaTimer) {
                     clearTimeout(zimaTimer);
                     zimaTimer = null;
                 }
 
-                // Remove all existing squares
-                zimaSquares.forEach(square => {
-                    if (square && square.parentNode) {
-                        square.parentNode.removeChild(square);
-                    }
-                });
-                zimaSquares = [];
+                // Keep existing squares - don't remove them
+                // zimaSquares array is preserved to maintain references
             }
 
             // Cyberpunk 2077 Easter Egg functions
