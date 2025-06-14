@@ -10,6 +10,16 @@
             href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&family=Pacifico&family=Great+Vibes&family=Cinzel:wght@400;600&family=Zhi+Mang+Xing&family=Long+Cang&family=Noto+Serif+SC:wght@400;600;700&display=swap"
             rel="stylesheet"
         />
+        <!-- Gabriel Weiss Friends Font -->
+        <link
+            href="https://fonts.cdnfonts.com/css/gabriel-weiss-friends-font"
+            rel="stylesheet"
+        />
+        <!-- Backup Friends-style font -->
+        <link
+            href="https://fonts.googleapis.com/css2?family=Fredoka+One:wght@400&display=swap"
+            rel="stylesheet"
+        />
         <style>
             * {
                 margin: 0;
@@ -645,14 +655,13 @@
             /* High-performance text splitting and portal effects */
             .rick-portal {
                 position: fixed;
-                top: 50%;
-                left: 50%;
-                transform: translate3d(-50%, -50%, 0);
-                z-index: 3000;
-                text-align: center;
+                transform: translate(-50%, -50%);
+                z-index: 5000;
                 opacity: 0;
-                transition: opacity 1s ease-in;
+                transition: opacity 1s ease-in-out;
+                pointer-events: none;
                 will-change: opacity;
+                text-align: center;
             }
 
             .rick-portal.show {
@@ -662,9 +671,14 @@
             .rick-portal img {
                 width: 300px;
                 height: 300px;
-                animation: portal-fast-spin 0.5s linear infinite;
-                will-change: transform;
+                animation:
+                    portal-fast-spin 20s ease-in-out forwards,
+                    portal-glow 20s ease-in-out forwards;
+                will-change: transform, opacity, filter, box-shadow;
                 transform: translateZ(0);
+                position: relative;
+                z-index: 5;
+                border-radius: 50%;
             }
 
             .rick-message {
@@ -675,17 +689,140 @@
                 text-shadow: 0 0 20px rgba(254, 235, 234, 0.8);
                 margin-top: 2rem;
                 min-height: 3rem;
+                z-index: 10;
+                position: relative;
             }
 
             @keyframes portal-fast-spin {
                 0% {
-                    transform: rotate3d(0, 0, 1, 0deg);
+                    transform: rotate3d(0, 0, 1, 0deg) scale3d(1, 1, 1);
+                    opacity: 1;
+                    animation-timing-function: ease-out;
                 }
-                30% {
-                    transform: rotate3d(0, 0, 1, 180deg);
+                25% {
+                    transform: rotate3d(0, 0, 1, 360deg) scale3d(1.4, 1.4, 1);
+                    opacity: 1;
+                    animation-timing-function: ease-out;
+                }
+                50% {
+                    transform: rotate3d(0, 0, 1, 720deg) scale3d(1.8, 1.8, 1);
+                    opacity: 1;
+                    animation-timing-function: ease-out;
+                }
+                75% {
+                    transform: rotate3d(0, 0, 1, 1080deg) scale3d(2, 2, 1);
+                    opacity: 1;
+                    animation-timing-function: linear;
+                }
+                85% {
+                    transform: rotate3d(0, 0, 1, 1440deg) scale3d(2, 2, 1);
+                    opacity: 1;
+                    animation-timing-function: linear;
+                }
+                90% {
+                    transform: rotate3d(0, 0, 1, 2160deg) scale3d(1.5, 1.5, 1);
+                    opacity: 0.8;
+                    animation-timing-function: cubic-bezier(
+                        0.755,
+                        0.05,
+                        0.855,
+                        0.06
+                    );
+                }
+                95% {
+                    transform: rotate3d(0, 0, 1, 3600deg) scale3d(0.5, 0.5, 1);
+                    opacity: 0.3;
+                    animation-timing-function: cubic-bezier(
+                        0.95,
+                        0.05,
+                        0.795,
+                        0.035
+                    );
+                }
+                98% {
+                    transform: rotate3d(0, 0, 1, 4680deg) scale3d(0.1, 0.1, 1);
+                    opacity: 0.1;
+                    animation-timing-function: cubic-bezier(
+                        0.98,
+                        0.02,
+                        0.82,
+                        0.01
+                    );
                 }
                 100% {
-                    transform: rotate3d(0, 0, 1, 720deg);
+                    transform: rotate3d(0, 0, 1, 5400deg) scale3d(0, 0, 1);
+                    opacity: 0;
+                }
+            }
+
+            @keyframes portal-glow {
+                0% {
+                    box-shadow:
+                        0 0 20px #00ff88,
+                        0 0 40px #00ff88,
+                        0 0 60px #00ff88,
+                        inset 0 0 20px rgba(0, 255, 136, 0.3);
+                    filter: brightness(1.2) saturate(1.5);
+                }
+                25% {
+                    box-shadow:
+                        0 0 50px #00ff88,
+                        0 0 100px #00ff88,
+                        0 0 150px #00ff88,
+                        inset 0 0 50px rgba(0, 255, 136, 0.4);
+                    filter: brightness(1.6) saturate(2);
+                }
+                50% {
+                    box-shadow:
+                        0 0 80px #00ccff,
+                        0 0 160px #00ccff,
+                        0 0 240px #00ccff,
+                        inset 0 0 80px rgba(0, 204, 255, 0.5);
+                    filter: brightness(1.8) saturate(2.2);
+                }
+                75% {
+                    box-shadow:
+                        0 0 100px #8800ff,
+                        0 0 200px #8800ff,
+                        0 0 300px #8800ff,
+                        inset 0 0 100px rgba(136, 0, 255, 0.6);
+                    filter: brightness(2) saturate(2.5);
+                }
+                85% {
+                    box-shadow:
+                        0 0 120px #ff0088,
+                        0 0 240px #ff0088,
+                        0 0 360px #ff0088,
+                        inset 0 0 120px rgba(255, 0, 136, 0.7);
+                    filter: brightness(2.2) saturate(3);
+                }
+                90% {
+                    box-shadow:
+                        0 0 60px #ffaa00,
+                        0 0 120px #ffaa00,
+                        0 0 180px #ffaa00,
+                        inset 0 0 60px rgba(255, 170, 0, 0.5);
+                    filter: brightness(1.8) saturate(2);
+                }
+                95% {
+                    box-shadow:
+                        0 0 20px #ffffff,
+                        0 0 40px #ffffff,
+                        0 0 60px #ffffff,
+                        inset 0 0 20px rgba(255, 255, 255, 0.3);
+                    filter: brightness(1.2) saturate(1.2);
+                }
+                98% {
+                    box-shadow:
+                        0 0 5px #ffffff,
+                        0 0 10px #ffffff,
+                        0 0 15px #ffffff,
+                        inset 0 0 5px rgba(255, 255, 255, 0.1);
+                    filter: brightness(0.6) saturate(0.8);
+                }
+                100% {
+                    box-shadow: none;
+                    filter: brightness(0.2) saturate(0.3);
                 }
             }
 
@@ -707,77 +844,133 @@
             @keyframes letter-explode {
                 0% {
                     transform: translate3d(0, 0, 0) rotate3d(0, 0, 1, 0deg)
-                        scale3d(1, 1, 1);
+                        scale3d(1, 1, 1) skew(0deg, 0deg);
                     opacity: 1;
+                    filter: blur(0px);
                     animation-timing-function: ease-in;
                 }
                 15% {
                     transform: translate3d(
-                            calc(var(--dx) * 0.1),
-                            calc(var(--dy) * 0.1),
+                            calc(var(--dx) * 0.01),
+                            calc(var(--dy) * 0.01),
                             0
                         )
-                        rotate3d(1, 1, 1, calc(var(--rotation) * 30deg))
-                        scale3d(1.1, 0.9, 1);
-                    opacity: 0.95;
+                        rotate3d(0, 0, 1, calc(var(--rotation) * 8deg))
+                        scale3d(1.02, 0.98, 1) skew(2deg, 1deg);
+                    opacity: 0.99;
+                    filter: blur(0.1px);
                     animation-timing-function: ease-in;
                 }
-                35% {
+                25% {
                     transform: translate3d(
-                            calc(var(--dx) * 0.25),
-                            calc(var(--dy) * 0.25),
+                            calc(var(--dx) * 0.03),
+                            calc(var(--dy) * 0.03),
                             0
                         )
-                        rotate3d(1, 1, 1, calc(var(--rotation) * 150deg))
-                        scale3d(1.3, 0.7, 1);
-                    opacity: 0.85;
+                        rotate3d(0, 0, 1, calc(var(--rotation) * 20deg))
+                        scale3d(1.05, 0.95, 1) skew(5deg, 3deg);
+                    opacity: 0.96;
+                    filter: blur(0.3px);
                     animation-timing-function: ease-out;
+                }
+                40% {
+                    transform: translate3d(
+                            calc(var(--dx) * 0.08),
+                            calc(var(--dx) * 0.08),
+                            0
+                        )
+                        rotate3d(0, 0, 1, calc(var(--rotation) * 60deg))
+                        scale3d(1.1, 0.9, 1) skew(12deg, 8deg);
+                    opacity: 0.9;
+                    filter: blur(0.8px);
+                    animation-timing-function: cubic-bezier(
+                        0.25,
+                        0.46,
+                        0.45,
+                        0.94
+                    );
                 }
                 55% {
                     transform: translate3d(
-                            calc(var(--dx) * 0.5),
-                            calc(var(--dy) * 0.5),
+                            calc(var(--dx) * 0.2),
+                            calc(var(--dy) * 0.2),
                             0
                         )
-                        rotate3d(1, 1, 1, calc(var(--rotation) * 360deg))
-                        scale3d(0.8, 1.2, 1);
-                    opacity: 0.7;
-                    animation-timing-function: ease-out;
+                        rotate3d(0, 0, 1, calc(var(--rotation) * 180deg))
+                        scale3d(1.15, 0.85, 1) skew(25deg, 18deg);
+                    opacity: 0.8;
+                    filter: blur(1.2px);
+                    animation-timing-function: cubic-bezier(
+                        0.55,
+                        0.055,
+                        0.675,
+                        0.19
+                    );
                 }
-                75% {
+                70% {
                     transform: translate3d(
-                            calc(var(--dx) * 0.75),
-                            calc(var(--dy) * 0.75),
+                            calc(var(--dx) * 0.45),
+                            calc(var(--dy) * 0.45),
                             0
                         )
-                        rotate3d(1, 1, 1, calc(var(--rotation) * 600deg))
-                        scale3d(0.4, 0.4, 1);
-                    opacity: 0.4;
-                    animation-timing-function: ease-in;
+                        rotate3d(0, 0, 1, calc(var(--rotation) * 420deg))
+                        scale3d(0.9, 1.1, 1) skew(40deg, 30deg);
+                    opacity: 0.6;
+                    filter: blur(2px);
+                    animation-timing-function: cubic-bezier(
+                        0.215,
+                        0.61,
+                        0.355,
+                        1
+                    );
                 }
-                90% {
+                85% {
                     transform: translate3d(
-                            calc(var(--dx) * 0.9),
-                            calc(var(--dy) * 0.9),
+                            calc(var(--dx) * 0.8),
+                            calc(var(--dy) * 0.8),
                             0
                         )
-                        rotate3d(1, 1, 1, calc(var(--rotation) * 900deg))
-                        scale3d(0.15, 0.15, 1);
-                    opacity: 0.15;
-                    animation-timing-function: ease-in;
+                        rotate3d(0, 0, 1, calc(var(--rotation) * 900deg))
+                        scale3d(0.5, 0.5, 1) skew(65deg, 50deg);
+                    opacity: 0.3;
+                    filter: blur(3.5px);
+                    animation-timing-function: cubic-bezier(
+                        0.755,
+                        0.05,
+                        0.855,
+                        0.06
+                    );
+                }
+                95% {
+                    transform: translate3d(
+                            calc(var(--dx) * 0.95),
+                            calc(var(--dy) * 0.95),
+                            0
+                        )
+                        rotate3d(0, 0, 1, calc(var(--rotation) * 1440deg))
+                        scale3d(0.2, 0.2, 1) skew(80deg, 70deg);
+                    opacity: 0.1;
+                    filter: blur(4.5px);
+                    animation-timing-function: cubic-bezier(
+                        0.95,
+                        0.05,
+                        0.795,
+                        0.035
+                    );
                 }
                 100% {
                     transform: translate3d(var(--dx), var(--dy), 0)
-                        rotate3d(1, 1, 1, calc(var(--rotation) * 1200deg))
-                        scale3d(0, 0, 1);
+                        rotate3d(0, 0, 1, calc(var(--rotation) * 1800deg))
+                        scale3d(0, 0, 1) skew(90deg, 75deg);
                     opacity: 0;
+                    filter: blur(5px);
                 }
             }
 
             /* Element sucking effect with GPU acceleration */
             .element-sucking {
                 animation: element-suck var(--duration, 2s) var(--delay, 0s)
-                    cubic-bezier(0.4, 0, 1, 1) forwards;
+                    cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
                 will-change: transform, opacity;
                 transform-style: preserve-3d;
                 backface-visibility: hidden;
@@ -788,46 +981,96 @@
                     transform: translate3d(0, 0, 0) scale3d(1, 1, 1)
                         rotate3d(0, 0, 1, 0deg);
                     opacity: 1;
-                    animation-timing-function: ease-in;
+                    border-radius: 0;
+                    clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+                    filter: blur(0px);
                 }
-                25% {
+                20% {
                     transform: translate3d(
-                            calc(var(--dx) * 0.15),
-                            calc(var(--dy) * 0.15),
+                            calc(var(--dx) * 0.02),
+                            calc(var(--dy) * 0.02),
                             0
                         )
-                        scale3d(0.95, 0.95, 1)
+                        scale3d(0.98, 0.98, 1)
+                        rotate3d(0, 0, 1, calc(var(--rotation, 1) * 25deg));
+                    opacity: 0.95;
+                    border-radius: 3px;
+                    clip-path: polygon(2% 1%, 98% 3%, 97% 98%, 3% 99%);
+                    filter: blur(0.2px);
+                }
+                35% {
+                    transform: translate3d(
+                            calc(var(--dx) * 0.08),
+                            calc(var(--dy) * 0.08),
+                            0
+                        )
+                        scale3d(0.92, 0.92, 1)
                         rotate3d(0, 0, 1, calc(var(--rotation, 1) * 90deg));
-                    opacity: 0.9;
-                    animation-timing-function: ease-out;
+                    opacity: 0.88;
+                    border-radius: 8px;
+                    clip-path: polygon(5% 3%, 95% 8%, 92% 95%, 8% 97%);
+                    filter: blur(0.8px);
                 }
                 50% {
+                    transform: translate3d(
+                            calc(var(--dx) * 0.2),
+                            calc(var(--dy) * 0.2),
+                            0
+                        )
+                        scale3d(0.85, 0.85, 1)
+                        rotate3d(0, 0, 1, calc(var(--rotation, 1) * 220deg));
+                    opacity: 0.78;
+                    border-radius: 15px;
+                    clip-path: polygon(8% 5%, 92% 12%, 88% 92%, 12% 95%);
+                    filter: blur(1.5px);
+                }
+                65% {
                     transform: translate3d(
                             calc(var(--dx) * 0.4),
                             calc(var(--dy) * 0.4),
                             0
                         )
                         scale3d(0.7, 0.7, 1)
-                        rotate3d(0, 0, 1, calc(var(--rotation, 1) * 270deg));
-                    opacity: 0.7;
-                    animation-timing-function: ease-in;
+                        rotate3d(0, 0, 1, calc(var(--rotation, 1) * 420deg));
+                    opacity: 0.65;
+                    border-radius: 25px;
+                    clip-path: polygon(12% 8%, 88% 18%, 82% 88%, 18% 92%);
+                    filter: blur(2.5px);
                 }
-                75% {
+                80% {
                     transform: translate3d(
-                            calc(var(--dx) * 0.75),
-                            calc(var(--dy) * 0.75),
+                            calc(var(--dx) * 0.7),
+                            calc(var(--dy) * 0.7),
+                            0
+                        )
+                        scale3d(0.5, 0.5, 1)
+                        rotate3d(0, 0, 1, calc(var(--rotation, 1) * 720deg));
+                    opacity: 0.45;
+                    border-radius: 40px;
+                    clip-path: polygon(18% 12%, 82% 25%, 75% 82%, 25% 88%);
+                    filter: blur(3.5px);
+                }
+                90% {
+                    transform: translate3d(
+                            calc(var(--dx) * 0.9),
+                            calc(var(--dy) * 0.9),
                             0
                         )
                         scale3d(0.3, 0.3, 1)
-                        rotate3d(0, 0, 1, calc(var(--rotation, 1) * 540deg));
-                    opacity: 0.3;
-                    animation-timing-function: ease-in;
+                        rotate3d(0, 0, 1, calc(var(--rotation, 1) * 1080deg));
+                    opacity: 0.25;
+                    border-radius: 50px;
+                    clip-path: polygon(25% 18%, 75% 35%, 65% 75%, 35% 82%);
+                    filter: blur(4.5px);
                 }
                 100% {
                     transform: translate3d(var(--dx), var(--dy), 0)
                         scale3d(0, 0, 1)
-                        rotate3d(0, 0, 1, calc(var(--rotation, 1) * 720deg));
+                        rotate3d(0, 0, 1, calc(var(--rotation, 1) * 1440deg));
                     opacity: 0;
+                    border-radius: 50px;
+                    clip-path: polygon(50% 50%, 50% 50%, 50% 50%, 50% 50%);
+                    filter: blur(5px);
                 }
             }
 
@@ -1043,6 +1286,24 @@
                 .rick-message {
                     font-size: 1.2rem;
                 }
+
+                #pickle-rick {
+                    width: 60px !important;
+                    height: 60px !important;
+                    bottom: 15px !important;
+                    left: 15px !important;
+                }
+
+                /* Pickle Rick text responsive styles */
+                .pickle-text-mobile {
+                    font-size: clamp(2rem, 12vw, 4rem) !important;
+                    letter-spacing: 0.05em !important;
+                    text-shadow:
+                        2px 2px 0px #2e7d32,
+                        4px 4px 0px #1b5e20,
+                        6px 6px 0px #0d4e14,
+                        8px 8px 15px rgba(0, 0, 0, 0.4) !important;
+                }
             }
 
             /* Touch device optimizations */
@@ -1056,6 +1317,401 @@
                     background: rgba(254, 235, 234, 0.08);
                     transform: translateY(-2px);
                 }
+            }
+
+            /* Cyberpunk 2077 Easter Egg Styles */
+            .cyberpunk-easter-egg {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100vw;
+                height: 100vh;
+                background: #feebea;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
+                z-index: 10000;
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.8s ease;
+            }
+
+            .cyberpunk-easter-egg.show {
+                opacity: 1;
+                visibility: visible;
+            }
+
+            .cyberpunk-content {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 2rem;
+                animation: cyberpunkEntry 3s ease-out forwards;
+            }
+
+            .broken-heart {
+                font-size: 12rem;
+                color: #ffffff;
+                text-shadow:
+                    0 0 20px #ffffff,
+                    0 0 40px #ffffff,
+                    0 0 60px #ffffff;
+                animation: heartbreak 2s ease-in-out infinite alternate;
+                user-select: none;
+            }
+
+            @keyframes heartbreak {
+                0% {
+                    transform: scale(1) rotate(0deg);
+                    filter: brightness(1);
+                }
+                50% {
+                    transform: scale(1.1) rotate(-2deg);
+                    filter: brightness(1.2);
+                }
+                100% {
+                    transform: scale(1.05) rotate(2deg);
+                    filter: brightness(0.9);
+                }
+            }
+
+            .cyberpunk-text {
+                font-family: "Courier New", monospace;
+                font-size: 8rem;
+                color: #ffffff;
+                text-shadow:
+                    0 0 10px #ffffff,
+                    0 0 20px #ffffff,
+                    0 0 30px #ffffff;
+                font-weight: bold;
+                letter-spacing: 0.5rem;
+                animation: cyberpunkGlow 1.5s ease-in-out infinite alternate;
+                user-select: none;
+            }
+
+            @keyframes cyberpunkEntry {
+                0% {
+                    opacity: 0;
+                    transform: scale(2) rotate(10deg);
+                }
+                50% {
+                    opacity: 1;
+                    transform: scale(1.2) rotate(-5deg);
+                }
+                100% {
+                    opacity: 0.9;
+                    transform: scale(1) rotate(0deg);
+                }
+            }
+
+            @keyframes cyberpunkGlow {
+                0% {
+                    opacity: 0.8;
+                    text-shadow:
+                        0 0 10px #ffffff,
+                        0 0 20px #ffffff,
+                        0 0 30px #ffffff;
+                }
+                100% {
+                    opacity: 1;
+                    text-shadow:
+                        0 0 15px #ffffff,
+                        0 0 30px #ffffff,
+                        0 0 45px #ffffff,
+                        0 0 60px #ffffff;
+                }
+            }
+
+            .audio-control-panel {
+                position: fixed;
+                right: 1rem;
+                top: 50%;
+                transform: translateY(-50%);
+                background: rgba(0, 0, 0, 0.8);
+                border: 2px solid #00ffff;
+                border-radius: 15px;
+                padding: 1rem;
+                backdrop-filter: blur(10px);
+                z-index: 9999;
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.3s ease;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 0.5rem;
+                min-width: 80px;
+            }
+
+            .audio-control-panel.show {
+                opacity: 1;
+                visibility: visible;
+            }
+
+            .audio-control-panel.hidden-during-fullscreen {
+                opacity: 0;
+                visibility: hidden;
+            }
+
+            .audio-control-btn {
+                background: rgba(0, 255, 255, 0.2);
+                border: 1px solid #00ffff;
+                color: #00ffff;
+                padding: 0.8rem;
+                border-radius: 50%;
+                font-family: "Courier New", monospace;
+                font-size: 1.5rem;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                width: 50px;
+                height: 50px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                animation: audioButtonPulse 2s ease-in-out infinite;
+            }
+
+            .audio-control-btn:hover {
+                background: rgba(0, 255, 255, 0.4);
+                box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+                transform: scale(1.1);
+            }
+
+            .audio-control-btn:active {
+                transform: scale(0.95);
+            }
+
+            .audio-status {
+                color: #00ffff;
+                font-family: "Courier New", monospace;
+                font-size: 0.7rem;
+                text-align: center;
+                opacity: 0.8;
+            }
+
+            @keyframes audioButtonPulse {
+                0%, 100% {
+                    box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+                }
+                50% {
+                    box-shadow: 0 0 20px rgba(0, 255, 255, 0.6);
+                }
+            }
+
+            .close-easter-egg {
+                position: fixed;
+                top: 2rem;
+                right: 2rem;
+                background: rgba(255, 255, 255, 0.1);
+                border: 2px solid #ffffff;
+                color: #ffffff;
+                padding: 0.5rem 1rem;
+                border-radius: 50%;
+                font-family: "Courier New", monospace;
+                font-size: 1.5rem;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                z-index: 9998;
+                opacity: 0;
+                visibility: hidden;
+                backdrop-filter: blur(10px);
+                width: 60px;
+                height: 60px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .close-easter-egg.show {
+                opacity: 1;
+                visibility: visible;
+            }
+
+            .close-easter-egg.hidden-during-fullscreen {
+                opacity: 0;
+                visibility: hidden;
+            }
+
+            .close-easter-egg:hover {
+                background: rgba(255, 255, 255, 0.2);
+                box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+                transform: scale(1.1) rotate(90deg);
+            }
+
+            /* Cyberpunk mode body styles */
+            body.cyberpunk-mode {
+                background: linear-gradient(
+                    135deg,
+                    #000000 0%,
+                    #0f0f0f 50%,
+                    #1a0a0a 100%
+                );
+            }
+
+            body.cyberpunk-mode .zima-square {
+                display: none !important;
+            }
+
+            @media (max-width: 768px) {
+                .cyberpunk-content {
+                    flex-direction: column;
+                    gap: 1rem;
+                }
+
+                .broken-heart {
+                    font-size: 6rem;
+                }
+
+                .cyberpunk-text {
+                    font-size: 4rem;
+                    letter-spacing: 0.3rem;
+                }
+
+                .audio-control-panel {
+                    right: 0.5rem;
+                    padding: 0.8rem;
+                }
+
+                .audio-control-btn {
+                    width: 45px;
+                    height: 45px;
+                    font-size: 1.2rem;
+                }
+            }
+
+            @media (max-width: 480px) {
+                .broken-heart {
+                    font-size: 4rem;
+                }
+
+                .cyberpunk-text {
+                    font-size: 3rem;
+                    letter-spacing: 0.2rem;
+                }
+
+                .audio-control-panel {
+                    right: 0.3rem;
+                    padding: 0.6rem;
+                }
+
+                .audio-control-btn {
+                    width: 40px;
+                    height: 40px;
+                    font-size: 1rem;
+                }
+            }
+
+            /* Debug Panel Styles */
+            .debug-panel {
+                position: fixed;
+                bottom: 2rem;
+                right: 2rem;
+                background: rgba(0, 0, 0, 0.8);
+                border: 1px solid rgba(254, 235, 234, 0.3);
+                border-radius: 10px;
+                padding: 1rem;
+                color: #feebea;
+                font-family: "Courier New", monospace;
+                font-size: 0.8rem;
+                max-width: 300px;
+                z-index: 9999;
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.3s ease;
+                backdrop-filter: blur(10px);
+            }
+
+            .debug-panel.show {
+                opacity: 1;
+                visibility: visible;
+            }
+
+            .debug-panel h4 {
+                color: #00ffff;
+                margin-bottom: 0.5rem;
+                font-size: 0.9rem;
+            }
+
+            .debug-panel p {
+                margin-bottom: 0.3rem;
+                line-height: 1.3;
+            }
+
+            .debug-panel .easter-egg-hint {
+                color: #ff6b6b;
+                font-weight: bold;
+                margin-top: 0.5rem;
+            }
+
+            .debug-panel .current-quotes {
+                background: rgba(0, 255, 255, 0.1);
+                padding: 0.5rem;
+                border-radius: 5px;
+                margin-top: 0.5rem;
+            }
+
+            .auto-click-btn {
+                background: rgba(255, 215, 0, 0.2);
+                border: 2px solid #ffd700;
+                color: #ffd700;
+                padding: 0.5rem 1rem;
+                border-radius: 20px;
+                font-family: "Courier New", monospace;
+                font-size: 0.8rem;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                margin-top: 0.5rem;
+                width: 100%;
+                font-weight: bold;
+            }
+
+            .auto-click-btn:hover {
+                background: rgba(255, 215, 0, 0.3);
+                box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+                transform: scale(1.02);
+            }
+
+            .auto-click-btn:active {
+                transform: scale(0.98);
+            }
+
+            .auto-click-btn.running {
+                background: rgba(255, 69, 0, 0.2);
+                border-color: #ff4500;
+                color: #ff4500;
+                animation: autoClickPulse 1s ease-in-out infinite alternate;
+            }
+
+            @keyframes autoClickPulse {
+                0% {
+                    box-shadow: 0 0 5px rgba(255, 69, 0, 0.3);
+                }
+                100% {
+                    box-shadow: 0 0 15px rgba(255, 69, 0, 0.7);
+                }
+            }
+
+            .debug-toggle {
+                position: fixed;
+                bottom: 2rem;
+                left: 2rem;
+                background: rgba(254, 235, 234, 0.1);
+                border: 2px solid rgba(254, 235, 234, 0.3);
+                border-radius: 25px;
+                padding: 0.5rem 1rem;
+                color: #feebea;
+                font-family: "Dancing Script", cursive;
+                font-size: 0.9rem;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                backdrop-filter: blur(10px);
+                z-index: 9998;
+            }
+
+            .debug-toggle:hover {
+                background: rgba(254, 235, 234, 0.2);
+                transform: scale(1.05);
             }
         </style>
     </head>
@@ -1711,12 +2367,6 @@
                     source: "王小波",
                     sourceEn: "Wang Xiaobo",
                 },
-                {
-                    en: "The silent majority",
-                    zh: "沉默的大多数",
-                    source: "王小波",
-                    sourceEn: "Wang Xiaobo",
-                },
 
                 // The Little Prince
                 {
@@ -1807,7 +2457,7 @@
                 },
                 {
                     en: "I have a hangover. A hangover with a hangover",
-                    zh: "我有宿醉。宿醉上的宿醉",
+                    zh: "我宿醉了。比宿醉还宿醉",
                     source: "布莱克书店",
                     sourceEn: "Black Books",
                 },
@@ -1837,14 +2487,7 @@
                     source: "塞尔达传说",
                     sourceEn: "The Legend of Zelda",
                 },
-                {
-                    en: "Listen carefully to the wind",
-                    zh: "仔细倾听风的声音",
-                    source: "塞尔达传说",
-                    sourceEn: "The Legend of Zelda",
-                },
 
-                // League of Legends
                 {
                     en: "Death is like the wind, always by my side",
                     zh: "死亡如风，常伴吾身",
@@ -1866,18 +2509,6 @@
                 {
                     en: "You belong in a museum!",
                     zh: "你属于博物馆！",
-                    source: "英雄联盟",
-                    sourceEn: "League of Legends",
-                },
-                {
-                    en: "OK",
-                    zh: "好的",
-                    source: "英雄联盟",
-                    sourceEn: "League of Legends",
-                },
-                {
-                    en: "Time to troll!",
-                    zh: "是时候开始恶搞了！",
                     source: "英雄联盟",
                     sourceEn: "League of Legends",
                 },
@@ -1906,14 +2537,8 @@
                     sourceEn: "League of Legends",
                 },
                 {
-                    en: "I will be the best",
-                    zh: "我会成为最好的",
-                    source: "英雄联盟",
-                    sourceEn: "League of Legends",
-                },
-                {
                     en: "Balance in all things",
-                    zh: "万物皆有其道",
+                    zh: "均衡存乎万物之间",
                     source: "英雄联盟",
                     sourceEn: "League of Legends",
                 },
@@ -1954,6 +2579,235 @@
                     zh: "逝者不死",
                     source: "权力的游戏",
                     sourceEn: "Game of Thrones",
+                },
+                {
+                    en: "No cost too great",
+                    zh: "不惜一切代价",
+                    source: "空洞骑士 - 苍白之王",
+                    sourceEn: "Hollow Knight - The Pale King",
+                },
+                {
+                    en: "Higher beings, these words are for you alone",
+                    zh: "高等生灵，此言仅为汝等而述",
+                    source: "空洞骑士 - 远古石碑",
+                    sourceEn: "Hollow Knight - Ancient Tablets",
+                },
+                {
+                    en: "No more dreams",
+                    zh: "不再有梦",
+                    source: "空洞骑士 - 骑士",
+                    sourceEn: "Hollow Knight - The Knight",
+                },
+                {
+                    en: "Take care of yourself out there",
+                    zh: "外面要小心照顾自己",
+                    source: "空洞骑士 - 老虫",
+                    sourceEn: "Hollow Knight - Elderbug",
+                },
+                {
+                    en: "Our light shall blaze from its dark sun",
+                    zh: "我们的光芒将从黑暗之日中燃烧",
+                    source: "空洞骑士 - 辉光",
+                    sourceEn: "Hollow Knight - Radiance",
+                },
+                {
+                    en: "You wield your nail like a club",
+                    zh: "你挥舞钉子像挥棍子一样",
+                    source: "空洞骑士 - 斯莱",
+                    sourceEn: "Hollow Knight - Sly",
+                },
+                {
+                    en: "So it can access a mind, then the weakness of the mind is revealed",
+                    zh: "它能进入心灵，那么心灵的弱点就暴露了",
+                    source: "空洞骑士 - 先知",
+                    sourceEn: "Hollow Knight - Seer",
+                },
+                {
+                    en: "Tiny squib, you approach fearless. Are you a hunter like me?",
+                    zh: "小家伙，你无所畏惧地靠近。你也是像我一样的猎人吗？",
+                    source: "空洞骑士 - 猎人",
+                    sourceEn: "Hollow Knight - The Hunter",
+                },
+                {
+                    en: "The path is opened. One way or another, an end awaits inside",
+                    zh: "道路已开，无论如何，终点都在里面等着你",
+                    source: "空洞骑士 - 大黄蜂",
+                    sourceEn: "Hollow Knight - Hornet",
+                },
+                {
+                    en: "No mind to think. No will to break. No voice to cry suffering. Born of God and Void",
+                    zh: "无心可思，无意可破，无声可诉苦。生于神与虚空",
+                    source: "空洞骑士 - 苍白之王",
+                    sourceEn: "Hollow Knight - The Pale King",
+                },
+                {
+                    en: "Soul of Wyrm. Soul of Root. Heart of Void",
+                    zh: "巨龙之魂，根之魂，虚空之心",
+                    source: "空洞骑士 - 苍白之王",
+                    sourceEn: "Hollow Knight - The Pale King",
+                },
+                {
+                    en: "You shall seal the blinding light that plagues their dreams. You are the Vessel. You are the Hollow Knight",
+                    zh: "你将封印侵扰他们梦境的炽光。你是容器，你是空洞骑士",
+                    source: "空洞骑士 - 苍白之王",
+                    sourceEn: "Hollow Knight - The Pale King",
+                },
+                {
+                    en: "The Pilgrim's way. Travellers of Hallownest, descend through verdant wilds and fungal groves to the city at this kingdom's heart. There all wishes shall be granted, all truths revealed",
+                    zh: "朝圣者之路。圣巢的旅人们，穿越翠绿荒野与真菌林地，前往王国之心的城市。所有愿望都将在那里实现，所有真相都将揭晓",
+                    source: "空洞骑士 - 石碑",
+                    sourceEn: "Hollow Knight - Stone Tablet",
+                },
+                {
+                    en: "Wanderers seeking death, welcome. May you find swift end upon our claws",
+                    zh: "寻死的流浪者，欢迎你。愿你在我们的利爪下速得解脱",
+                    source: "空洞骑士 - 螳螂族长老",
+                    sourceEn: "Hollow Knight - Mantis Lords",
+                },
+                {
+                    en: "The great gates have been sealed. None shall enter. None shall leave",
+                    zh: "伟大的城门已被封锁。无人能进，无人能出",
+                    source: "空洞骑士 - 泪之城石碑",
+                    sourceEn: "Hollow Knight - City of Tears Tablet",
+                },
+                {
+                    en: "Through its sacrifice Hallownest lasts eternal",
+                    zh: "因其牺牲，圣巢得以永存",
+                    source: "空洞骑士 - 空洞骑士纪念碑",
+                    sourceEn: "Hollow Knight - Hollow Knight Memorial",
+                },
+                {
+                    en: "Protect yourself… You are our last…",
+                    zh: "保护好自己……你是我们的最后希望……",
+                    source: "空洞骑士 - 梦盾雕像",
+                    sourceEn: "Hollow Knight - Dreamshield Totem",
+                },
+                {
+                    en: "To witness secrets sealed, one must endure the harshest punishment",
+                    zh: "欲见封印之秘，必承最严酷之罚",
+                    source: "空洞骑士 - 痛苦之路",
+                    sourceEn: "Hollow Knight - Path of Pain",
+                },
+                {
+                    en: "Ho there, traveller. I'm afraid there's only me left to offer welcome. Our town's fallen quiet you see. The other residents, they've all disappeared. Headed down that well, one by one, into the caverns below",
+                    zh: "你好，旅人。恐怕只剩我能欢迎你了。我们的镇子已经沉寂，其他居民都消失了，一个接一个地跳进了井下的洞穴",
+                    source: "空洞骑士 - 老虫",
+                    sourceEn: "Hollow Knight - Elderbug",
+                },
+                {
+                    en: "The ordinary days we experience may actually be a series of continuous miracles",
+                    zh: "我们所经历的每个平凡的日常，也许就是连续发生的奇迹",
+                    source: "日常",
+                    sourceEn: "Nichijou",
+                },
+                {
+                    en: "We live in the moment; we are creatures who exist in the moment",
+                    zh: "我们是活在瞬间里的，我们是活在瞬间里的生物啊",
+                    source: "日常",
+                    sourceEn: "Nichijou",
+                },
+                {
+                    en: "I like the way you die, boy",
+                    zh: "我喜欢你死的样子，小子",
+                    source: "被解救的姜戈",
+                    sourceEn: "Django Unchained",
+                },
+                {
+                    en: "Revenge is a dish best served cold",
+                    zh: "复仇是一道最好冷着吃的菜",
+                    source: "杀死比尔",
+                    sourceEn: "Kill Bill",
+                },
+                {
+                    en: "Say 'what' again. I dare you, I double dare you motherf***er, say what one more Goddamn time!",
+                    zh: "再说一次'什么'。我敢你，再敢你一次，你再说一次'什么'试试！",
+                    source: "低俗小说",
+                    sourceEn: "Pulp Fiction",
+                },
+                {
+                    en: "It's a deal, it's a steal, it's the sale of the fucking century!",
+                    zh: "成交，捡漏，世纪大甩卖！",
+                    source: "两杆大烟枪",
+                    sourceEn: "Lock, Stock and Two Smoking Barrels",
+                },
+                {
+                    en: "If the milk turns out to be sour, I ain't the kind of pussy to drink it",
+                    zh: "如果牛奶变酸了，我可不是那种还会喝下去的傻瓜",
+                    source: "两杆大烟枪",
+                    sourceEn: "Lock, Stock and Two Smoking Barrels",
+                },
+                {
+                    en: "Do you know what 'nemesis' means?",
+                    zh: "你知道'天谴'是什么意思吗？",
+                    source: "偷拐抢骗",
+                    sourceEn: "Snatch",
+                },
+                {
+                    en: "You should never underestimate the predictability of stupidity",
+                    zh: "你永远不要低估愚蠢的可预测性",
+                    source: "偷拐抢骗",
+                    sourceEn: "Snatch",
+                },
+                {
+                    en: "Heavy is good, heavy is reliable. If it doesn't work, you can always hit them with it",
+                    zh: "重是好事，重就可靠。如果它不管用，你还可以用它砸人",
+                    source: "偷拐抢骗",
+                    sourceEn: "Snatch",
+                },
+                {
+                    en: "There's fuckery afoot",
+                    zh: "有鬼",
+                    source: "绅士们",
+                    sourceEn: "The Gentlemen",
+                },
+                {
+                    en: "If you wish to be the king of the jungle, it's not enough to act like a king. You must be the king",
+                    zh: "如果你想成为丛林之王，光有王者的气势还不够，你必须成为王",
+                    source: "绅士们",
+                    sourceEn: "The Gentlemen",
+                },
+                {
+                    en: "In the jungle, the only way a lion survives is not by acting like a king, but by being the king",
+                    zh: "在丛林里，狮子之所以能活下来，不是因为它像国王，而是因为它就是国王",
+                    source: "绅士们",
+                    sourceEn: "The Gentlemen",
+                }, // Cyberpunk: Edgerunners
+                {
+                    en: "You gotta live your own life",
+                    zh: "你得活得像你自己",
+                    source: "赛博朋克：边缘行者",
+                    sourceEn: "Cyberpunk: Edgerunners",
+                },
+                {
+                    en: "You're a natural-born Edgerunner",
+                    zh: "你是个天生的边缘行者",
+                    source: "赛博朋克：边缘行者",
+                    sourceEn: "Cyberpunk: Edgerunners",
+                },
+                {
+                    en: "Night City won't change, but you can choose not to be swallowed by it",
+                    zh: "夜之城不会改变，但你可以选择不被它吞噬",
+                    source: "赛博朋克：边缘行者",
+                    sourceEn: "Cyberpunk: Edgerunners",
+                },
+                {
+                    en: "We're all children of Night City",
+                    zh: "我们都是夜之城的孩子",
+                    source: "赛博朋克：边缘行者",
+                    sourceEn: "Cyberpunk: Edgerunners",
+                },
+                {
+                    en: "As long as you're alive, there's hope",
+                    zh: "只要还活着，就有希望",
+                    source: "赛博朋克：边缘行者",
+                    sourceEn: "Cyberpunk: Edgerunners",
+                },
+                // Special trigger quote for easter egg
+                {
+                    en: "You're a natural-born Edgerunner.",
+                    zh: "你是个天生的边缘行者",
+                    source: "赛博朋克：边缘行者",
+                    sourceEn: "Cyberpunk: Edgerunners",
                 },
             ];
 
@@ -2018,6 +2872,26 @@
             let whoSingingTimer = null;
             let isListeningForYou = false;
 
+            // Rick portal keyboard tracking variables
+            let rickKeySequence = [];
+            let rickKeyTimer = null;
+            let rickPortalTriggered = false;
+
+            // Pickle Rick keyboard tracking variables
+            let pickleRickKeySequence = [];
+            let pickleRickKeyTimer = null;
+            let pickleRickTriggered = false;
+
+            // Cyberpunk 2077 Easter Egg variables
+            let cyberpunkEasterEggTriggered = false;
+            let cyberpunkAudio = null;
+            let isAudioPlaying = false;
+
+            // Auto click variables
+            let autoClickRunning = false;
+            let autoClickInterval = null;
+            let currentAutoClickIndex = 0;
+
             // Function to change quote in a card
             function changeQuote(cardIndex) {
                 const activeQuotes = isEnglish
@@ -2059,6 +2933,11 @@
                 setTimeout(() => {
                     adaptFontSizeResponsive();
                 }, 50);
+
+                // Check for Cyberpunk 2077 Easter Egg
+                setTimeout(() => {
+                    checkCyberpunkEasterEgg();
+                }, 100);
             }
 
             // Function to copy quote text
@@ -2085,6 +2964,11 @@
             let zimaTimer = null;
 
             function createZimaSquare() {
+                // Don't create squares if cyberpunk easter egg is active
+                if (cyberpunkEasterEggTriggered) {
+                    return;
+                }
+
                 const square = document.createElement("div");
 
                 // Random size variation
@@ -2121,11 +3005,18 @@
                 document.body.appendChild(square);
                 zimaSquares.push(square);
 
-                // Schedule next square
-                scheduleNextZimaSquare();
+                // Schedule next square (only if cyberpunk easter egg is not active)
+                if (!cyberpunkEasterEggTriggered) {
+                    scheduleNextZimaSquare();
+                }
             }
 
             function scheduleNextZimaSquare() {
+                // Don't schedule if cyberpunk easter egg is active
+                if (cyberpunkEasterEggTriggered) {
+                    return;
+                }
+
                 // Gradually decrease interval as more squares appear
                 const baseInterval = Math.max(
                     2000,
@@ -2138,9 +3029,498 @@
             }
 
             function startZimaBlueSystem() {
+                // Don't start if cyberpunk easter egg is active
+                if (cyberpunkEasterEggTriggered) {
+                    return;
+                }
+
                 // Start the first square after a random delay
                 const initialDelay = Math.random() * 10000 + 5000; // 5-15 seconds
                 zimaTimer = setTimeout(createZimaSquare, initialDelay);
+            }
+
+            function stopZimaBlueSystem() {
+                // Clear the timer
+                if (zimaTimer) {
+                    clearTimeout(zimaTimer);
+                    zimaTimer = null;
+                }
+
+                // Remove all existing squares
+                zimaSquares.forEach(square => {
+                    if (square && square.parentNode) {
+                        square.parentNode.removeChild(square);
+                    }
+                });
+                zimaSquares = [];
+            }
+
+            // Cyberpunk 2077 Easter Egg functions
+            function checkCyberpunkEasterEgg() {
+                if (cyberpunkEasterEggTriggered) {
+                    return;
+                }
+
+                const currentCards = document.querySelectorAll(
+                    isEnglish
+                        ? "#englishContent .essence-card"
+                        : "#chineseContent .essence-card",
+                );
+
+                const targetTextEn = "You're a natural-born Edgerunner.";
+                const targetTextZh = "你是个天生的边缘行者";
+                const targetText = isEnglish ? targetTextEn : targetTextZh;
+
+                let matchCount = 0;
+                currentCards.forEach(card => {
+                    const titleEl = card.querySelector(".essence-title");
+                    if (titleEl && titleEl.textContent.trim() === targetText) {
+                        matchCount++;
+                    }
+                });
+
+                if (matchCount === 3) {
+                    console.log("🌃 Cyberpunk 2077 Easter Egg triggered!");
+                    triggerCyberpunkEasterEgg();
+                }
+            }
+
+            function triggerCyberpunkEasterEgg() {
+                if (cyberpunkEasterEggTriggered) {
+                    return;
+                }
+
+                cyberpunkEasterEggTriggered = true;
+
+                // Stop Zima Blue system
+                stopZimaBlueSystem();
+
+                // Add cyberpunk mode to body
+                document.body.classList.add('cyberpunk-mode');
+
+                // Show easter egg overlay
+                const easterEgg = document.getElementById('cyberpunkEasterEgg');
+                const audioBtn = document.getElementById('audioControlBtn');
+
+                if (easterEgg) {
+                    easterEgg.classList.add('show');
+
+                    // Add click listener to background to close
+                    setTimeout(() => {
+                        easterEgg.addEventListener('click', function(e) {
+                            if (e.target === easterEgg) {
+                                closeCyberpunkEasterEgg();
+                            }
+                        });
+                    }, 500);
+                }
+
+                // Show and then hide controls during fullscreen display
+                const audioPanel = document.getElementById('audioControlPanel');
+                const closeBtn = document.getElementById('closeEasterEgg');
+
+                if (audioPanel) {
+                    audioPanel.classList.add('show'); // First show the panel
+                    audioPanel.classList.add('hidden-during-fullscreen'); // Then hide it during fullscreen
+                }
+
+                if (closeBtn) {
+                    closeBtn.classList.add('show'); // Make sure it's marked as should be shown
+                    closeBtn.classList.add('hidden-during-fullscreen');
+                }
+
+                // Initialize button state first
+                updateAudioButton();
+
+                // Start playing audio
+                startCyberpunkAudio();
+
+                // Show controls after a delay (after fullscreen display)
+                setTimeout(() => {
+                    if (audioPanel) {
+                        audioPanel.classList.remove('hidden-during-fullscreen');
+                        // Ensure audio panel stays visible permanently after first trigger
+                        audioPanel.classList.add('show');
+                    }
+                    if (closeBtn) {
+                        closeBtn.classList.remove('hidden-during-fullscreen');
+                        // Ensure close button stays visible permanently after first trigger
+                        closeBtn.classList.add('show');
+                    }
+                }, 4000); // Show controls after 4 seconds
+            }
+
+            function startCyberpunkAudio() {
+                cyberpunkAudio = document.getElementById('cyberpunkAudio');
+
+                if (cyberpunkAudio) {
+                    cyberpunkAudio.volume = 0.3; // Set volume to 30%
+                    isAudioPlaying = false; // Set initial state
+                    updateAudioButton(); // Update button to show play state
+
+                    cyberpunkAudio.play().then(() => {
+                        console.log("🎵 Cyberpunk audio started playing");
+                        isAudioPlaying = true;
+                        updateAudioButton();
+                    }).catch(error => {
+                        console.log("❌ Audio play failed:", error);
+                        // Try to play after user interaction
+                        document.addEventListener('click', function tryPlay() {
+                            cyberpunkAudio.play().then(() => {
+                                console.log("🎵 Cyberpunk audio started after user interaction");
+                                isAudioPlaying = true;
+                                updateAudioButton();
+                                document.removeEventListener('click', tryPlay);
+                            }).catch(e => {
+                                console.log("❌ Audio still failed:", e);
+                            });
+                        }, { once: true });
+                    });
+                }
+            }
+
+            function setupAudioControl() {
+                const audioBtn = document.getElementById('audioControlBtn');
+
+                if (audioBtn && !audioBtn.hasAttribute('data-initialized')) {
+                    audioBtn.addEventListener('click', toggleAudio);
+                    audioBtn.setAttribute('data-initialized', 'true');
+                }
+            }
+
+            function setupCloseButton() {
+                const closeBtn = document.getElementById('closeEasterEgg');
+
+                if (closeBtn && !closeBtn.hasAttribute('data-initialized')) {
+                    closeBtn.addEventListener('click', closeCyberpunkEasterEgg);
+                    closeBtn.setAttribute('data-initialized', 'true');
+                }
+            }
+
+            function closeCyberpunkEasterEgg() {
+                console.log("🚪 Closing Cyberpunk Easter Egg");
+
+                // Hide easter egg overlay only
+                const easterEgg = document.getElementById('cyberpunkEasterEgg');
+                const audioPanel = document.getElementById('audioControlPanel');
+                const closeBtn = document.getElementById('closeEasterEgg');
+
+                if (easterEgg) {
+                    easterEgg.classList.remove('show');
+                }
+
+                // Just hide the fullscreen overlay, keep controls visible
+                if (audioPanel && audioPanel.classList.contains('hidden-during-fullscreen')) {
+                    audioPanel.classList.remove('hidden-during-fullscreen');
+                }
+
+                if (closeBtn && closeBtn.classList.contains('hidden-during-fullscreen')) {
+                    closeBtn.classList.remove('hidden-during-fullscreen');
+                }
+
+                // Keep audio playing and controls visible
+                // Remove cyberpunk mode from body
+                document.body.classList.remove('cyberpunk-mode');
+
+                // Don't reset easter egg state - keep it triggered so buttons stay visible
+                // Don't restart Zima Blue system - keep it stopped permanently
+            }
+
+            function toggleAudio() {
+                if (!cyberpunkAudio) {
+                    return;
+                }
+
+                if (isAudioPlaying) {
+                    cyberpunkAudio.pause();
+                    isAudioPlaying = false;
+                    console.log("⏸️ Audio paused");
+                } else {
+                    cyberpunkAudio.play().then(() => {
+                        isAudioPlaying = true;
+                        console.log("▶️ Audio resumed");
+                    }).catch(error => {
+                        console.log("❌ Audio resume failed:", error);
+                    });
+                }
+
+                updateAudioButton();
+            }
+
+            function updateAudioButton() {
+                const audioBtn = document.getElementById('audioControlBtn');
+                const audioStatus = document.querySelector('.audio-status');
+
+                if (audioBtn) {
+                    audioBtn.textContent = isAudioPlaying ? '⏸️' : '▶️';
+                }
+
+                if (audioStatus) {
+                    audioStatus.textContent = isAudioPlaying ? 'PLAYING' : 'PAUSED';
+                }
+            }
+
+            // Add keyboard shortcut to close easter egg
+            document.addEventListener('keydown', function(e) {
+                if (cyberpunkEasterEggTriggered && e.key === 'Escape') {
+                    closeCyberpunkEasterEgg();
+                }
+            });
+
+            // Debug Panel functionality
+            let debugPanelVisible = false;
+
+            function setupDebugPanel() {
+                const debugToggle = document.getElementById('debugToggle');
+                const debugPanel = document.getElementById('debugPanel');
+                const autoClickBtn = document.getElementById('autoClickBtn');
+
+                if (debugToggle && debugPanel) {
+                    debugToggle.addEventListener('click', function() {
+                        debugPanelVisible = !debugPanelVisible;
+                        if (debugPanelVisible) {
+                            debugPanel.classList.add('show');
+                            updateDebugInfo();
+                        } else {
+                            debugPanel.classList.remove('show');
+                        }
+                    });
+
+                    // Update debug info every 2 seconds when visible
+                    setInterval(() => {
+                        if (debugPanelVisible) {
+                            updateDebugInfo();
+                        }
+                    }, 2000);
+                }
+
+                if (autoClickBtn) {
+                    autoClickBtn.addEventListener('click', toggleAutoClick);
+                }
+            }
+
+            function updateDebugInfo() {
+                const quotesList = document.getElementById('quotesList');
+                if (!quotesList) return;
+
+                const currentCards = document.querySelectorAll(
+                    isEnglish
+                        ? "#englishContent .essence-card"
+                        : "#chineseContent .essence-card",
+                );
+
+                const targetText = isEnglish
+                    ? "You're a natural-born Edgerunner."
+                    : "你是个天生的边缘行者。";
+
+                let html = '';
+                let matchCount = 0;
+
+                currentCards.forEach((card, index) => {
+                    const titleEl = card.querySelector(".essence-title");
+                    const title = titleEl ? titleEl.textContent.trim() : '';
+                    const isMatch = title === targetText;
+                    const isCurrentTarget = autoClickRunning && index === currentAutoClickIndex;
+
+                    if (isMatch) matchCount++;
+
+                    html += `<p style="color: ${isMatch ? '#00ff00' : '#ff6b6b'}; ${isCurrentTarget ? 'background: rgba(255, 255, 0, 0.2); padding: 0.2rem; border-radius: 3px;' : ''}">
+                        Card ${index + 1}: ${isMatch ? '✅' : '❌'} ${isCurrentTarget ? '🎯' : ''}<br/>
+                        <small>"${title.substring(0, 25)}${title.length > 25 ? '...' : ''}"</small>
+                    </p>`;
+                });
+
+                html += `<p style="color: #00ffff; font-weight: bold; margin-top: 0.5rem;">
+                    Progress: ${matchCount}/3 cards match
+                </p>`;
+
+                if (autoClickRunning) {
+                    html += `<p style="color: #ffd700; font-weight: bold; font-size: 0.75rem;">
+                        🤖 Auto-clicking card ${currentAutoClickIndex + 1}...
+                    </p>`;
+                }
+
+                if (matchCount === 3) {
+                    html += `<p style="color: #00ff00; font-weight: bold; animation: pulse 1s infinite;">
+                        🎉 Easter egg will trigger soon!
+                    </p>`;
+                }
+
+                quotesList.innerHTML = html;
+            }
+
+            function toggleAutoClick() {
+                const autoClickBtn = document.getElementById('autoClickBtn');
+
+                if (!autoClickRunning) {
+                    startAutoClick();
+                    autoClickBtn.textContent = '⏹️ Stop Auto';
+                    autoClickBtn.classList.add('running');
+                } else {
+                    stopAutoClick();
+                    autoClickBtn.textContent = '🤖 Auto Click';
+                    autoClickBtn.classList.remove('running');
+                }
+            }
+
+            function startAutoClick() {
+                if (autoClickRunning || cyberpunkEasterEggTriggered) {
+                    return;
+                }
+
+                console.log("🤖 Starting auto click...");
+                autoClickRunning = true;
+                currentAutoClickIndex = 0;
+
+                // Start immediately, then use variable intervals
+                performAutoClick();
+            }
+
+            function stopAutoClick() {
+                if (autoClickInterval) {
+                    clearInterval(autoClickInterval);
+                    autoClickInterval = null;
+                }
+                autoClickRunning = false;
+                currentAutoClickIndex = 0;
+                console.log("⏹️ Auto click stopped");
+
+                // Reset button appearance
+                const autoClickBtn = document.getElementById('autoClickBtn');
+                if (autoClickBtn && !cyberpunkEasterEggTriggered) {
+                    autoClickBtn.textContent = '🤖 Auto Click';
+                    autoClickBtn.classList.remove('running');
+                    autoClickBtn.style.background = '';
+                    autoClickBtn.style.borderColor = '';
+                    autoClickBtn.style.color = '';
+                }
+            }
+
+            function performAutoClick() {
+                if (!autoClickRunning || cyberpunkEasterEggTriggered) {
+                    stopAutoClick();
+                    return;
+                }
+
+                const currentCards = document.querySelectorAll(
+                    isEnglish
+                        ? "#englishContent .essence-card"
+                        : "#chineseContent .essence-card",
+                );
+
+                const targetText = isEnglish
+                    ? "You're a natural-born Edgerunner."
+                    : "你是个天生的边缘行者。";
+
+                // Check current card
+                const currentCard = currentCards[currentAutoClickIndex];
+                if (!currentCard) {
+                    stopAutoClick();
+                    return;
+                }
+
+                const titleEl = currentCard.querySelector(".essence-title");
+                const currentText = titleEl ? titleEl.textContent.trim() : '';
+
+                console.log(`🎯 Auto-click [${currentAutoClickIndex + 1}/3]: "${currentText.substring(0, 30)}..."`);
+
+                if (currentText === targetText) {
+                    // Current card matches, move to next with celebration
+                    console.log(`✅ Card ${currentAutoClickIndex + 1} matches! Moving to next...`);
+
+                    // Add success visual feedback
+                    currentCard.style.border = '2px solid #00ff00';
+                    currentCard.style.boxShadow = '0 0 15px rgba(0, 255, 0, 0.5)';
+                    setTimeout(() => {
+                        currentCard.style.border = '';
+                        currentCard.style.boxShadow = '';
+                    }, 1000);
+
+                    currentAutoClickIndex++;
+
+                    if (currentAutoClickIndex >= 3) {
+                        // Check if all cards match
+                        checkAllCardsAndComplete(currentCards, targetText);
+                    } else {
+                        // Move to next card with a short delay
+                        setTimeout(() => {
+                            if (autoClickRunning) {
+                                performAutoClick();
+                            }
+                        }, 600);
+                    }
+                } else {
+                    // Click the current card to change its quote
+                    console.log(`🖱️ Clicking card ${currentAutoClickIndex + 1} to change quote...`);
+
+                    // Enhanced visual feedback
+                    currentCard.style.transform = 'scale(0.95)';
+                    currentCard.style.border = '2px solid #ffff00';
+                    currentCard.style.boxShadow = '0 0 15px rgba(255, 255, 0, 0.5)';
+
+                    setTimeout(() => {
+                        currentCard.style.transform = '';
+                        currentCard.style.border = '';
+                        currentCard.style.boxShadow = '';
+                    }, 300);
+
+                    currentCard.click();
+
+                    // Schedule next click with random delay for natural feeling
+                    const delay = 600 + Math.random() * 400; // 600-1000ms
+                    setTimeout(() => {
+                        if (autoClickRunning) {
+                            performAutoClick();
+                        }
+                    }, delay);
+                }
+            }
+
+            function checkAllCardsAndComplete(currentCards, targetText) {
+                let matchCount = 0;
+                currentCards.forEach(card => {
+                    const title = card.querySelector(".essence-title");
+                    if (title && title.textContent.trim() === targetText) {
+                        matchCount++;
+                    }
+                });
+
+                if (matchCount === 3) {
+                    console.log("🎉 Mission accomplished! All cards match!");
+                    stopAutoClick();
+                    const autoClickBtn = document.getElementById('autoClickBtn');
+                    if (autoClickBtn) {
+                        autoClickBtn.textContent = '🎉 Success!';
+                        autoClickBtn.classList.remove('running');
+                        autoClickBtn.style.background = 'rgba(0, 255, 0, 0.3)';
+                        autoClickBtn.style.borderColor = '#00ff00';
+                        autoClickBtn.style.color = '#00ff00';
+                    }
+
+                    // Show celebration effect
+                    currentCards.forEach((card, index) => {
+                        setTimeout(() => {
+                            card.style.border = '2px solid #00ff00';
+                            card.style.boxShadow = '0 0 20px rgba(0, 255, 0, 0.8)';
+                            card.style.transform = 'scale(1.05)';
+
+                            setTimeout(() => {
+                                card.style.border = '';
+                                card.style.boxShadow = '';
+                                card.style.transform = '';
+                            }, 1500);
+                        }, index * 200);
+                    });
+                } else {
+                    // Not all match yet, restart from first card
+                    console.log(`🔄 Only ${matchCount}/3 cards match. Restarting...`);
+                    currentAutoClickIndex = 0;
+                    setTimeout(() => {
+                        if (autoClickRunning) {
+                            performAutoClick();
+                        }
+                    }, 800);
+                }
             }
 
             // Handle window resize to reposition squares if needed
@@ -2173,6 +3553,17 @@
 
                 // Start Zima Blue system
                 startZimaBlueSystem();
+
+                // Setup debug panel
+                setupDebugPanel();
+
+                // Setup permanent audio controls (always available after page load)
+                setTimeout(() => {
+                    setupAudioControl();
+                    setupCloseButton();
+                }, 100);
+
+                // Note: Close button will only be shown after easter egg is triggered
             });
 
             // Easter egg: clicking the circle 7 times shows a Phoebe quote
@@ -2181,13 +3572,22 @@
 
             // Easter egg event listeners - using event delegation for maximum stability
             let easterEggEventsInitialized = false;
+            let colorCircleEventCount = 0;
 
             function initializeEasterEggEvents() {
-                if (easterEggEventsInitialized) return;
+                if (easterEggEventsInitialized) {
+                    console.log(
+                        "⚠️ Easter egg events already initialized, skipping...",
+                    );
+                    return;
+                }
                 easterEggEventsInitialized = true;
 
                 console.log(
                     "🎮 Initializing easter egg events with event delegation...",
+                );
+                console.log(
+                    "🔍 Adding single document-level event listener...",
                 );
 
                 // Use event delegation on document to catch all events
@@ -2261,7 +3661,7 @@
                                 "essenceCard",
                                 "that-is-brand-new-information.mp3",
                                 isEnglish
-                                    ? "This is brand new information!"
+                                    ? "That is brand new information!"
                                     : "这是全新的信息！",
                             );
                         }
@@ -2289,55 +3689,52 @@
                         target.classList.contains("color-circle") ||
                         target.closest(".color-circle")
                     ) {
-                        console.log("🎨 Color circle clicked!");
+                        colorCircleEventCount++;
+                        console.log(
+                            `🎨 Color circle clicked! (Event #${colorCircleEventCount})`,
+                        );
                         console.log("🎨 Click target:", target);
                         console.log("🎨 Target classes:", target.className);
                         console.log(
-                            "🎨 Closest color-circle:",
-                            target.closest(".color-circle"),
+                            "🎨 Current language:",
+                            isEnglish ? "English" : "Chinese",
                         );
 
-                        // Prevent any other click handlers
+                        // Prevent any other click handlers immediately
                         e.preventDefault();
                         e.stopPropagation();
                         e.stopImmediatePropagation();
 
-                        // Small delay to ensure all states are updated
-                        setTimeout(() => {
+                        // Debounce mechanism to prevent multiple rapid calls
+                        if (!window.colorCircleProcessing) {
+                            window.colorCircleProcessing = true;
+                            console.log("🎨 Processing color circle click...");
+
                             triggerWhoSinging();
-                        }, 50);
+
+                            // Reset processing flag after a short delay
+                            setTimeout(() => {
+                                window.colorCircleProcessing = false;
+                                console.log(
+                                    "🎨 Color circle processing flag reset",
+                                );
+                            }, 1000);
+                        } else {
+                            console.log(
+                                "🎨 Color circle click ignored (already processing)",
+                            );
+                        }
                         return;
                     }
                 });
             }
 
-            // Initialize easter egg events immediately
+            // Initialize easter egg events immediately (only once)
+            console.log("🚀 About to initialize easter egg events...");
             initializeEasterEggEvents();
 
-            // Add additional color circle safeguard with direct event listener
-            function addColorCircleSafeguard() {
-                const colorCircle = document.querySelector(".color-circle");
-                if (colorCircle) {
-                    console.log(
-                        "🔧 Adding direct color circle safeguard listener",
-                    );
-                    colorCircle.addEventListener(
-                        "click",
-                        function (e) {
-                            console.log(
-                                "🔧 Direct color circle safeguard triggered",
-                            );
-                            setTimeout(() => {
-                                triggerWhoSinging();
-                            }, 100);
-                        },
-                        true,
-                    ); // Use capture phase
-                }
-            }
-
-            // Add safeguard after a delay to ensure DOM is ready
-            setTimeout(addColorCircleSafeguard, 500);
+            // Prevent any additional initialization
+            window.easterEggSystemInitialized = true;
 
             function handleTripleClick(eggType, audioFile, message) {
                 clickCounters[eggType]++;
@@ -2494,7 +3891,7 @@
                 smellyCatOverlay.appendChild(smellyCatContent);
                 document.body.appendChild(smellyCatOverlay);
 
-                // After 5 seconds, transition to Friends typing effect
+                // After 8 seconds, transition to Friends typing effect
                 setTimeout(() => {
                     smellyCatOverlay.style.animation =
                         "fadeOut 1s ease-out forwards";
@@ -2504,7 +3901,7 @@
                         }
                         showFriendsTypingEffect();
                     }, 1000);
-                }, 5000);
+                }, 8000);
 
                 // Click to skip to typing effect
                 smellyCatOverlay.addEventListener("click", () => {
@@ -2541,8 +3938,8 @@
                 const typingText = document.createElement("div");
                 typingText.style.cssText = `
                     text-align: center;
-                    font-family: 'Dancing Script', cursive;
-                    font-weight: 700;
+                    font-family: 'Gabriel Weiss Friends Font', 'Trebuchet MS', 'Arial Black', 'Helvetica', sans-serif;
+                    font-weight: 900;
                     color: #feebea;
                     text-shadow:
                         0 0 20px rgba(254, 235, 234, 0.8),
@@ -2555,10 +3952,11 @@
                     box-sizing: border-box;
                     width: 100%;
                     display: flex;
-                    flex-direction: column;
+                    flex-direction: row;
                     align-items: center;
                     justify-content: center;
                     min-height: 100vh;
+                    flex-wrap: nowrap;
                 `;
 
                 // Adjust font size for different screen sizes
@@ -2581,32 +3979,148 @@
 
                 typingText.style.fontSize = fontSize;
                 typingText.style.letterSpacing = letterSpacing;
+                typingText.style.gap = "0.2em";
 
-                // No completion message needed in typing section
+                // Add background glow effect
+                const backgroundGlow = document.createElement("div");
+                backgroundGlow.style.cssText = `
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    width: 80vw;
+                    height: 40vh;
+                    background: radial-gradient(ellipse, rgba(254, 235, 234, 0.1) 0%, transparent 70%);
+                    filter: blur(50px);
+                    z-index: -1;
+                    animation: glowPulse 3s ease-in-out infinite alternate;
+                `;
+
+                // Add CSS for background glow animation
+                if (!document.getElementById("glowPulseStyle")) {
+                    const glowStyle = document.createElement("style");
+                    glowStyle.id = "glowPulseStyle";
+                    glowStyle.textContent = `
+                        @keyframes glowPulse {
+                            0% { opacity: 0.3; transform: translate(-50%, -50%) scale(1); }
+                            100% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.2); }
+                        }
+                    `;
+                    document.head.appendChild(glowStyle);
+                }
+
+                typingOverlay.appendChild(backgroundGlow);
                 typingOverlay.appendChild(typingText);
                 document.body.appendChild(typingOverlay);
 
-                // Type F·R·I·E·N·D·S
+                // Type F·R·I·E·N·D·S with colored dots
                 const letters = [
-                    "F",
-                    "·",
-                    "R",
-                    "·",
-                    "I",
-                    "·",
-                    "E",
-                    "·",
-                    "N",
-                    "·",
-                    "D",
-                    "·",
-                    "S",
+                    { char: "F", color: "#feebea" },
+                    { char: "·", color: "rgb(181, 48, 44)" },
+                    { char: "R", color: "#feebea" },
+                    { char: "·", color: "rgb(102, 186, 229)" },
+                    { char: "I", color: "#feebea" },
+                    { char: "·", color: "rgb(247, 230, 83)" },
+                    { char: "E", color: "#feebea" },
+                    { char: "·", color: "rgb(181, 48, 44)" },
+                    { char: "N", color: "#feebea" },
+                    { char: "·", color: "rgb(247, 230, 83)" },
+                    { char: "D", color: "#feebea" },
+                    { char: "·", color: "rgb(102, 186, 229)" },
+                    { char: "S", color: "#feebea" },
                 ];
                 let letterIndex = 0;
 
                 const typeInterval = setInterval(() => {
                     if (letterIndex < letters.length) {
-                        typingText.textContent += letters[letterIndex];
+                        const letterElement = document.createElement("span");
+                        letterElement.textContent = letters[letterIndex].char;
+                        letterElement.style.cssText = `
+                            color: ${letters[letterIndex].color};
+                            display: inline-block;
+                            font-weight: 900;
+                            margin: 0 ${letters[letterIndex].char === "·" ? "0.1em" : "0.05em"};
+                            text-shadow: ${
+                                letters[letterIndex].char === "·"
+                                    ? `0 0 20px ${letters[letterIndex].color}, 0 0 40px ${letters[letterIndex].color}, 0 0 60px ${letters[letterIndex].color}`
+                                    : `0 0 15px rgba(254, 235, 234, 0.8), 0 0 30px rgba(254, 235, 234, 0.6), 0 0 45px rgba(254, 235, 234, 0.4)`
+                            };
+                            animation: letterPop 0.5s ease-out, letterGlow 2s ease-in-out infinite alternate;
+                            transform-origin: center bottom;
+                            position: relative;
+                        `;
+
+                        // Add CSS animations for letter effects
+                        if (!document.getElementById("letterPopStyle")) {
+                            const style = document.createElement("style");
+                            style.id = "letterPopStyle";
+                            style.textContent = `
+                                @keyframes letterPop {
+                                    0% { transform: scale(0) translateY(50px) rotateY(180deg); opacity: 0; }
+                                    50% { transform: scale(1.3) translateY(-15px) rotateY(0deg); opacity: 1; }
+                                    100% { transform: scale(1) translateY(0) rotateY(0deg); opacity: 1; }
+                                }
+                                @keyframes letterGlow {
+                                    0% { filter: brightness(1) saturate(1); }
+                                    100% { filter: brightness(1.3) saturate(1.5); }
+                                }
+                            `;
+                            document.head.appendChild(style);
+                        }
+
+                        // Add subtle particle effect for dots
+                        if (letters[letterIndex].char === "·") {
+                            setTimeout(() => {
+                                for (let i = 0; i < 3; i++) {
+                                    const particle =
+                                        document.createElement("div");
+                                    particle.style.cssText = `
+                                        position: absolute;
+                                        width: 4px;
+                                        height: 4px;
+                                        background: ${letters[letterIndex].color};
+                                        border-radius: 50%;
+                                        pointer-events: none;
+                                        z-index: 1000;
+                                        animation: particleFloat 2s ease-out forwards;
+                                    `;
+
+                                    const rect =
+                                        letterElement.getBoundingClientRect();
+                                    particle.style.left =
+                                        rect.left +
+                                        rect.width / 2 +
+                                        (Math.random() - 0.5) * 20 +
+                                        "px";
+                                    particle.style.top =
+                                        rect.top + rect.height / 2 + "px";
+
+                                    document.body.appendChild(particle);
+
+                                    setTimeout(() => {
+                                        if (document.body.contains(particle)) {
+                                            document.body.removeChild(particle);
+                                        }
+                                    }, 2000);
+                                }
+
+                                // Add particle animation if not exists
+                                if (!document.getElementById("particleStyle")) {
+                                    const particleStyle =
+                                        document.createElement("style");
+                                    particleStyle.id = "particleStyle";
+                                    particleStyle.textContent = `
+                                        @keyframes particleFloat {
+                                            0% { transform: translateY(0) scale(1); opacity: 1; }
+                                            100% { transform: translateY(-100px) scale(0); opacity: 0; }
+                                        }
+                                    `;
+                                    document.head.appendChild(particleStyle);
+                                }
+                            }, 100);
+                        }
+
+                        typingText.appendChild(letterElement);
                         letterIndex++;
                     } else {
                         clearInterval(typeInterval);
@@ -2706,17 +4220,43 @@
 
             function showEasterEggNotification(message) {
                 const notification = document.createElement("div");
-                const animationType = Math.floor(Math.random() * 4);
+                const animationType = Math.floor(Math.random() * 8);
                 let animationCSS = "";
+                let positionCSS = "";
+
+                // Generate random positions
+                const positions = [
+                    { top: "20%", left: "20%" },
+                    { top: "20%", right: "20%" },
+                    { top: "70%", left: "20%" },
+                    { top: "70%", right: "20%" },
+                    { top: "50%", left: "10%" },
+                    { top: "50%", right: "10%" },
+                    { top: "30%", left: "50%", transform: "translateX(-50%)" },
+                    { top: "60%", left: "50%", transform: "translateX(-50%)" },
+                ];
+
+                const randomPosition =
+                    positions[Math.floor(Math.random() * positions.length)];
+
+                // Build position CSS
+                if (randomPosition.top)
+                    positionCSS += `top: ${randomPosition.top}; `;
+                if (randomPosition.left)
+                    positionCSS += `left: ${randomPosition.left}; `;
+                if (randomPosition.right)
+                    positionCSS += `right: ${randomPosition.right}; `;
+                if (randomPosition.transform)
+                    positionCSS += `transform: ${randomPosition.transform}; `;
 
                 switch (animationType) {
                     case 0:
                         animationCSS = `
                             @keyframes fallFromLeft {
-                                0% { transform: translateX(-100vw) translateY(-50px); opacity: 0; }
-                                20% { opacity: 1; }
-                                80% { opacity: 1; }
-                                100% { transform: translateX(100vw) translateY(100vh); opacity: 0; }
+                                0% { transform: translateX(-100vw) translateY(-50px) scale(0); opacity: 0; }
+                                20% { transform: translateX(0) translateY(0) scale(1.1); opacity: 1; }
+                                80% { opacity: 1; transform: scale(1); }
+                                100% { transform: translateX(100vw) scale(0); opacity: 0; }
                             }
                             animation: fallFromLeft 4s ease-out forwards;
                         `;
@@ -2725,7 +4265,8 @@
                         animationCSS = `
                             @keyframes bounceIn {
                                 0% { transform: scale(0) rotate(0deg); opacity: 0; }
-                                50% { transform: scale(1.2) rotate(180deg); opacity: 1; }
+                                50% { transform: scale(1.3) rotate(180deg); opacity: 1; }
+                                70% { transform: scale(0.9) rotate(270deg); opacity: 1; }
                                 100% { transform: scale(1) rotate(360deg); opacity: 1; }
                             }
                             animation: bounceIn 2s ease-out forwards, fadeOut 2s ease-out 2s forwards;
@@ -2734,10 +4275,10 @@
                     case 2:
                         animationCSS = `
                             @keyframes slideUp {
-                                0% { transform: translateY(100vh); opacity: 0; }
-                                20% { opacity: 1; }
-                                80% { opacity: 1; }
-                                100% { transform: translateY(-100vh); opacity: 0; }
+                                0% { transform: translateY(100vh) scale(0.5); opacity: 0; }
+                                20% { opacity: 1; transform: translateY(0) scale(1.1); }
+                                80% { opacity: 1; transform: scale(1); }
+                                100% { transform: translateY(-100vh) scale(0.5); opacity: 0; }
                             }
                             animation: slideUp 4s ease-out forwards;
                         `;
@@ -2745,13 +4286,61 @@
                     case 3:
                         animationCSS = `
                             @keyframes spiral {
-                                0% { transform: scale(0) rotate(0deg) translateX(0); opacity: 0; }
-                                25% { transform: scale(1) rotate(90deg) translateX(100px); opacity: 1; }
+                                0% { transform: scale(0) rotate(0deg); opacity: 0; }
+                                25% { transform: scale(1) rotate(90deg) translateX(50px); opacity: 1; }
                                 50% { transform: scale(1.2) rotate(180deg) translateX(0); opacity: 1; }
-                                75% { transform: scale(1) rotate(270deg) translateX(-100px); opacity: 1; }
-                                100% { transform: scale(0) rotate(360deg) translateX(0); opacity: 0; }
+                                75% { transform: scale(1) rotate(270deg) translateX(-50px); opacity: 1; }
+                                100% { transform: scale(0) rotate(360deg); opacity: 0; }
                             }
                             animation: spiral 3s ease-out forwards;
+                        `;
+                        break;
+                    case 4:
+                        animationCSS = `
+                            @keyframes zigzag {
+                                0% { transform: translateX(-200px) translateY(-100px) scale(0); opacity: 0; }
+                                25% { transform: translateX(100px) translateY(50px) scale(1); opacity: 1; }
+                                50% { transform: translateX(-50px) translateY(-30px) scale(1.1); opacity: 1; }
+                                75% { transform: translateX(80px) translateY(20px) scale(0.9); opacity: 1; }
+                                100% { transform: translateX(300px) translateY(-200px) scale(0); opacity: 0; }
+                            }
+                            animation: zigzag 3.5s ease-in-out forwards;
+                        `;
+                        break;
+                    case 5:
+                        animationCSS = `
+                            @keyframes pulse {
+                                0% { transform: scale(0); opacity: 0; }
+                                20% { transform: scale(1.2); opacity: 1; }
+                                40% { transform: scale(0.8); opacity: 1; }
+                                60% { transform: scale(1.1); opacity: 1; }
+                                80% { transform: scale(0.9); opacity: 1; }
+                                100% { transform: scale(1); opacity: 1; }
+                            }
+                            animation: pulse 1.5s ease-out forwards, fadeOut 2s ease-out 2s forwards;
+                        `;
+                        break;
+                    case 6:
+                        animationCSS = `
+                            @keyframes flyIn {
+                                0% { transform: translateX(100vw) translateY(-100vh) rotate(0deg) scale(0.3); opacity: 0; }
+                                30% { transform: translateX(0) translateY(0) rotate(180deg) scale(1.2); opacity: 1; }
+                                70% { transform: rotate(360deg) scale(1); opacity: 1; }
+                                100% { transform: translateX(-100vw) translateY(100vh) rotate(720deg) scale(0.3); opacity: 0; }
+                            }
+                            animation: flyIn 4.5s ease-in-out forwards;
+                        `;
+                        break;
+                    case 7:
+                        animationCSS = `
+                            @keyframes wave {
+                                0% { transform: translateY(50px) scale(0); opacity: 0; }
+                                25% { transform: translateY(-20px) scale(1); opacity: 1; }
+                                50% { transform: translateY(10px) scale(1.1); opacity: 1; }
+                                75% { transform: translateY(-5px) scale(0.9); opacity: 1; }
+                                100% { transform: translateY(0) scale(1); opacity: 1; }
+                            }
+                            animation: wave 1.8s ease-out forwards, fadeOut 2s ease-out 2.5s forwards;
                         `;
                         break;
                 }
@@ -2768,23 +4357,22 @@
 
                 notification.style.cssText = `
                     position: fixed;
-                    top: 50%;
-                    left: 50%;
-                    transform: translate(-50%, -50%);
+                    ${positionCSS}
                     background: linear-gradient(45deg, rgba(254, 235, 234, 0.95), rgba(255, 255, 255, 0.95));
                     color: #333;
-                    padding: 2rem 3rem;
+                    padding: 1.5rem 2.5rem;
                     border-radius: 20px;
                     font-family: "Dancing Script", cursive;
-                    font-size: 1.5rem;
+                    font-size: 1.3rem;
                     font-weight: bold;
                     text-align: center;
                     z-index: 10000;
-                    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+                    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
                     border: 2px solid rgba(254, 235, 234, 0.8);
                     backdrop-filter: blur(10px);
-                    max-width: 80vw;
+                    max-width: 300px;
                     word-wrap: break-word;
+                    pointer-events: none;
                 `;
 
                 notification.textContent = message;
@@ -2795,7 +4383,7 @@
                     if (document.body.contains(notification)) {
                         document.body.removeChild(notification);
                     }
-                }, 4000);
+                }, 5000);
             }
 
             // Keyboard listener for "you" input
@@ -2825,6 +4413,73 @@
                         );
                     }
                 }
+            });
+
+            // Keyboard listener for "rickrickrick" and "picklerick" input
+            document.addEventListener("keydown", function (e) {
+                const key = e.key.toLowerCase();
+
+                // Handle Rick portal sequence
+                rickKeySequence.push(key);
+
+                // Keep only last 12 characters for "rickrickrick"
+                if (rickKeySequence.length > 12) {
+                    rickKeySequence.shift();
+                }
+
+                // Check if "rickrickrick" was typed and not already triggered
+                if (
+                    rickKeySequence.join("") === "rickrickrick" &&
+                    !rickPortalTriggered
+                ) {
+                    console.log(
+                        "🎉 User typed 'rickrickrick'! Triggering Rick Portal!",
+                    );
+                    rickKeySequence = [];
+                    rickPortalTriggered = true;
+                    triggerRickPortal();
+                } else {
+                    console.log(
+                        "Current rick sequence:",
+                        rickKeySequence.join(""),
+                    );
+                }
+
+                // Handle Pickle Rick sequence
+                pickleRickKeySequence.push(key);
+
+                // Keep only last 10 characters for "picklerick"
+                if (pickleRickKeySequence.length > 10) {
+                    pickleRickKeySequence.shift();
+                }
+
+                // Check if "picklerick" was typed and not already triggered
+                if (
+                    pickleRickKeySequence.join("") === "picklerick" &&
+                    !pickleRickTriggered
+                ) {
+                    console.log(
+                        "🥒 User typed 'picklerick'! Triggering Pickle Rick!",
+                    );
+                    pickleRickKeySequence = [];
+                    pickleRickTriggered = true;
+                    triggerPickleRick();
+                } else {
+                    console.log(
+                        "Current pickle rick sequence:",
+                        pickleRickKeySequence.join(""),
+                    );
+                }
+
+                // Reset sequences after 5 seconds of inactivity
+                if (rickKeyTimer) {
+                    clearTimeout(rickKeyTimer);
+                }
+                rickKeyTimer = setTimeout(() => {
+                    rickKeySequence = [];
+                    pickleRickKeySequence = [];
+                    console.log("Key sequences reset due to timeout");
+                }, 5000);
             });
 
             function triggerFinalFriendsEasterEgg() {
@@ -2869,38 +4524,57 @@
                     colorCircle ? "Yes" : "No",
                 );
 
-                // Ensure easter egg events are initialized
-                initializeEasterEggEvents();
+                // Check if easter egg system was already initialized
+                console.log(
+                    "🔍 Easter egg events initialized:",
+                    easterEggEventsInitialized,
+                );
+                console.log(
+                    "🔍 Color circle event count:",
+                    colorCircleEventCount,
+                );
+
+                // Only initialize if not already done
+                if (!window.easterEggSystemInitialized) {
+                    console.log(
+                        "⚠️ Re-initializing easter egg events from load handler...",
+                    );
+                    initializeEasterEggEvents();
+                }
             });
 
-            function isCircularPattern(positions) {
-                if (positions.length < 20) return false;
+            function splitTextIntoLetters(element) {
+                const text = element.textContent;
+                if (!text || text.trim() === "") return;
 
-                let centerX =
-                    positions.reduce((sum, p) => sum + p.x, 0) /
-                    positions.length;
-                let centerY =
-                    positions.reduce((sum, p) => sum + p.y, 0) /
-                    positions.length;
+                const letters = text.split("").map((char) => {
+                    const span = document.createElement("span");
+                    span.className = "letter-particle";
+                    span.textContent = char === " " ? "\u00A0" : char; // Use non-breaking space
+                    span.style.cssText = `
+                        display: inline-block;
+                        will-change: transform, opacity, filter;
+                        transform-origin: center center;
+                        backface-visibility: hidden;
+                        transform: translateZ(0);
+                    `;
+                    return span;
+                });
 
-                let distances = positions.map((p) =>
-                    Math.sqrt((p.x - centerX) ** 2 + (p.y - centerY) ** 2),
-                );
-                let avgDistance =
-                    distances.reduce((sum, d) => sum + d, 0) / distances.length;
-                let variance =
-                    distances.reduce(
-                        (sum, d) => sum + (d - avgDistance) ** 2,
-                        0,
-                    ) / distances.length;
-
-                return avgDistance > 50 && variance < avgDistance * 0.3;
+                // Clear original content and add letter spans
+                element.textContent = "";
+                letters.forEach((letter) => element.appendChild(letter));
             }
 
             function triggerRickPortal() {
-                // Create portal
+                console.log("🎉 RICK PORTAL ACTIVATED! WUBBA LUBBA DUB DUB!");
+
+                // Create portal at screen center, slightly above middle
                 const portal = document.createElement("div");
                 portal.className = "rick-portal";
+                portal.style.left = "50%";
+                portal.style.top = "45%"; // Slightly above center (was 50%)
+                portal.style.transform = "translate(-50%, -50%)";
                 portal.innerHTML = `
                     <img src="./phoebe/rickandmorty.png" alt="Rick Portal" />
                     <div class="rick-message" id="rickMessage"></div>
@@ -2916,15 +4590,19 @@
                     typeMessage(
                         "WUBBA LUBBA DUB DUB!",
                         document.getElementById("rickMessage"),
+                        () => {
+                            // Play audio after typing completes
+                            playAudio("wubba-lubba.mp3");
+                        },
                     );
                 }, 2000);
 
                 setTimeout(() => {
                     startAdvancedSuckingEffect();
-                }, 5000);
+                }, 8000); // Start sucking effect during portal expansion phase
             }
 
-            function typeMessage(text, element) {
+            function typeMessage(text, element, callback) {
                 let index = 0;
                 element.textContent = "";
 
@@ -2933,97 +4611,191 @@
                         element.textContent += text.charAt(index);
                         index++;
                         setTimeout(typeChar, 100 + Math.random() * 100);
+                    } else if (callback) {
+                        // Call callback after typing is complete
+                        setTimeout(callback, 500);
                     }
                 }
                 typeChar();
             }
 
             function startAdvancedSuckingEffect() {
-                const portalRect = document
-                    .querySelector(".rick-portal img")
-                    .getBoundingClientRect();
-                const portalCenterX = portalRect.left + portalRect.width / 2;
-                const portalCenterY = portalRect.top + portalRect.height / 2;
+                // Get portal position (screen center, slightly above middle)
+                const portalCenterX = window.innerWidth / 2;
+                const portalCenterY = window.innerHeight * 0.45; // Match portal position
 
                 // Split all text elements into letters first
                 const textElements = document.querySelectorAll(
-                    "h1, h2, h3, p, span:not(.letter-particle):not(.rick-portal *)",
+                    "h1, h2, h3, h4, h5, h6, p, span:not(.letter-particle):not(.rick-portal *), div:not(.rick-portal):not(.rick-portal *):not(.final-background), a, button, label, li, td, th, blockquote, em, strong, i, b, u, small, code, pre",
                 );
 
                 textElements.forEach((element) => {
                     if (
                         element.textContent.trim() &&
-                        !element.querySelector(".letter-particle")
+                        !element.querySelector(".letter-particle") &&
+                        !element.closest(".rick-portal") &&
+                        element.children.length === 0 // Only split leaf text elements
                     ) {
                         splitTextIntoLetters(element);
                     }
                 });
 
-                // Animate letters with advanced effects
-                const letters = document.querySelectorAll(".letter-particle");
-                letters.forEach((letter, index) => {
+                // Get all letters and calculate distances from portal center
+                const letters = Array.from(
+                    document.querySelectorAll(".letter-particle"),
+                );
+                const letterDistances = letters.map((letter) => {
                     const rect = letter.getBoundingClientRect();
                     const letterCenterX = rect.left + rect.width / 2;
                     const letterCenterY = rect.top + rect.height / 2;
-
-                    const dx = portalCenterX - letterCenterX;
-                    const dy = portalCenterY - letterCenterY;
-                    const distance = Math.sqrt(dx * dx + dy * dy);
-                    const rotation = Math.random() * 2 - 1; // -1 to 1
-
-                    letter.style.setProperty("--dx", dx + "px");
-                    letter.style.setProperty("--dy", dy + "px");
-                    letter.style.setProperty("--rotation", rotation);
-                    letter.style.setProperty(
-                        "--duration",
-                        3 + Math.random() * 2 + "s",
+                    const distance = Math.sqrt(
+                        Math.pow(portalCenterX - letterCenterX, 2) +
+                            Math.pow(portalCenterY - letterCenterY, 2),
                     );
-                    letter.style.setProperty(
-                        "--delay",
-                        index * 25 + Math.random() * 300 + "ms",
+                    return {
+                        element: letter,
+                        distance,
+                        x: letterCenterX,
+                        y: letterCenterY,
+                    };
+                });
+
+                // Sort by distance (nearest first)
+                letterDistances.sort((a, b) => a.distance - b.distance);
+
+                // Animate letters with progressive acceleration based on distance
+                letterDistances.forEach((letterData, index) => {
+                    const letter = letterData.element;
+                    const dx = portalCenterX - letterData.x;
+                    const dy = portalCenterY - letterData.y;
+                    const distance = letterData.distance;
+
+                    // Distance-based timing: closer letters start sooner, but much slower progression
+                    const distanceRatio =
+                        distance /
+                        Math.max(...letterDistances.map((l) => l.distance));
+                    const baseDelay = distanceRatio * 1500; // Slower start, max 1500ms delay
+
+                    // Slow start with gradual acceleration
+                    const progressRatio = index / letterDistances.length;
+                    const accelerationFactor = 0.3 + progressRatio * 1.2; // Start very slow
+                    const baseDuration = 5; // Longer base duration for slower effect
+                    const duration = Math.max(
+                        2,
+                        baseDuration / accelerationFactor,
                     );
+
+                    // Distance-based rotation intensity - gentler at start
+                    const rotationIntensity = 0.3 + distanceRatio * 1.2;
+                    const rotation =
+                        (Math.random() * 2 - 1) * rotationIntensity;
+
+                    // Apply optimized styles
+                    letter.style.cssText += `
+                        --dx: ${dx}px;
+                        --dy: ${dy}px;
+                        --rotation: ${rotation};
+                        --duration: ${duration}s;
+                        --delay: ${baseDelay}ms;
+                    `;
 
                     setTimeout(() => {
                         letter.classList.add("letter-exploding");
-                    }, index * 25);
+                    }, baseDelay);
                 });
 
-                // Animate other elements
-                const otherElements = document.querySelectorAll(
-                    "*:not(.letter-particle):not(.rick-portal):not(.rick-portal *):not(.final-background)",
+                // Get other elements and sort by distance
+                const otherElements = Array.from(
+                    document.querySelectorAll(
+                        "div:not(.rick-portal):not(.rick-portal *):not(.final-background), img:not(.rick-portal *), svg:not(.rick-portal *), canvas:not(.rick-portal *), video:not(.rick-portal *), audio:not(.rick-portal *), input:not(.rick-portal *), textarea:not(.rick-portal *), select:not(.rick-portal *), form:not(.rick-portal *), table:not(.rick-portal *), section:not(.rick-portal *), article:not(.rick-portal *), aside:not(.rick-portal *), nav:not(.rick-portal *), header:not(.rick-portal *), footer:not(.rick-portal *), main:not(.rick-portal *)",
+                    ),
                 );
 
-                otherElements.forEach((element, index) => {
-                    if (
-                        element.children.length === 0 ||
-                        element.querySelector(".letter-particle")
-                    ) {
-                        return; // Skip if empty or already processed
-                    }
+                const elementDistances = otherElements
+                    .filter((element) => {
+                        // Include elements that have letter particles (already processed text elements)
+                        // or elements that are visible and have some content
+                        const hasLetterParticles =
+                            element.querySelector(".letter-particle");
+                        const hasVisibleContent =
+                            element.offsetWidth > 0 && element.offsetHeight > 0;
+                        const isNotBodyOrHtml =
+                            element.tagName !== "BODY" &&
+                            element.tagName !== "HTML";
+                        const isNotScript =
+                            element.tagName !== "SCRIPT" &&
+                            element.tagName !== "STYLE";
 
-                    const rect = element.getBoundingClientRect();
-                    const elementCenterX = rect.left + rect.width / 2;
-                    const elementCenterY = rect.top + rect.height / 2;
+                        return (
+                            (hasLetterParticles || hasVisibleContent) &&
+                            isNotBodyOrHtml &&
+                            isNotScript
+                        );
+                    })
+                    .map((element) => {
+                        const rect = element.getBoundingClientRect();
+                        const elementCenterX = rect.left + rect.width / 2;
+                        const elementCenterY = rect.top + rect.height / 2;
+                        const distance = Math.sqrt(
+                            Math.pow(portalCenterX - elementCenterX, 2) +
+                                Math.pow(portalCenterY - elementCenterY, 2),
+                        );
+                        return {
+                            element,
+                            distance,
+                            x: elementCenterX,
+                            y: elementCenterY,
+                        };
+                    });
 
-                    const dx = portalCenterX - elementCenterX;
-                    const dy = portalCenterY - elementCenterY;
-                    const rotation = Math.random() * 2 - 1;
+                // Sort elements by distance (nearest first)
+                elementDistances.sort((a, b) => a.distance - b.distance);
 
-                    element.style.setProperty("--dx", dx + "px");
-                    element.style.setProperty("--dy", dy + "px");
-                    element.style.setProperty("--rotation", rotation);
-                    element.style.setProperty(
-                        "--duration",
-                        3.5 + Math.random() * 1.5 + "s",
+                // Animate elements with distance-based timing and 3D effects
+                elementDistances.forEach((elementData, index) => {
+                    const element = elementData.element;
+                    const dx = portalCenterX - elementData.x;
+                    const dy = portalCenterY - elementData.y;
+                    const distance = elementData.distance;
+
+                    // Elements start after letters finish (around 3-6 seconds)
+                    const distanceRatio =
+                        distance /
+                        Math.max(...elementDistances.map((e) => e.distance));
+                    const letterFinishTime = 4000; // Wait for letters to mostly finish
+                    const baseDelay = letterFinishTime + distanceRatio * 800; // Start after letters
+
+                    // Slower, more dramatic element animation
+                    const accelerationFactor = 0.8 + (1 - distanceRatio) * 1;
+                    const baseDuration = 4.5; // Longer duration for element warping
+                    const duration = Math.max(
+                        3,
+                        baseDuration / accelerationFactor,
                     );
-                    element.style.setProperty("--delay", index * 50 + "ms");
+
+                    // Moderate rotation for smooth border warping
+                    const rotationIntensity = 0.8 + distanceRatio * 1.5;
+                    const rotation =
+                        (Math.random() * 2 - 1) * rotationIntensity;
+
+                    // Apply performance optimized styles for border warping
+                    element.style.cssText += `
+                        will-change: transform, opacity, border-radius, clip-path, filter;
+                        transform-origin: center center;
+                        backface-visibility: hidden;
+                        --dx: ${dx}px;
+                        --dy: ${dy}px;
+                        --rotation: ${rotation};
+                        --duration: ${duration}s;
+                        --delay: ${baseDelay}ms;
+                    `;
 
                     setTimeout(() => {
                         element.classList.add("element-sucking");
-                    }, index * 50);
+                    }, baseDelay);
                 });
 
-                // Show final background after all elements are absorbed
+                // Show final background after all elements are absorbed (much longer timing)
                 setTimeout(() => {
                     // Hide scrollbars
                     document.body.classList.add("portal-mode");
@@ -3041,9 +4813,249 @@
                         if (document.querySelector(".rick-portal")) {
                             document.querySelector(".rick-portal").remove();
                         }
-                    }, 4000);
-                }, 5000);
+                    }, 21000); // Remove portal after animation completes (20s + 1s buffer)
+                }, 22000); // Extended total duration to accommodate 20s portal animation
+            }
+
+            function triggerPickleRick() {
+                console.log("🥒 PICKLE RICK ACTIVATED!");
+
+                // First show central text display
+                showPickleRickText();
+
+                // Then create persistent Pickle Rick in bottom left after delay
+                setTimeout(() => {
+                    createPersistentPickleRick();
+                }, 3000);
+            }
+
+            function showPickleRickText() {
+                // Create fullscreen overlay for Pickle Rick text
+                const overlay = document.createElement("div");
+                overlay.style.cssText = `
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100vw;
+                    height: 100vh;
+                    background: rgba(0, 0, 0, 0.8);
+                    z-index: 15000;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    animation: fadeIn 0.5s ease-out;
+                `;
+
+                // Create the main text element
+                const textElement = document.createElement("div");
+                const isMobile = window.innerWidth <= 768;
+                textElement.style.cssText = `
+                    font-family: Arial Black, sans-serif;
+                    font-size: ${isMobile ? "clamp(2rem, 12vw, 4rem)" : "clamp(3rem, 8vw, 8rem)"};
+                    font-weight: 900;
+                    color: #4CAF50;
+                    text-align: center;
+                    text-transform: uppercase;
+                    letter-spacing: ${isMobile ? "0.05em" : "0.1em"};
+                    transform: rotate(-8deg) skew(-5deg, 0deg);
+                    text-shadow:
+                        ${isMobile ? "2px 2px 0px #2E7D32, 4px 4px 0px #1B5E20, 6px 6px 0px #0D4E14, 8px 8px 15px rgba(0,0,0,0.4)" : "4px 4px 0px #2E7D32, 8px 8px 0px #1B5E20, 12px 12px 0px #0D4E14, 16px 16px 20px rgba(0,0,0,0.4)"};
+                    background: linear-gradient(45deg, #66BB6A 0%, #4CAF50 50%, #388E3C 100%);
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                    background-clip: text;
+                    animation: pickleTextGlow 2s ease-in-out infinite alternate;
+                    position: relative;
+                    padding: ${isMobile ? "10px" : "20px"};
+                `;
+                textElement.textContent = "I'M PICKLE RICK!";
+
+                // Add background decoration with diagonal stripes
+                const decoration = document.createElement("div");
+                decoration.style.cssText = `
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%) rotate(-8deg);
+                    width: 120%;
+                    height: 150%;
+                    background:
+                        repeating-linear-gradient(
+                            45deg,
+                            rgba(76, 175, 80, 0.8) 0px,
+                            rgba(76, 175, 80, 0.8) ${isMobile ? "10px" : "15px"},
+                            rgba(129, 199, 132, 0.6) ${isMobile ? "10px" : "15px"},
+                            rgba(129, 199, 132, 0.6) ${isMobile ? "20px" : "30px"},
+                            rgba(46, 125, 50, 0.7) ${isMobile ? "20px" : "30px"},
+                            rgba(46, 125, 50, 0.7) ${isMobile ? "30px" : "45px"}
+                        ),
+                        linear-gradient(135deg,
+                            rgba(76, 175, 80, 0.2) 0%,
+                            rgba(129, 199, 132, 0.3) 50%,
+                            rgba(46, 125, 50, 0.2) 100%);
+                    border: ${isMobile ? "4px" : "6px"} solid #4CAF50;
+                    border-radius: ${isMobile ? "15px" : "25px"};
+                    z-index: -1;
+                    box-shadow:
+                        0 0 40px rgba(76, 175, 80, 0.6),
+                        inset 0 0 40px rgba(76, 175, 80, 0.2),
+                        0 0 80px rgba(76, 175, 80, 0.3);
+                `;
+
+                // Add diagonal accent stripes
+                for (let i = 0; i < 4; i++) {
+                    const stripe = document.createElement("div");
+                    stripe.style.cssText = `
+                        position: absolute;
+                        top: ${-20 + i * 25}%;
+                        left: ${-30 + i * 20}%;
+                        width: 200%;
+                        height: ${isMobile ? "5px" : "8px"};
+                        background: linear-gradient(90deg,
+                            transparent 0%,
+                            rgba(76, 175, 80, 0.8) 20%,
+                            rgba(129, 199, 132, 1) 50%,
+                            rgba(76, 175, 80, 0.8) 80%,
+                            transparent 100%);
+                        transform: rotate(${-15 + i * 5}deg);
+                        z-index: -1;
+                        animation: stripeGlow ${1.5 + i * 0.3}s ease-in-out infinite alternate;
+                    `;
+                    decoration.appendChild(stripe);
+                }
+
+                // Add CSS for the glow and stripe animations
+                if (!document.getElementById("pickleTextGlowStyle")) {
+                    const glowStyle = document.createElement("style");
+                    glowStyle.id = "pickleTextGlowStyle";
+                    glowStyle.textContent = `
+                        @keyframes pickleTextGlow {
+                            0% {
+                                filter: brightness(1) drop-shadow(0 0 10px rgba(76, 175, 80, 0.5));
+                                transform: rotate(-8deg) skew(-5deg, 0deg) scale(1);
+                            }
+                            100% {
+                                filter: brightness(1.2) drop-shadow(0 0 25px rgba(76, 175, 80, 0.8));
+                                transform: rotate(-8deg) skew(-5deg, 0deg) scale(1.02);
+                            }
+                        }
+                        @keyframes stripeGlow {
+                            0% {
+                                opacity: 0.6;
+                                transform: rotate(var(--rotation, 0deg)) scaleX(0.8);
+                            }
+                            100% {
+                                opacity: 1;
+                                transform: rotate(var(--rotation, 0deg)) scaleX(1.2);
+                            }
+                        }
+                    `;
+                    document.head.appendChild(glowStyle);
+                }
+
+                textElement.appendChild(decoration);
+                overlay.appendChild(textElement);
+                document.body.appendChild(overlay);
+
+                // Play audio immediately
+                playAudio("picklerick.mp3");
+
+                // Remove after 2.5 seconds with fade out
+                setTimeout(() => {
+                    overlay.style.animation = "fadeOut 0.5s ease-out forwards";
+                    setTimeout(() => {
+                        if (document.body.contains(overlay)) {
+                            document.body.removeChild(overlay);
+                        }
+                    }, 500);
+                }, 2500);
+            }
+
+            function createPersistentPickleRick() {
+                // Create persistent Pickle Rick in bottom left
+                const pickleRick = document.createElement("div");
+                pickleRick.id = "pickle-rick";
+                pickleRick.style.cssText = `
+                    position: fixed;
+                    bottom: 20px;
+                    left: 20px;
+                    width: 80px;
+                    height: 80px;
+                    z-index: 10000;
+                    cursor: pointer;
+                    transition: transform 0.3s ease;
+                `;
+
+                const pickleImg = document.createElement("img");
+                pickleImg.src = "./phoebe/picklerick.png";
+                pickleImg.alt = "Pickle Rick";
+                pickleImg.style.cssText = `
+                    width: 100%;
+                    height: 100%;
+                    object-fit: contain;
+                `;
+
+                pickleRick.appendChild(pickleImg);
+                document.body.appendChild(pickleRick);
+
+                // Add hover effect
+                pickleRick.addEventListener("mouseenter", () => {
+                    pickleRick.style.transform = "scale(1.1) rotate(5deg)";
+                });
+
+                pickleRick.addEventListener("mouseleave", () => {
+                    pickleRick.style.transform = "scale(1) rotate(0deg)";
+                });
+
+                // Add click to play audio
+                pickleRick.addEventListener("click", () => {
+                    console.log("🥒 Pickle Rick clicked!");
+                    pickleRick.style.transform = "scale(0.95) rotate(-5deg)";
+                    setTimeout(() => {
+                        pickleRick.style.transform = "scale(1.1) rotate(5deg)";
+                    }, 150);
+                    playAudio("picklerick.mp3");
+                });
+
+                // Audio is already played in showPickleRickText()
             }
         </script>
+
+        <!-- Cyberpunk 2077 Easter Egg -->
+        <div id="cyberpunkEasterEgg" class="cyberpunk-easter-egg">
+            <div class="cyberpunk-content">
+                <div class="broken-heart">💔</div>
+                <div class="cyberpunk-text">808</div>
+            </div>
+        </div>
+
+        <!-- Audio Control Panel -->
+        <div id="audioControlPanel" class="audio-control-panel">
+            <button id="audioControlBtn" class="audio-control-btn">▶️</button>
+            <div class="audio-status">PAUSED</div>
+        </div>
+
+        <!-- Hidden Audio Element -->
+        <audio id="cyberpunkAudio" loop preload="auto">
+            <source src="https://eta.vgmtreasurechest.com/soundtracks/cyberpunk-2077-radio-vol.-2-original-soundtrack/liojiacuhf/05.%20I%20Really%20Want%20to%20Stay%20at%20Your%20House.mp3" type="audio/mpeg">
+        </audio>
+
+        <!-- Debug Panel -->
+        <button id="debugToggle" class="debug-toggle">🔍 Debug</button>
+        <div id="debugPanel" class="debug-panel">
+            <h4>🎮 Easter Egg Debug</h4>
+            <p><strong>Target:</strong> All 3 cards show:<br/>
+            "你是个天生的边缘行者" (中文)<br/>
+            "You're a natural-born Edgerunner." (英文)</p>
+            <div class="easter-egg-hint">
+                💡 Tip: Click cards to change quotes until all 3 match!
+            </div>
+            <button id="autoClickBtn" class="auto-click-btn" title="Automatically click cards until all 3 show the target text">🤖 Auto Click</button>
+            <div id="currentQuotes" class="current-quotes">
+                <p><strong>Current Cards:</strong></p>
+                <div id="quotesList"></div>
+            </div>
+        </div>
     </body>
 </html>
+</text>
