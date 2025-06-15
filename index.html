@@ -235,7 +235,6 @@
 
             body.chinese .quote-text {
                 font-family: "Cinzel", serif;
-                font-size: 1.4rem;
                 line-height: 1.8;
                 color: #feebea;
                 opacity: 0.9;
@@ -245,11 +244,22 @@
                 font-style: italic;
             }
 
-            body.chinese .quote-author {
+            body.chinese .quote-text {
+                text-align: center;
+            }
+
+            .quote-author {
                 font-family: "Dancing Script", cursive;
-                font-size: 1.1rem;
                 color: #feebea;
                 opacity: 0.7;
+                display: inline;
+            }
+
+            body.chinese .quote-author {
+                font-family: "Dancing Script", cursive;
+                color: #feebea;
+                opacity: 0.7;
+                display: inline;
             }
 
             body.chinese .phoebe-title {
@@ -410,28 +420,94 @@
                 justify-content: center;
                 gap: 1rem;
                 flex-wrap: wrap;
+                cursor: pointer;
+                user-select: none;
+                transition: all 0.3s ease;
+                position: relative;
+                height: 9rem;
+                min-height: 9rem;
+                max-height: 9rem;
+                overflow: hidden;
+            }
+
+            .quote-section:hover {
+                background: rgba(254, 235, 234, 0.05);
+                border-color: rgba(254, 235, 234, 0.15);
+                transform: translateY(-2px);
+                box-shadow: 0 8px 25px rgba(254, 235, 234, 0.1);
+            }
+
+            .quote-section:active {
+                transform: translateY(0);
+                background: rgba(254, 235, 234, 0.08);
+            }
+
+            .quote-section::before {
+                content: '← →';
+                position: absolute;
+                top: 10px;
+                right: 15px;
+                font-size: 0.8rem;
+                color: rgba(254, 235, 234, 0.4);
+                font-family: monospace;
+                pointer-events: none;
+            }
+
+            .quote-section::after {
+                content: 'Use arrow keys or swipe to navigate';
+                position: absolute;
+                bottom: 10px;
+                right: 15px;
+                font-size: 0.7rem;
+                color: rgba(254, 235, 234, 0.3);
+                font-family: 'Dancing Script', cursive;
+                pointer-events: none;
+                opacity: 0;
+                transition: opacity 0.3s ease;
+            }
+
+            .quote-section:hover::after {
+                opacity: 1;
+            }
+
+            @media (max-width: 768px) {
+                .quote-section::after {
+                    content: 'Swipe left/right to navigate';
+                    font-size: 0.6rem;
+                }
+                
+                .quote-section::before {
+                    content: '← →';
+                    font-size: 0.7rem;
+                }
             }
 
             .quote-text {
                 font-family: "Cinzel", serif;
-                font-size: 1.4rem;
-                line-height: 1.8;
+                line-height: 1.3;
                 color: #feebea;
                 opacity: 0.9;
                 font-weight: 400;
                 font-style: italic;
                 margin: 0;
-                flex: 1;
-                min-width: 300px;
+                width: 100%;
+                text-align: center;
+                max-height: 100%;
+                overflow: hidden;
+                word-wrap: break-word;
+                hyphens: auto;
+                display: flex;
+                align-items: center;
+                justify-content: center;
             }
 
             .quote-author {
                 font-family: "Dancing Script", cursive;
-                font-size: 1.1rem;
                 color: #feebea;
                 opacity: 0.7;
                 margin: 0;
                 white-space: nowrap;
+                display: inline;
             }
 
             .meditation {
@@ -453,34 +529,32 @@
             }
 
             .essence {
-                display: flex;
-                justify-content: center;
-                gap: 1.2rem;
-                margin: 3rem auto;
-                flex-wrap: nowrap;
-                overflow-x: auto;
-                padding: 0 1rem;
-                max-width: 900px;
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 1.5rem;
+                margin: 3rem 0;
+                padding: 2rem 0;
+                justify-items: center;
+                width: 100%;
             }
 
             .essence-card {
                 background: rgba(254, 235, 234, 0.03);
                 border: 1px solid rgba(254, 235, 234, 0.1);
                 border-radius: 15px;
-                padding: 1.3rem;
+                padding: 2rem;
                 text-align: center;
                 backdrop-filter: blur(5px);
                 transition: all 0.3s ease;
                 cursor: pointer;
                 position: relative;
-                width: 270px;
-                height: 180px;
+                width: 100%;
+                max-width: 450px;
+                height: 220px;
                 display: flex;
                 flex-direction: column;
-                justify-content: center;
+                justify-content: space-between;
                 align-items: center;
-                flex-shrink: 0;
-                min-width: 270px;
                 margin-top: 10px;
             }
 
@@ -491,8 +565,8 @@
 
             .essence-title {
                 font-family: "Pacifico", cursive;
-                font-size: 1.3rem;
-                margin-bottom: 0.5rem;
+                font-size: clamp(1.2rem, 3.5vw, 1.7rem);
+                margin-bottom: 0.8rem;
                 color: #feebea;
                 cursor: text;
                 user-select: text;
@@ -505,12 +579,12 @@
                 align-items: center;
                 justify-content: center;
                 text-align: center;
-                overflow: hidden;
+                flex: 1;
             }
 
             .essence-desc {
                 font-family: "Dancing Script", cursive;
-                font-size: 1rem;
+                font-size: clamp(1rem, 2.8vw, 1.4rem);
                 color: #feebea;
                 opacity: 0.8;
                 cursor: text;
@@ -521,10 +595,10 @@
                 max-width: 100%;
                 width: 100%;
                 display: flex;
-                align-items: center;
+                align-items: flex-end;
                 justify-content: center;
                 text-align: center;
-                overflow: hidden;
+                margin-top: auto;
             }
 
             .quote-clickable {
@@ -580,6 +654,43 @@
                 font-size: 2rem;
                 color: #feebea;
                 opacity: 0.7;
+            }
+
+            .footer-content {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 2rem;
+                flex-wrap: wrap;
+            }
+
+            .contact-icons {
+                display: flex;
+                gap: 1rem;
+                align-items: center;
+            }
+
+            .email-icon,
+            .wechat-icon {
+                display: flex;
+                align-items: center;
+                gap: 0.4rem;
+                font-size: 1.2rem;
+                color: #feebea;
+                cursor: pointer;
+                transition: opacity 0.2s ease;
+                user-select: none;
+                text-decoration: none;
+            }
+
+            .email-icon:hover,
+            .wechat-icon:hover {
+                opacity: 0.8;
+            }
+
+            .email-icon svg,
+            .wechat-icon svg {
+                flex-shrink: 0;
             }
 
             .copy-notification {
@@ -1213,23 +1324,25 @@
                 }
 
                 .essence {
+                    grid-template-columns: 1fr;
                     gap: 1rem;
-                    padding: 0 0.5rem;
-                    max-width: 100%;
+                    padding: 1rem;
+                    width: 100%;
+                    justify-items: stretch;
                 }
 
                 .essence-card {
-                    width: 250px;
-                    height: 150px;
-                    min-width: 250px;
+                    width: 100%;
+                    max-width: none;
+                    height: 120px;
                 }
 
                 .essence-title {
-                    font-size: 1.1rem;
+                    font-size: clamp(1rem, 4vw, 1.3rem);
                 }
 
                 .essence-desc {
-                    font-size: 0.9rem;
+                    font-size: clamp(0.8rem, 3vw, 1.1rem);
                 }
             }
 
@@ -1269,27 +1382,32 @@
                 }
 
                 .essence {
+                    grid-template-columns: 1fr;
                     gap: 0.8rem;
-                    padding: 0 0.5rem;
-                    overflow-x: auto;
-                    justify-content: flex-start;
-                    max-width: 90%;
+                    padding: 0.5rem;
+                    width: 100%;
+                    justify-items: stretch;
                 }
 
                 .essence-card {
-                    padding: 1rem;
-                    width: 210px;
-                    height: 130px;
-                    min-width: 210px;
-                    margin-top: 8px;
+                    padding: 0.8rem;
+                    width: 100%;
+                    max-width: none;
+                    height: auto;
+                    min-height: 110px;
+                    margin-top: 0;
+                }
+
+                .essence-card:nth-child(n+4) {
+                    display: none;
                 }
 
                 .essence-title {
-                    font-size: 1rem;
+                    font-size: clamp(0.9rem, 3.5vw, 1.1rem);
                 }
 
                 .essence-desc {
-                    font-size: 0.8rem;
+                    font-size: clamp(0.7rem, 2.8vw, 0.9rem);
                 }
 
                 .phoebe-title {
@@ -1344,12 +1462,28 @@
                     font-size: 1.1rem;
                 }
 
+                .essence {
+                    grid-template-columns: 1fr;
+                    gap: 0.5rem;
+                    padding: 0.5rem;
+                }
+
+                .essence-card {
+                    padding: 0.6rem;
+                    height: auto;
+                    min-height: 100px;
+                }
+
+                .essence-card:nth-child(n+4) {
+                    display: none;
+                }
+
                 .essence-title {
-                    font-size: 1.2rem;
+                    font-size: clamp(0.8rem, 3vw, 1rem);
                 }
 
                 .essence-desc {
-                    font-size: 0.9rem;
+                    font-size: clamp(0.6rem, 2.5vw, 0.8rem);
                 }
 
                 .rick-portal img {
@@ -1563,6 +1697,235 @@
             @keyframes loadingPulse {
                 0%, 100% { opacity: 0.6; }
                 50% { opacity: 1; }
+            }
+
+            /* Virtual Keyboard Styles */
+            .virtual-keyboard {
+                 position: fixed;
+                 left: 0;
+                 bottom: 0;
+                 transform: translateY(100%);
+                width: 100vw;
+                min-width: 300px;
+                max-width: 100vw;
+                background: rgba(0, 0, 0, 0.95);
+                border: 2px solid #feebea;
+                border-radius: 15px;
+                padding: 15px;
+                z-index: 9999;
+                box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.8);
+                backdrop-filter: blur(10px);
+                transition: transform 0.3s ease-in-out;
+                font-family: 'Courier New', monospace;
+                resize: horizontal;
+                overflow: hidden;
+            }
+
+            .virtual-keyboard:not(.hidden) {
+                transform: translateY(0);
+            }
+
+            .keyboard-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 10px;
+                padding: 5px 0;
+                border-bottom: 1px solid rgba(254, 235, 234, 0.3);
+                cursor: move;
+                user-select: none;
+            }
+
+            .keyboard-title {
+                color: #feebea;
+                font-size: 14px;
+                font-weight: bold;
+            }
+
+            .keyboard-controls {
+                display: flex;
+                gap: 8px;
+            }
+
+            .control-btn {
+                background: rgba(254, 235, 234, 0.1);
+                border: 1px solid #feebea;
+                border-radius: 4px;
+                color: #feebea;
+                padding: 4px 8px;
+                font-size: 12px;
+                cursor: pointer;
+                transition: all 0.2s;
+            }
+
+            .control-btn:hover {
+                background: rgba(254, 235, 234, 0.2);
+            }
+
+            .resize-handle {
+                position: absolute;
+                right: 0;
+                top: 0;
+                bottom: 0;
+                width: 10px;
+                cursor: ew-resize;
+                background: linear-gradient(90deg, transparent, rgba(254, 235, 234, 0.3));
+            }
+
+            .resize-handle:hover {
+                background: linear-gradient(90deg, transparent, rgba(254, 235, 234, 0.5));
+            }
+
+
+
+
+
+            .keyboard-keys {
+                margin-bottom: 12px;
+            }
+
+            .key-row {
+                display: flex;
+                gap: 4px;
+                margin-bottom: 4px;
+                justify-content: center;
+            }
+
+            .key {
+                background: rgba(254, 235, 234, 0.1);
+                border: 1px solid #feebea;
+                border-radius: 6px;
+                color: #feebea;
+                padding: 8px;
+                min-width: 28px;
+                height: 36px;
+                font-size: 12px;
+                font-weight: bold;
+                cursor: pointer;
+                transition: all 0.2s;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .key:hover {
+                background: rgba(254, 235, 234, 0.2);
+                transform: translateY(-1px);
+            }
+
+            .key:active {
+                background: rgba(254, 235, 234, 0.3);
+                transform: translateY(0);
+            }
+
+            .arrow-keys {
+                justify-content: center;
+                gap: 8px;
+                margin-top: 8px;
+            }
+
+            .arrow-key {
+                background: rgba(254, 235, 234, 0.15);
+                border: 1px solid #feebea;
+                color: #feebea;
+                font-size: 14px;
+                min-width: 32px;
+                height: 40px;
+                font-weight: bold;
+            }
+
+            .arrow-key:hover {
+                background: rgba(254, 235, 234, 0.25);
+                box-shadow: 0 0 8px rgba(254, 235, 234, 0.4);
+                transform: translateY(-1px);
+            }
+
+            .arrow-key:active {
+                background: rgba(254, 235, 234, 0.35);
+                transform: translateY(0);
+            }
+
+            .keyboard-actions {
+                display: flex;
+                justify-content: center;
+                margin-bottom: 10px;
+            }
+
+            .key-action {
+                background: rgba(254, 235, 234, 0.2);
+                border: 2px solid #feebea;
+                border-radius: 8px;
+                color: #feebea;
+                padding: 10px 20px;
+                font-size: 14px;
+                font-weight: bold;
+                cursor: pointer;
+                transition: all 0.2s;
+            }
+
+            .key-action:hover {
+                background: rgba(254, 235, 234, 0.3);
+                transform: translateY(-1px);
+            }
+
+            .keyboard-hints {
+                font-size: 10px;
+                color: rgba(254, 235, 234, 0.7);
+                text-align: center;
+                line-height: 1.3;
+            }
+
+
+
+            /* Mobile-only class */
+            .mobile-only {
+                display: none;
+            }
+
+            /* Show mobile elements only on touch devices */
+            @media (hover: none) and (pointer: coarse) {
+                .mobile-only {
+                    display: flex;
+                }
+            }
+
+            /* Mobile responsive adjustments for virtual keyboard */
+            @media (max-width: 480px) {
+                 .virtual-keyboard {
+                     left: 10px;
+                     width: calc(100vw - 20px);
+                     max-width: calc(100vw - 20px);
+                     min-width: 280px;
+                     bottom: 10px;
+                     transform: translateY(100%);
+                     padding: 10px;
+                 }
+
+                 .virtual-keyboard:not(.hidden) {
+                     transform: translateY(0);
+                 }
+
+                 .resize-handle {
+                     width: 15px;
+                 }
+
+                .key {
+                    min-width: 22px;
+                    height: 30px;
+                    font-size: 10px;
+                    padding: 4px;
+                }
+
+                .arrow-key {
+                    min-width: 28px;
+                    height: 32px;
+                    font-size: 12px;
+                }
+            }
+
+            /* Hidden class */
+            .hidden {
+                display: none !important;
             }
 
             /* 移动端优化 */
@@ -1889,21 +2252,24 @@
             /* Debug Panel Styles */
             .debug-panel {
                 position: fixed;
-                bottom: 2rem;
-                right: 2rem;
-                background: rgba(0, 0, 0, 0.8);
-                border: 1px solid rgba(254, 235, 234, 0.3);
-                border-radius: 10px;
-                padding: 1rem;
-                color: #feebea;
-                font-family: "Courier New", monospace;
-                font-size: 0.8rem;
-                max-width: 300px;
+                bottom: 1rem;
+                right: 1rem;
+                background: rgba(0, 0, 0, 0.95);
+                border: 1px solid rgba(254, 237, 234, 0.3);
+                border-radius: 8px;
+                padding: 0.8rem;
+                color: #feedea;
+                font-family: "Arial", sans-serif;
+                font-size: 0.7rem;
+                max-width: 280px;
+                max-height: 70vh;
+                overflow-y: auto;
                 z-index: 9999;
                 opacity: 0;
                 visibility: hidden;
                 transition: all 0.3s ease;
-                backdrop-filter: blur(10px);
+                backdrop-filter: blur(5px);
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
             }
 
             .debug-panel.show {
@@ -1912,48 +2278,53 @@
             }
 
             .debug-panel h4 {
-                color: #00ffff;
-                margin-bottom: 0.5rem;
-                font-size: 0.9rem;
+                color: #feedea;
+                margin-bottom: 0.4rem;
+                font-size: 0.8rem;
+                font-weight: normal;
             }
 
             .debug-panel p {
-                margin-bottom: 0.3rem;
-                line-height: 1.3;
+                margin-bottom: 0.2rem;
+                line-height: 1.2;
+                font-size: 0.65rem;
+                color: #feedea;
             }
 
             .debug-panel .easter-egg-hint {
-                color: #ff6b6b;
-                font-weight: bold;
-                margin-top: 0.5rem;
+                color: rgba(254, 237, 234, 0.8);
+                font-weight: normal;
+                margin-top: 0.3rem;
+                font-size: 0.65rem;
             }
 
             .debug-panel .current-quotes {
-                background: rgba(0, 255, 255, 0.1);
-                padding: 0.5rem;
-                border-radius: 5px;
-                margin-top: 0.5rem;
+                background: rgba(254, 237, 234, 0.1);
+                padding: 0.4rem;
+                border-radius: 4px;
+                margin-top: 0.3rem;
+                font-size: 0.6rem;
+                border: 1px solid rgba(254, 237, 234, 0.2);
             }
 
             .auto-click-btn {
-                background: rgba(255, 215, 0, 0.2);
-                border: 2px solid #ffd700;
-                color: #ffd700;
-                padding: 0.5rem 1rem;
-                border-radius: 20px;
-                font-family: "Courier New", monospace;
-                font-size: 0.8rem;
+                background: rgba(254, 237, 234, 0.1);
+                border: 1px solid rgba(254, 237, 234, 0.3);
+                color: #feedea;
+                padding: 0.3rem 0.6rem;
+                border-radius: 4px;
+                font-family: "Arial", sans-serif;
+                font-size: 0.65rem;
                 cursor: pointer;
-                transition: all 0.3s ease;
-                margin-top: 0.5rem;
+                transition: all 0.2s ease;
+                margin-top: 0.3rem;
                 width: 100%;
-                font-weight: bold;
+                font-weight: normal;
             }
 
             .auto-click-btn:hover {
-                background: rgba(255, 215, 0, 0.3);
-                box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-                transform: scale(1.02);
+                background: rgba(254, 237, 234, 0.2);
+                border-color: rgba(254, 237, 234, 0.5);
             }
 
             .auto-click-btn:active {
@@ -1961,151 +2332,134 @@
             }
 
             .auto-click-btn.running {
-                background: rgba(255, 69, 0, 0.2);
-                border-color: #ff4500;
-                color: #ff4500;
-                animation: autoClickPulse 1s ease-in-out infinite alternate;
-            }
-
-            @keyframes autoClickPulse {
-                0% {
-                    box-shadow: 0 0 5px rgba(255, 69, 0, 0.3);
-                }
-                100% {
-                    box-shadow: 0 0 15px rgba(255, 69, 0, 0.7);
-                }
+                background: rgba(254, 237, 234, 0.15);
+                border-color: rgba(254, 237, 234, 0.4);
+                color: rgba(254, 237, 234, 0.9);
             }
 
             .quick-set-buttons {
                 display: flex;
-                gap: 0.5rem;
-                margin: 1rem 0;
+                flex-direction: column;
+                gap: 0.3rem;
+                margin: 0.5rem 0;
             }
 
             .quick-set-btn {
-                background: rgba(254, 235, 234, 0.1);
-                border: 2px solid rgba(254, 235, 234, 0.3);
-                color: #feebea;
-                padding: 0.5rem 1rem;
-                border-radius: 20px;
-                font-family: "Dancing Script", cursive;
-                font-size: 0.9rem;
+                background: rgba(254, 237, 234, 0.1);
+                border: 1px solid rgba(254, 237, 234, 0.3);
+                color: #feedea;
+                padding: 0.3rem 0.5rem;
+                border-radius: 4px;
+                font-family: "Arial", sans-serif;
+                font-size: 0.65rem;
                 cursor: pointer;
-                transition: all 0.3s ease;
-                flex: 1;
-                font-weight: 500;
+                transition: all 0.2s ease;
+                font-weight: normal;
             }
 
             .quick-set-btn:hover {
-                background: rgba(254, 235, 234, 0.2);
-                box-shadow: 0 0 10px rgba(254, 235, 234, 0.3);
-                transform: translateY(-2px);
+                background: rgba(254, 237, 234, 0.2);
+                border-color: rgba(254, 237, 234, 0.5);
             }
 
             .quick-set-btn:active {
-                transform: translateY(0);
-            }
-
-            .quick-set-btn:first-child {
-                background: rgba(255, 69, 0, 0.1);
-                border-color: rgba(255, 69, 0, 0.3);
-                color: #ff4500;
-            }
-
-            .quick-set-btn:first-child:hover {
-                background: rgba(255, 69, 0, 0.2);
-                box-shadow: 0 0 10px rgba(255, 69, 0, 0.3);
+                transform: scale(0.98);
             }
 
             .debug-toggle {
                 position: fixed;
                 top: 5rem;
                 left: 1rem;
+                z-index: 1000;
                 background: rgba(254, 235, 234, 0.1);
-                border: 2px solid rgba(254, 235, 234, 0.3);
-                border-radius: 25px;
-                padding: 0.6rem 1.2rem;
-                color: #feebea;
+                border-radius: 20px;
+                padding: 0.5rem 1rem;
                 font-family: "Dancing Script", cursive;
-                font-size: 1rem;
+                font-size: 1.1rem;
                 cursor: pointer;
                 transition: all 0.3s ease;
                 backdrop-filter: blur(10px);
-                z-index: 9998;
-                display: none; /* 默认隐藏 */
+                display: none;
+                align-items: center;
+                gap: 0.3rem;
+                color: #feebea;
             }
             
             .debug-toggle.show {
-                display: block; /* 显示状态 */
+                display: flex;
             }
 
             .debug-toggle:hover {
-                background: rgba(254, 235, 234, 0.2);
+                background: rgba(254, 235, 234, 0.15);
                 transform: scale(1.05);
+                box-shadow: 0 0 15px rgba(254, 235, 234, 0.2);
             }
 
             .debug-panel .easter-egg-controls {
-                margin-top: 1rem;
-                padding: 0.5rem;
-                background: rgba(0, 0, 0, 0.2);
-                border-radius: 5px;
-                border: 1px solid rgba(255, 255, 255, 0.1);
+                margin-top: 0.5rem;
+                padding: 0.4rem;
+                background: rgba(254, 237, 234, 0.05);
+                border-radius: 4px;
+                border: 1px solid rgba(254, 237, 234, 0.2);
             }
 
             .debug-panel .easter-egg-controls h5 {
-                margin: 0 0 0.5rem 0;
-                color: #00ffff;
-                font-size: 0.9rem;
+                margin: 0 0 0.3rem 0;
+                color: #feedea;
+                font-size: 0.7rem;
                 text-align: center;
+                font-weight: normal;
             }
 
             .debug-panel .egg-state-buttons {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 0.3rem;
-                margin-bottom: 0.5rem;
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 0.2rem;
+                margin-bottom: 0.3rem;
             }
 
             .debug-panel .state-btn {
-                flex: 1;
-                min-width: 80px;
-                padding: 0.3rem 0.5rem;
-                background: rgba(255, 255, 255, 0.1);
-                color: #ffffff;
-                border: 1px solid rgba(255, 255, 255, 0.2);
+                padding: 0.2rem 0.3rem;
+                background: rgba(254, 237, 234, 0.1);
+                color: #feedea;
+                border: 1px solid rgba(254, 237, 234, 0.3);
                 border-radius: 3px;
                 cursor: pointer;
-                font-size: 0.7rem;
+                font-size: 0.6rem;
                 transition: all 0.2s ease;
+                font-family: "Arial", sans-serif;
+                text-align: center;
             }
 
             .debug-panel .state-btn:hover {
-                background: rgba(255, 255, 255, 0.2);
-                border-color: rgba(255, 255, 255, 0.4);
+                background: rgba(254, 237, 234, 0.2);
+                border-color: rgba(254, 237, 234, 0.5);
             }
 
             .debug-panel .state-btn.active {
-                background: rgba(0, 255, 0, 0.3);
-                border-color: #00ff00;
-                color: #00ff00;
+                background: rgba(254, 237, 234, 0.25);
+                border-color: rgba(254, 237, 234, 0.6);
+                color: #feedea;
             }
 
             .debug-panel .state-btn.reset-btn {
-                background: rgba(255, 100, 100, 0.2);
-                border-color: rgba(255, 100, 100, 0.4);
+                background: rgba(254, 237, 234, 0.08);
+                border-color: rgba(254, 237, 234, 0.25);
+                grid-column: 1;
             }
 
             .debug-panel .state-btn.reset-btn:hover {
-                background: rgba(255, 100, 100, 0.3);
+                background: rgba(254, 237, 234, 0.15);
             }
 
             .debug-panel .state-btn.trigger-btn {
-                background: rgba(100, 255, 100, 0.2);
-                border-color: rgba(100, 255, 100, 0.4);
+                background: rgba(254, 237, 234, 0.12);
+                border-color: rgba(254, 237, 234, 0.3);
+                grid-column: 2;
             }
 
             .debug-panel .state-btn.trigger-btn:hover {
-                background: rgba(100, 255, 100, 0.3);
+                background: rgba(254, 237, 234, 0.2);
             }
 
             /* 导航菜单样式 */
@@ -2277,40 +2631,24 @@
                         Feebea
                     </h1>
 
-                    <p
-                        class="tribute"
-                        onclick="copyToClipboard('To Those I Love')"
-                        style="cursor: pointer"
-                    >
+                    <p class="tribute">
                         To Those I Love
                     </p>
                 </header>
 
                 <section class="color-display" id="color-display">
-                    <div
-                        class="color-circle"
-                        onclick="copyToClipboard('#feebea')"
-                    ></div>
+                    <div class="color-circle"></div>
                 </section>
 
                 <section class="color-info">
                     <div class="color-codes">
-                        <div
-                            class="code-item"
-                            onclick="copyToClipboard('#feebea')"
-                        >
+                        <div class="code-item">
                             #feebea
                         </div>
-                        <div
-                            class="code-item"
-                            onclick="copyToClipboard('rgb(254, 235, 234)')"
-                        >
+                        <div class="code-item">
                             rgb(254, 235, 234)
                         </div>
-                        <div
-                            class="code-item"
-                            onclick="copyToClipboard('hsl(3, 91%, 96%)')"
-                        >
+                        <div class="code-item">
                             hsl(3, 91%, 96%)
                         </div>
                     </div>
@@ -2319,9 +2657,8 @@
                 <section class="quote-section" id="quote-section">
                     <p class="quote-text">
                         "My search for truth is finished at last. I'm going
-                        home."
+                        home." <span class="quote-author">— Zima Blue</span>
                     </p>
-                    <p class="quote-author">— Zima Blue</p>
                 </section>
 
                 <section class="meditation" id="meditation">
@@ -2352,45 +2689,35 @@
 
                 <section class="essence" id="essence">
                     <div class="essence-card" onclick="changeQuote(0)">
-                        <h3
-                            class="essence-title quote-clickable"
-                            onclick="event.stopPropagation(); copyQuoteText(this)"
-                        >
+                        <h3 class="essence-title">
                             The night is dark and full of terrors
                         </h3>
-                        <p
-                            class="essence-desc quote-clickable"
-                            onclick="event.stopPropagation(); copyQuoteText(this)"
-                        >
+                        <p class="essence-desc">
                             Game of Thrones
                         </p>
                     </div>
                     <div class="essence-card" onclick="changeQuote(1)">
-                        <h3
-                            class="essence-title quote-clickable"
-                            onclick="event.stopPropagation(); copyQuoteText(this)"
-                        >
+                        <h3 class="essence-title">
                             I have a hangover. A hangover with a hangover
                         </h3>
-                        <p
-                            class="essence-desc quote-clickable"
-                            onclick="event.stopPropagation(); copyQuoteText(this)"
-                        >
+                        <p class="essence-desc">
                             Black Books
                         </p>
                     </div>
                     <div class="essence-card" onclick="changeQuote(2)">
-                        <h3
-                            class="essence-title quote-clickable"
-                            onclick="event.stopPropagation(); copyQuoteText(this)"
-                        >
+                        <h3 class="essence-title">
                             Life is a beautiful robe crawling with lice
                         </h3>
-                        <p
-                            class="essence-desc quote-clickable"
-                            onclick="event.stopPropagation(); copyQuoteText(this)"
-                        >
+                        <p class="essence-desc">
                             Zhang Ailing
+                        </p>
+                    </div>
+                    <div class="essence-card" onclick="changeQuote(3)">
+                        <h3 class="essence-title">
+                            Sometimes you have to run before you can walk
+                        </h3>
+                        <p class="essence-desc">
+                            Iron Man
                         </p>
                     </div>
                 </section>
@@ -2398,13 +2725,28 @@
                 <section class="phoebe-section" id="phoebe-section">
                     <h2 class="phoebe-title">Phoebe's Wisdom</h2>
                     <p class="phoebe-quote">
-                        "Maybe this is what's meant to be.<br />
-                        Like, maybe the universe has a plan for us."
+                        "NO, YOU ARE THE BOSS OF YOU!"
                     </p>
                 </section>
 
                 <footer class="final-tribute">
-                    <p class="final-text">Peng</p>
+                    <div class="footer-content">
+                        <p class="final-text">Peng</p>
+                        <div class="contact-icons">
+                            <span class="email-icon" title="Email: pjlpcc@qq.com" onclick="copyToClipboard('pjlpcc@qq.com')">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="#feebea" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M20 4H4C2.9 4 2 4.9 2 6V18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6C22 4.9 21.1 4 20 4ZM20 8L12 13L4 8V6L12 11L20 6V8Z"/>
+                                </svg>
+                                pjlpcc@qq.com
+                            </span>
+                            <span class="wechat-icon" title="WeChat: wx3dot1415926" onclick="copyToClipboard('wx3dot1415926')">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="#feebea" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M8.5 12C9.33 12 10 11.33 10 10.5S9.33 9 8.5 9 7 9.67 7 10.5 7.67 12 8.5 12ZM15.5 12C16.33 12 17 11.33 17 10.5S16.33 9 15.5 9 14 9.67 14 10.5 14.67 12 15.5 12ZM18 10.5C18 6.36 14.64 3 10.5 3S3 6.36 3 10.5C3 12.83 4.24 14.86 6.07 16.05C5.73 17.74 4.21 19.81 4.21 19.81S7.5 19.5 9.08 18.29C9.54 18.38 10.01 18.43 10.5 18.43C14.64 18.43 18 15.07 18 10.5Z"/>
+                                </svg>
+                                wx3dot1415926
+                            </span>
+                        </div>
+                    </div>
                 </footer>
             </div>
 
@@ -2415,40 +2757,24 @@
                         Feebea
                     </h1>
 
-                    <p
-                        class="tribute"
-                        onclick="copyToClipboard('致那些我所热爱的')"
-                        style="cursor: pointer"
-                    >
+                    <p class="tribute">
                         致那些我所热爱的
                     </p>
                 </header>
 
                 <section class="color-display">
-                    <div
-                        class="color-circle"
-                        onclick="copyToClipboard('#feebea')"
-                    ></div>
+                    <div class="color-circle"></div>
                 </section>
 
                 <section class="color-info">
                     <div class="color-codes">
-                        <div
-                            class="code-item"
-                            onclick="copyToClipboard('#feebea')"
-                        >
+                        <div class="code-item">
                             #feebea
                         </div>
-                        <div
-                            class="code-item"
-                            onclick="copyToClipboard('rgb(254, 235, 234)')"
-                        >
+                        <div class="code-item">
                             rgb(254, 235, 234)
                         </div>
-                        <div
-                            class="code-item"
-                            onclick="copyToClipboard('hsl(3, 91%, 96%)')"
-                        >
+                        <div class="code-item">
                             hsl(3, 91%, 96%)
                         </div>
                     </div>
@@ -2456,9 +2782,8 @@
 
                 <section class="quote-section">
                     <p class="quote-text">
-                        "我对真相的探索终于结束了。我要回家了。"
+                        "我对真相的探索终于结束了。我要回家了。" <span class="quote-author">— 齐马蓝</span>
                     </p>
-                    <p class="quote-author">— 齐马蓝</p>
                 </section>
 
                 <section class="meditation">
@@ -2509,45 +2834,35 @@
 
                 <section class="essence">
                     <div class="essence-card" onclick="changeQuote(0)">
-                        <h3
-                            class="essence-title quote-clickable"
-                            onclick="event.stopPropagation(); copyQuoteText(this)"
-                        >
+                        <h3 class="essence-title">
                             长夜漫漫，处处险恶
                         </h3>
-                        <p
-                            class="essence-desc quote-clickable"
-                            onclick="event.stopPropagation(); copyQuoteText(this)"
-                        >
+                        <p class="essence-desc">
                             权力的游戏
                         </p>
                     </div>
                     <div class="essence-card" onclick="changeQuote(1)">
-                        <h3
-                            class="essence-title quote-clickable"
-                            onclick="event.stopPropagation(); copyQuoteText(this)"
-                        >
+                        <h3 class="essence-title">
                             我宿醉了。比宿醉还醉的宿醉
                         </h3>
-                        <p
-                            class="essence-desc quote-clickable"
-                            onclick="event.stopPropagation(); copyQuoteText(this)"
-                        >
+                        <p class="essence-desc">
                             布莱克书店
                         </p>
                     </div>
                     <div class="essence-card" onclick="changeQuote(2)">
-                        <h3
-                            class="essence-title quote-clickable"
-                            onclick="event.stopPropagation(); copyQuoteText(this)"
-                        >
+                        <h3 class="essence-title">
                             人生是一袭华美的袍，爬满了虱子
                         </h3>
-                        <p
-                            class="essence-desc quote-clickable"
-                            onclick="event.stopPropagation(); copyQuoteText(this)"
-                        >
+                        <p class="essence-desc">
                             张爱玲
+                        </p>
+                    </div>
+                    <div class="essence-card" onclick="changeQuote(3)">
+                        <h3 class="essence-title">
+                            有时候你必须先跑起来，才能学会走路
+                        </h3>
+                        <p class="essence-desc">
+                            钢铁侠
                         </p>
                     </div>
                 </section>
@@ -2555,15 +2870,28 @@
                 <section class="phoebe-section">
                     <h2 class="phoebe-title">菲比的智慧</h2>
                     <p class="phoebe-quote">
-                        "Maybe this is what's meant to be.<br />
-                        也许这就是命中注定的<br />
-                        Like, maybe the universe has a plan for us."<br />
-                        也许宇宙对我们另有安排
+                        "NO, YOU ARE THE BOSS OF YOU!"
                     </p>
                 </section>
 
                 <footer class="final-tribute">
-                    <p class="final-text">Peng</p>
+                    <div class="footer-content">
+                        <p class="final-text">Peng</p>
+                        <div class="contact-icons">
+                            <span class="email-icon" title="Email: pjlpcc@qq.com" onclick="copyToClipboard('pjlpcc@qq.com')">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="#feebea" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M20 4H4C2.9 4 2 4.9 2 6V18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6C22 4.9 21.1 4 20 4ZM20 8L12 13L4 8V6L12 11L20 6V8Z"/>
+                                </svg>
+                                pjlpcc@qq.com
+                            </span>
+                            <span class="wechat-icon" title="WeChat: wx3dot1415926" onclick="copyToClipboard('wx3dot1415926')">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="#feebea" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M8.5 12C9.33 12 10 11.33 10 10.5S9.33 9 8.5 9 7 9.67 7 10.5 7.67 12 8.5 12ZM15.5 12C16.33 12 17 11.33 17 10.5S16.33 9 15.5 9 14 9.67 14 10.5 14.67 12 15.5 12ZM18 10.5C18 6.36 14.64 3 10.5 3S3 6.36 3 10.5C3 12.83 4.24 14.86 6.07 16.05C5.73 17.74 4.21 19.81 4.21 19.81S7.5 19.5 9.08 18.29C9.54 18.38 10.01 18.43 10.5 18.43C14.64 18.43 18 15.07 18 10.5Z"/>
+                                </svg>
+                                wx3dot1415926
+                            </span>
+                        </div>
+                    </div>
                 </footer>
             </div>
         </div>
@@ -2642,6 +2970,11 @@
                 // Re-adapt font sizes after language change
                 setTimeout(() => {
                     adaptFontSizeResponsive();
+                    adaptQuoteFontSize();
+                    // Update quote section content for new language
+                    updateQuoteSection();
+                    // Reinitialize touch events for the new language
+                    initializeQuoteTouchEvents();
                 }, 100);
             }
 
@@ -2692,15 +3025,15 @@
                     let fontSize;
 
                     if (textLength <= 8) {
-                        fontSize = "1.3rem";
+                        fontSize = "1.7rem";
                     } else if (textLength <= 12) {
-                        fontSize = "1.1rem";
+                        fontSize = "1.5rem";
                     } else if (textLength <= 16) {
-                        fontSize = "1rem";
+                        fontSize = "1.3rem";
                     } else if (textLength <= 20) {
-                        fontSize = "0.9rem";
+                        fontSize = "1.2rem";
                     } else {
-                        fontSize = "0.8rem";
+                        fontSize = "1.1rem";
                     }
 
                     title.style.fontSize = fontSize;
@@ -2711,17 +3044,208 @@
                     let fontSize;
 
                     if (textLength <= 6) {
-                        fontSize = "1rem";
+                        fontSize = "1.4rem";
                     } else if (textLength <= 10) {
-                        fontSize = "0.9rem";
+                        fontSize = "1.3rem";
                     } else if (textLength <= 14) {
-                        fontSize = "0.8rem";
+                        fontSize = "1.2rem";
                     } else {
-                        fontSize = "0.7rem";
+                        fontSize = "1.1rem";
                     }
 
                     desc.style.fontSize = fontSize;
                 });
+            }
+
+            // Function to initialize touch events for quote sections
+            function initializeQuoteTouchEvents() {
+                // Remove existing event listeners
+                const allQuoteSections = document.querySelectorAll('.quote-section');
+                allQuoteSections.forEach(section => {
+                    section.removeEventListener('touchstart', handleTouchStart);
+                    section.removeEventListener('touchend', handleTouchEnd);
+                });
+                
+                // Add event listeners to the currently visible quote section
+                const currentQuoteSection = isEnglish 
+                    ? document.querySelector('#englishContent .quote-section')
+                    : document.querySelector('#chineseContent .quote-section');
+                    
+                if (currentQuoteSection) {
+                    currentQuoteSection.addEventListener('touchstart', handleTouchStart, { passive: true });
+                    currentQuoteSection.addEventListener('touchend', handleTouchEnd, { passive: true });
+                    
+                    // Add transition styles for smooth animations
+                    currentQuoteSection.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+                }
+            }
+
+            // Quote font size adaptation based on text length
+            function adaptQuoteFontSize() {
+                // Select quote elements from the currently visible section
+                const container = isEnglish ? '#englishContent' : '#chineseContent';
+                const quoteText = document.querySelector(`${container} .quote-text`);
+                const quoteAuthor = document.querySelector(`${container} .quote-author`);
+                const isMobile = window.innerWidth <= 768;
+                const isSmallMobile = window.innerWidth <= 480;
+
+                if (quoteText) {
+                    const textLength = quoteText.textContent.length;
+                    let fontSize;
+
+                    if (isEnglish) {
+                        // English font sizes
+                        if (isSmallMobile) {
+                            if (textLength <= 50) {
+                                fontSize = "1.2rem";
+                            } else if (textLength <= 100) {
+                                fontSize = "1rem";
+                            } else if (textLength <= 150) {
+                                fontSize = "0.9rem";
+                            } else if (textLength <= 200) {
+                                fontSize = "0.8rem";
+                            } else {
+                                fontSize = "0.7rem";
+                            }
+                        } else if (isMobile) {
+                            if (textLength <= 50) {
+                                fontSize = "1.4rem";
+                            } else if (textLength <= 100) {
+                                fontSize = "1.2rem";
+                            } else if (textLength <= 150) {
+                                fontSize = "1rem";
+                            } else if (textLength <= 200) {
+                                fontSize = "0.9rem";
+                            } else {
+                                fontSize = "0.8rem";
+                            }
+                        } else {
+                            // Desktop sizes
+                            if (textLength <= 50) {
+                                fontSize = "2rem";
+                            } else if (textLength <= 100) {
+                                fontSize = "1.6rem";
+                            } else if (textLength <= 150) {
+                                fontSize = "1.3rem";
+                            } else if (textLength <= 200) {
+                                fontSize = "1.1rem";
+                            } else if (textLength <= 300) {
+                                fontSize = "1rem";
+                            } else {
+                                fontSize = "0.9rem";
+                            }
+                        }
+                    } else {
+                        // Chinese font sizes (slightly larger than half)
+                        if (isSmallMobile) {
+                            if (textLength <= 50) {
+                                fontSize = "0.8rem";
+                            } else if (textLength <= 100) {
+                                fontSize = "0.7rem";
+                            } else if (textLength <= 150) {
+                                fontSize = "0.6rem";
+                            } else if (textLength <= 200) {
+                                fontSize = "0.55rem";
+                            } else {
+                                fontSize = "0.5rem";
+                            }
+                        } else if (isMobile) {
+                            if (textLength <= 50) {
+                                fontSize = "0.9rem";
+                            } else if (textLength <= 100) {
+                                fontSize = "0.8rem";
+                            } else if (textLength <= 150) {
+                                fontSize = "0.7rem";
+                            } else if (textLength <= 200) {
+                                fontSize = "0.6rem";
+                            } else {
+                                fontSize = "0.55rem";
+                            }
+                        } else {
+                            // Desktop sizes
+                            if (textLength <= 50) {
+                                fontSize = "1.3rem";
+                            } else if (textLength <= 100) {
+                                fontSize = "1.1rem";
+                            } else if (textLength <= 150) {
+                                fontSize = "0.9rem";
+                            } else if (textLength <= 200) {
+                                fontSize = "0.8rem";
+                            } else if (textLength <= 300) {
+                                fontSize = "0.7rem";
+                            } else {
+                                fontSize = "0.6rem";
+                            }
+                        }
+                    }
+
+                    quoteText.style.fontSize = fontSize;
+                }
+
+                if (quoteAuthor) {
+                    const authorLength = quoteAuthor.textContent.length;
+                    let fontSize;
+
+                    if (isEnglish) {
+                        // English author font sizes
+                        if (isSmallMobile) {
+                            if (authorLength <= 10) {
+                                fontSize = "1rem";
+                            } else if (authorLength <= 20) {
+                                fontSize = "0.9rem";
+                            } else {
+                                fontSize = "0.8rem";
+                            }
+                        } else if (isMobile) {
+                            if (authorLength <= 10) {
+                                fontSize = "1.1rem";
+                            } else if (authorLength <= 20) {
+                                fontSize = "1rem";
+                            } else {
+                                fontSize = "0.9rem";
+                            }
+                        } else {
+                            // Desktop sizes
+                            if (authorLength <= 10) {
+                                fontSize = "1.5rem";
+                            } else if (authorLength <= 20) {
+                                fontSize = "1.3rem";
+                            } else {
+                                fontSize = "1.1rem";
+                            }
+                        }
+                    } else {
+                        // Chinese author font sizes (slightly larger than half)
+                        if (isSmallMobile) {
+                            if (authorLength <= 10) {
+                                fontSize = "0.7rem";
+                            } else if (authorLength <= 20) {
+                                fontSize = "0.6rem";
+                            } else {
+                                fontSize = "0.55rem";
+                            }
+                        } else if (isMobile) {
+                            if (authorLength <= 10) {
+                                fontSize = "0.75rem";
+                            } else if (authorLength <= 20) {
+                                fontSize = "0.7rem";
+                            } else {
+                                fontSize = "0.6rem";
+                            }
+                        } else {
+                            // Desktop sizes
+                            if (authorLength <= 10) {
+                                fontSize = "1rem";
+                            } else if (authorLength <= 20) {
+                                fontSize = "0.9rem";
+                            } else {
+                                fontSize = "0.8rem";
+                            }
+                        }
+                    }
+
+                    quoteAuthor.style.fontSize = fontSize;
+                }
             }
 
             // Responsive font size adaptation for mobile
@@ -2738,40 +3262,40 @@
 
                     if (isSmallMobile) {
                         if (textLength <= 8) {
-                            fontSize = "1rem";
+                            fontSize = "1.3rem";
                         } else if (textLength <= 12) {
-                            fontSize = "0.9rem";
+                            fontSize = "1.2rem";
                         } else if (textLength <= 16) {
-                            fontSize = "0.8rem";
+                            fontSize = "1.1rem";
                         } else if (textLength <= 20) {
-                            fontSize = "0.7rem";
+                            fontSize = "1rem";
                         } else {
-                            fontSize = "0.6rem";
+                            fontSize = "0.9rem";
                         }
                     } else if (isMobile) {
                         if (textLength <= 8) {
-                            fontSize = "1.1rem";
+                            fontSize = "1.4rem";
                         } else if (textLength <= 12) {
-                            fontSize = "1rem";
+                            fontSize = "1.3rem";
                         } else if (textLength <= 16) {
-                            fontSize = "0.9rem";
+                            fontSize = "1.2rem";
                         } else if (textLength <= 20) {
-                            fontSize = "0.8rem";
+                            fontSize = "1.1rem";
                         } else {
-                            fontSize = "0.7rem";
+                            fontSize = "1rem";
                         }
                     } else {
                         // Desktop sizes
                         if (textLength <= 8) {
-                            fontSize = "1.3rem";
+                            fontSize = "1.7rem";
                         } else if (textLength <= 12) {
-                            fontSize = "1.1rem";
+                            fontSize = "1.5rem";
                         } else if (textLength <= 16) {
-                            fontSize = "1rem";
+                            fontSize = "1.3rem";
                         } else if (textLength <= 20) {
-                            fontSize = "0.9rem";
+                            fontSize = "1.2rem";
                         } else {
-                            fontSize = "0.8rem";
+                            fontSize = "1.1rem";
                         }
                     }
 
@@ -2784,34 +3308,34 @@
 
                     if (isSmallMobile) {
                         if (textLength <= 6) {
-                            fontSize = "0.8rem";
+                            fontSize = "1.1rem";
                         } else if (textLength <= 10) {
-                            fontSize = "0.7rem";
+                            fontSize = "1rem";
                         } else if (textLength <= 14) {
-                            fontSize = "0.6rem";
+                            fontSize = "0.9rem";
                         } else {
-                            fontSize = "0.55rem";
+                            fontSize = "0.8rem";
                         }
                     } else if (isMobile) {
                         if (textLength <= 6) {
-                            fontSize = "0.9rem";
+                            fontSize = "1.2rem";
                         } else if (textLength <= 10) {
-                            fontSize = "0.8rem";
+                            fontSize = "1.1rem";
                         } else if (textLength <= 14) {
-                            fontSize = "0.7rem";
+                            fontSize = "1rem";
                         } else {
-                            fontSize = "0.65rem";
+                            fontSize = "0.9rem";
                         }
                     } else {
                         // Desktop sizes
                         if (textLength <= 6) {
-                            fontSize = "1rem";
+                            fontSize = "1.4rem";
                         } else if (textLength <= 10) {
-                            fontSize = "0.9rem";
+                            fontSize = "1.3rem";
                         } else if (textLength <= 14) {
-                            fontSize = "0.8rem";
+                            fontSize = "1.2rem";
                         } else {
-                            fontSize = "0.7rem";
+                            fontSize = "1.1rem";
                         }
                     }
 
@@ -2823,6 +3347,10 @@
             document.addEventListener("DOMContentLoaded", function () {
                 initializeQuotes();
                 adaptFontSizeResponsive();
+                adaptQuoteFontSize();
+                
+                // Initialize quote section touch events for both language versions
+                initializeQuoteTouchEvents();
                 
                 // 禁止右键菜单
                 document.addEventListener('contextmenu', function(e) {
@@ -2851,6 +3379,18 @@
                 
                 // 禁用键盘复制快捷键和开发者工具
                 document.addEventListener('keydown', function(e) {
+                    // Handle quote navigation with arrow keys
+                    if (e.key === 'ArrowLeft') {
+                        e.preventDefault();
+                        previousQuote();
+                        return;
+                    }
+                    if (e.key === 'ArrowRight') {
+                        e.preventDefault();
+                        nextQuote();
+                        return;
+                    }
+                    
                     // 检测是否按下 Ctrl + C / Ctrl + X / Ctrl + A / Ctrl + S / Ctrl + P
                     if (e.ctrlKey && (e.key === 'c' || e.key === 'x' || e.key === 'a' || e.key === 's' || e.key === 'p')) {
                         e.preventDefault();
@@ -2881,6 +3421,49 @@
             // Re-adapt font sizes on window resize
             window.addEventListener("resize", function () {
                 adaptFontSizeResponsive();
+                adaptQuoteFontSize();
+                
+                // Reposition LOOK AT YOU texts if they exist
+                const lookAtYouTexts = document.querySelectorAll('[style*="LOOK AT YOU"]');
+                lookAtYouTexts.forEach(textElement => {
+                    if (textElement.textContent === "LOOK AT YOU!") {
+                        const isMobile = window.innerWidth <= 768;
+                        const isSmallMobile = window.innerWidth <= 480;
+                        
+                        // Responsive margins
+                        const marginX = isSmallMobile ? 30 : isMobile ? 40 : 50;
+                        const marginY = isSmallMobile ? 40 : isMobile ? 50 : 50;
+                        const maxWidth = window.innerWidth - (marginX * 2);
+                        const maxHeight = window.innerHeight - (marginY * 2);
+                        
+                        // Get current position
+                        const currentLeft = parseInt(textElement.style.left);
+                        const currentTop = parseInt(textElement.style.top);
+                        
+                        // Adjust position if out of bounds
+                        let newLeft = currentLeft;
+                        let newTop = currentTop;
+                        
+                        if (currentLeft < marginX) {
+                            newLeft = marginX;
+                        } else if (currentLeft > maxWidth) {
+                            newLeft = Math.max(marginX, maxWidth - 100);
+                        }
+                        
+                        if (currentTop < marginY) {
+                            newTop = marginY;
+                        } else if (currentTop > maxHeight) {
+                            newTop = Math.max(marginY, maxHeight - 60);
+                        }
+                        
+                        // Update position
+                        textElement.style.left = newLeft + 'px';
+                        textElement.style.top = newTop + 'px';
+                        
+                        // Update max-width for responsive design
+                        textElement.style.maxWidth = isSmallMobile ? '200px' : isMobile ? '300px' : '400px';
+                    }
+                });
             });
 
             // Add subtle parallax effect
@@ -3458,6 +4041,9 @@
                 tributeClick: false, // see-hes-her-lobster
                 essenceCard: false, // that-is-brand-new-information-breaking-news-new-information-expected-not-surprised-phoebe-meme-friends-101soundboards.mp3
                 phoebeWisdom: false, // i-wish-i-could-but-i-dont-want-to-101soundboards.mp3
+                phoebeWisdomBoss: false, // boss.mp3
+                emailIcon: false, // email.mp3
+                wechatIcon: false, // computer.mp3
             };
 
             // Trigger count limits for Phoebe easter eggs (max 3 times each)
@@ -3469,6 +4055,9 @@
                 phoebeWisdom: 0,
                 phoebeKeyboard: 0,
                 c137: 0,
+                phoebeWisdomBoss: 0,
+                emailIcon: 0,
+                wechatIcon: 0,
             };
 
             let clickCounters = {
@@ -3477,6 +4066,9 @@
                 tributeClick: 0, // rapid click counter
                 essenceCard: 0, // rapid click counter
                 phoebeWisdom: 0, // rapid click counter
+                phoebeWisdomBoss: 0, // rapid click counter
+                emailIcon: 0, // rapid click counter
+                wechatIcon: 0, // rapid click counter
             };
 
             let clickTimers = {
@@ -3485,6 +4077,9 @@
                 tributeClick: null,
                 essenceCard: null,
                 phoebeWisdom: null,
+                phoebeWisdomBoss: null,
+                emailIcon: null,
+                wechatIcon: null,
             };
 
             let keySequence = [];
@@ -3534,7 +4129,162 @@
         // Audio playlist - starts empty, populated by easter eggs
         let audioPlaylist = [];
 
+            // HIMYM Quotes System
+            const himymQuotes = {
+                english: [
+                    {
+                        text: "The future is scary but you can't just run back to the past because it's familiar.",
+                        author: "Robin"
+                    },
+                    {
+                        text: "Because sometimes even if you know how something's gonna end that doesn't mean you can't enjoy the ride.",
+                        author: "Ted"
+                    },
+                    {
+                        text: "That's life, you know, we never end up where you thought you wanted to be.",
+                        author: "Marshall"
+                    },
+                    {
+                        text: "We're going to get older whether we like it or not, so the only question is whether we get on with our lives, or desperately cling to the past.",
+                        author: "Ted"
+                    },
+                    {
+                        text: "Look, you can't design your life like a building. It doesn't work that way. You just have to live it… and it'll design itself.",
+                        author: "Lily"
+                    },
+                    {
+                        text: "I realized that I'm searching, searching for what I really want in life. And you know what? I have absolutely no idea what that is.",
+                        author: "Barney"
+                    },
+                    {
+                        text: "So really the biggest mistake would be not to make that mistake, because then you'll go your whole life not knowing if something was a mistake or not.",
+                        author: "Lily"
+                    },
+                    {
+                        text: "You can't cling to the past, because no matter how tightly you hold on, it's already gone.",
+                        author: "Ted"
+                    },
+                    {
+                        text: "My search for truth is finished at last. I'm going home.",
+                        author: "Zima Blue"
+                    }
+                ],
+                chinese: [
+                    {
+                        text: "未来虽然可怕，但你不能因为过去很熟悉很诱人而转身跑回去。",
+                        author: "Robin"
+                    },
+                    {
+                        text: "因为有时候，即使你知道事情的结果也不代表你不能享受这个过程。",
+                        author: "Ted"
+                    },
+                    {
+                        text: "这就是人生，永远不会尽如人意。",
+                        author: "Marshall"
+                    },
+                    {
+                        text: "不管我们喜欢与否，我们都将变老。所以唯一的问题是我们选择继续生活下去还是可怜兮兮的守着过去。",
+                        author: "Ted"
+                    },
+                    {
+                        text: "你不能想设计建筑那样去规划自己的人生。生活不需要草图，你只需融入其中，上天自有安排。",
+                        author: "Lily"
+                    },
+                    {
+                        text: "我意识到我在寻找，寻找我生活中真正想要的东西。但是我完全不知道自己想要什么。",
+                        author: "Barney"
+                    },
+                    {
+                        text: "人生中最大的错误就是不去犯错。因为如果你不去犯错，你一辈子都不会知道它到底是不是一个错误。",
+                        author: "Lily"
+                    },
+                    {
+                        text: "你不能对过去念念不忘，因为无论你把回忆抓得多紧，它早已消失。",
+                        author: "Ted"
+                    },
+                    {
+                        text: "我对真理的探寻终于结束了。我要回家了。",
+                        author: "Zima Blue"
+                    }
+                ]
+            };
 
+            let currentQuoteIndex = 8; // Start with Zima Blue quote
+            let touchStartX = 0;
+            let touchEndX = 0;
+
+
+
+            // Function to update quote section content
+            function updateQuoteSection() {
+                // Select the correct quote section based on current language
+                const quoteSection = isEnglish 
+                    ? document.querySelector('#englishContent .quote-section')
+                    : document.querySelector('#chineseContent .quote-section');
+                    
+                if (!quoteSection) return;
+
+                const quoteText = quoteSection.querySelector('.quote-text');
+                
+                if (!quoteText) return;
+
+                const currentQuotes = isEnglish ? himymQuotes.english : himymQuotes.chinese;
+                const quote = currentQuotes[currentQuoteIndex];
+                
+                // Add fade out effect
+                quoteSection.style.opacity = '0.3';
+                quoteSection.style.transform = 'translateY(10px)';
+                
+                setTimeout(() => {
+                    quoteText.innerHTML = `"${quote.text}" <span class="quote-author">— ${quote.author}</span>`;
+                    
+                    // Adapt font size based on content length
+                    adaptQuoteFontSize();
+                    
+                    // Fade back in
+                    quoteSection.style.opacity = '1';
+                    quoteSection.style.transform = 'translateY(0)';
+                }, 200);
+            }
+
+            // Function to go to next quote
+            function nextQuote() {
+                const currentQuotes = isEnglish ? himymQuotes.english : himymQuotes.chinese;
+                currentQuoteIndex = (currentQuoteIndex + 1) % currentQuotes.length;
+                updateQuoteSection();
+            }
+
+            // Function to go to previous quote
+            function previousQuote() {
+                const currentQuotes = isEnglish ? himymQuotes.english : himymQuotes.chinese;
+                currentQuoteIndex = (currentQuoteIndex - 1 + currentQuotes.length) % currentQuotes.length;
+                updateQuoteSection();
+            }
+
+            // Function to handle touch events
+            function handleTouchStart(e) {
+                touchStartX = e.touches[0].clientX;
+            }
+
+            function handleTouchEnd(e) {
+                touchEndX = e.changedTouches[0].clientX;
+                handleSwipe();
+            }
+
+            function handleSwipe() {
+                const swipeThreshold = 50; // Minimum distance for a swipe
+                const swipeDistance = touchEndX - touchStartX;
+                
+                if (Math.abs(swipeDistance) > swipeThreshold) {
+                    if (swipeDistance > 0) {
+                        // Swipe right - previous quote
+                        previousQuote();
+                    } else {
+                        // Swipe left - next quote
+                        nextQuote();
+                    }
+                }
+            }
 
             // Function to change quote in a card
             function changeQuote(cardIndex) {
@@ -3589,24 +4339,9 @@
                 }, 100);
             }
 
-            // Function to copy quote text
-            function copyQuoteText(element) {
-                const text = element.textContent;
-                copyToClipboard(text);
-            }
+            // Function removed - no longer copying quote text
 
-            // Make all text elements clickable for copying
-            function makeTextClickable() {
-                const textSelectors =
-                    ".quote-text, .quote-author, .meditation-text, .phoebe-quote, .phoebe-title, .final-text";
-                document.querySelectorAll(textSelectors).forEach((element) => {
-                    element.addEventListener("click", function () {
-                        copyToClipboard(this.textContent);
-                    });
-                    element.style.cursor = "pointer";
-                    element.style.userSelect = "text";
-                });
-            }
+            // Function removed - no longer making text clickable for copying
 
             // Zima Blue squares system
             let zimaSquares = [];
@@ -4004,6 +4739,22 @@
                         
                         document.body.appendChild(overlay);
                         
+                        // Add double-click listener to close
+                        let zeldaClickCount = 0;
+                        let zeldaClickTimer = null;
+                        overlay.addEventListener('click', function(e) {
+                            zeldaClickCount++;
+                            if (zeldaClickCount === 1) {
+                                zeldaClickTimer = setTimeout(() => {
+                                    zeldaClickCount = 0;
+                                }, 300); // Reset after 300ms
+                            } else if (zeldaClickCount === 2) {
+                                clearTimeout(zeldaClickTimer);
+                                zeldaClickCount = 0;
+                                closeZeldaOverlay(overlay);
+                            }
+                        });
+                        
                         // Show overlay and start audio
                         setTimeout(() => {
                             overlay.classList.add('show');
@@ -4170,10 +4921,19 @@
                 if (easterEgg) {
                     easterEgg.classList.add('show');
 
-                    // Add click listener to background to close
+                    // Add double-click listener to close
+                    let clickCount = 0;
+                    let clickTimer = null;
                     setTimeout(() => {
                         easterEgg.addEventListener('click', function(e) {
-                            if (e.target === easterEgg) {
+                            clickCount++;
+                            if (clickCount === 1) {
+                                clickTimer = setTimeout(() => {
+                                    clickCount = 0;
+                                }, 300); // Reset after 300ms
+                            } else if (clickCount === 2) {
+                                clearTimeout(clickTimer);
+                                clickCount = 0;
                                 closeCyberpunkEasterEgg();
                             }
                         });
@@ -4629,6 +5389,9 @@
                 const toggleTributeBtn = document.getElementById('toggleTributeBtn');
                 const toggleEssenceBtn = document.getElementById('toggleEssenceBtn');
                 const toggleWisdomBtn = document.getElementById('toggleWisdomBtn');
+                const toggleBossBtn = document.getElementById('toggleBossBtn');
+                const toggleEmailBtn = document.getElementById('toggleEmailBtn');
+                const toggleWechatBtn = document.getElementById('toggleWechatBtn');
 
                 // Other easter egg buttons
                 const toggleCyberpunkBtn = document.getElementById('toggleCyberpunkBtn');
@@ -4656,6 +5419,15 @@
                 }
                 if (toggleWisdomBtn) {
                     toggleWisdomBtn.addEventListener('click', () => toggleEasterEggState('phoebeWisdom', toggleWisdomBtn));
+                }
+                if (toggleBossBtn) {
+                    toggleBossBtn.addEventListener('click', () => toggleEasterEggState('phoebeWisdomBoss', toggleBossBtn));
+                }
+                if (toggleEmailBtn) {
+                    toggleEmailBtn.addEventListener('click', () => toggleEasterEggState('emailIcon', toggleEmailBtn));
+                }
+                if (toggleWechatBtn) {
+                    toggleWechatBtn.addEventListener('click', () => toggleEasterEggState('wechatIcon', toggleWechatBtn));
                 }
 
                 // Other easter egg toggles
@@ -4827,6 +5599,9 @@
                 updateButtonState(document.getElementById('toggleTributeBtn'), easterEggTriggered.tributeClick);
                 updateButtonState(document.getElementById('toggleEssenceBtn'), easterEggTriggered.essenceCard);
                 updateButtonState(document.getElementById('toggleWisdomBtn'), easterEggTriggered.phoebeWisdom);
+                updateButtonState(document.getElementById('toggleBossBtn'), easterEggTriggered.phoebeWisdomBoss);
+                updateButtonState(document.getElementById('toggleEmailBtn'), easterEggTriggered.emailIcon);
+                updateButtonState(document.getElementById('toggleWechatBtn'), easterEggTriggered.wechatIcon);
                 
                 // Update other easter egg buttons
                 updateButtonState(document.getElementById('toggleCyberpunkBtn'), cyberpunkEasterEggTriggered);
@@ -4861,19 +5636,19 @@
 
                     if (isMatch) matchCount++;
 
-                    html += `<p style="color: ${isMatch ? '#00ff00' : '#ff6b6b'}; ${isCurrentTarget ? 'background: rgba(255, 255, 0, 0.2); padding: 0.2rem; border-radius: 3px;' : ''}">
+                    html += `<p style="color: ${isMatch ? '#feedea' : 'rgba(254, 237, 234, 0.6)'}; ${isCurrentTarget ? 'background: rgba(254, 237, 234, 0.2); padding: 0.2rem; border-radius: 3px;' : ''}">
                         Card ${index + 1}: ${isMatch ? 'Match' : 'No Match'} ${isCurrentTarget ? 'Target' : ''}<br/>
                         <small>"${title.substring(0, 25)}${title.length > 25 ? '...' : ''}"</small>
                     </p>`;
                 });
 
-                html += `<p style="color: #00ffff; font-weight: bold; margin-top: 0.5rem;">
+                html += `<p style="color: #feedea; font-weight: bold; margin-top: 0.5rem;">
                     Progress: ${matchCount}/3 cards match
                 </p>`;
 
                 // Add easter egg status display
                 html += `<div style="margin-top: 1rem; padding: 0.5rem; background: rgba(0,0,0,0.3); border-radius: 5px;">`;
-                html += `<p style="color: #ffd700; font-weight: bold; margin: 0 0 0.5rem 0;">Easter Egg Status:</p>`;
+                html += `<p style="color: #feedea; font-weight: bold; margin: 0 0 0.5rem 0;">Easter Egg Status:</p>`;
                 
                 // Phoebe easter eggs
                 const phoebeEggs = [
@@ -4882,29 +5657,35 @@
                     { key: 'tributeClick', name: 'Tribute Click' },
                     { key: 'essenceCard', name: 'Essence Card' },
                     { key: 'phoebeWisdom', name: 'Phoebe Wisdom' },
+                    { key: 'phoebeWisdomBoss', name: 'Phoebe Boss' },
+                    { key: 'emailIcon', name: 'Email Icon' },
+                    { key: 'wechatIcon', name: 'WeChat Icon' },
                 ];
                 
+                let eggNumber = 1;
                 phoebeEggs.forEach(egg => {
-                    const status = easterEggTriggered[egg.key] ? 'ON' : 'OFF';
-                    const color = easterEggTriggered[egg.key] ? '#00ff00' : '#ff6b6b';
-                    html += `<span style="color: ${color}; font-size: 0.8rem; margin-right: 0.5rem;">${egg.name} ${status}</span>`;
+                    const isTriggered = easterEggTriggered[egg.key];
+                    const checkmark = isTriggered ? '✓' : '○';
+                    const color = isTriggered ? '#feedea' : 'rgba(254, 237, 234, 0.5)';
+                    html += `<div style="color: ${color}; font-size: 0.85rem; margin: 0.2rem 0; line-height: 1.3;">${eggNumber}. ${checkmark} ${egg.name}</div>`;
+                    eggNumber++;
                 });
-                
-                html += `<br/>`;
                 
                 // Other easter eggs
                 const otherEggs = [
-                    { var: cyberpunkEasterEggTriggered, name: '🤖 Cyberpunk' },
-                    { var: zeldaEasterEggTriggered, name: '🗡️ Zelda' },
-                    { var: runawayEasterEggTriggered, name: '🎹 Runaway' },
-                    { var: smellyCatEasterEggTriggered, name: '🐱 Smelly Cat' },
-                    { var: roseQuoteEasterEggTriggered, name: '🌹 Rose Quote' }
+                    { var: cyberpunkEasterEggTriggered, name: 'Cyberpunk' },
+                    { var: zeldaEasterEggTriggered, name: 'Zelda' },
+                    { var: runawayEasterEggTriggered, name: 'Runaway' },
+                    { var: smellyCatEasterEggTriggered, name: 'Smelly Cat' },
+                    { var: roseQuoteEasterEggTriggered, name: 'Rose Quote' }
                 ];
                 
                 otherEggs.forEach(egg => {
-                    const status = egg.var ? 'ON' : 'OFF';
-                    const color = egg.var ? '#00ff00' : '#ff6b6b';
-                    html += `<span style="color: ${color}; font-size: 0.8rem; margin-right: 0.5rem;">${egg.name} ${status}</span>`;
+                    const isTriggered = egg.var;
+                    const checkmark = isTriggered ? '✓' : '○';
+                    const color = isTriggered ? '#feedea' : 'rgba(254, 237, 234, 0.5)';
+                    html += `<div style="color: ${color}; font-size: 0.85rem; margin: 0.2rem 0; line-height: 1.3;">${eggNumber}. ${checkmark} ${egg.name}</div>`;
+                    eggNumber++;
                 });
                 
                 html += `</div>`;
@@ -4912,7 +5693,7 @@
 
 
                 if (matchCount === 3) {
-                    html += `<p style="color: #00ff00; font-weight: bold; animation: pulse 1s infinite;">
+                    html += `<p style="color: #feedea; font-weight: bold; animation: pulse 1s infinite;">
                         🎉 Easter egg will trigger soon!
                     </p>`;
                 }
@@ -4956,7 +5737,6 @@
                 for (let i = 0; i < 3; i++) {
                     changeQuote(i);
                 }
-                makeTextClickable();
 
                 // Start Zima Blue system
                 startZimaBlueSystem();
@@ -5089,6 +5869,54 @@
                             isEnglish
                                 ? "Oh, I wish I could, but I don't want to."
                                 : "哦，我希望我能去帮忙，但我不想去。",
+                        );
+                        return;
+                    }
+
+                    // 5.1. Phoebe wisdom quote triple click for boss.mp3
+                    if (
+                        target.classList.contains("phoebe-quote") ||
+                        target.closest(".phoebe-quote")
+                    ) {
+                        console.log("💪 Phoebe quote clicked!");
+                        handleTripleClick(
+                            "phoebeWisdomBoss",
+                            "boss.mp3",
+                            isEnglish
+                                ? "You are the boss of you!"
+                                : "你是你自己的老板！",
+                        );
+                        return;
+                    }
+
+                    // 5.2. Email icon triple click
+                    if (
+                        target.classList.contains("email-icon") ||
+                        target.closest(".email-icon")
+                    ) {
+                        console.log("📧 Email icon clicked!");
+                        handleTripleClick(
+                            "emailIcon",
+                            "email.mp3",
+                            isEnglish
+                                ? "Email!"
+                                : "邮件！",
+                        );
+                        return;
+                    }
+
+                    // 5.3. WeChat icon triple click
+                    if (
+                        target.classList.contains("wechat-icon") ||
+                        target.closest(".wechat-icon")
+                    ) {
+                        console.log("💬 WeChat icon clicked!");
+                        handleTripleClick(
+                            "wechatIcon",
+                            "computer.mp3",
+                            isEnglish
+                                ? "Add me on WeChat (please state your purpose)!"
+                                : "如有需要请加微信(请注明来意)！",
                         );
                         return;
                     }
@@ -5382,13 +6210,8 @@
                     font-family: 'Gabriel Weiss Friends Font Local', 'Gabriel Weiss Friends Font', 'Trebuchet MS', 'Arial Black', 'Helvetica', sans-serif;
                     font-weight: 900;
                     color: #feebea;
-                    text-shadow:
-                        0 0 20px rgba(254, 235, 234, 0.8),
-                        0 0 40px rgba(254, 235, 234, 0.6),
-                        0 0 80px rgba(254, 235, 234, 0.4),
-                        0 0 120px rgba(254, 235, 234, 0.2);
                     line-height: 1;
-                    animation: glow 2s ease-in-out infinite alternate, scaleIn 1s ease-out;
+                    animation: scaleIn 1s ease-out;
                     padding: 1rem 2rem;
                     box-sizing: border-box;
                     width: 100%;
@@ -5403,30 +6226,34 @@
 
                 // Adjust font size for different screen sizes with better responsiveness
                 const screenWidth = window.innerWidth;
+                const screenHeight = window.innerHeight;
+                const isPortrait = screenHeight > screenWidth;
                 let fontSize, letterSpacing;
 
-                if (screenWidth < 480) {
-                    fontSize = "2.5rem";
-                    letterSpacing = "0.2rem";
+                if (screenWidth < 480 || isPortrait) {
+                    fontSize = "1.5rem";
+                    letterSpacing = "0.1rem";
                 } else if (screenWidth < 768) {
-                    fontSize = "4rem";
-                    letterSpacing = "0.3rem";
+                    fontSize = "2.5rem";
+                    letterSpacing = "0.15rem";
                 } else if (screenWidth < 1024) {
-                    fontSize = "5rem";
-                    letterSpacing = "0.4rem";
+                    fontSize = "3.5rem";
+                    letterSpacing = "0.2rem";
                 } else if (screenWidth < 1440) {
-                    fontSize = "6rem";
-                    letterSpacing = "0.5rem";
+                    fontSize = "4.5rem";
+                    letterSpacing = "0.3rem";
                 } else {
-                    fontSize = "7rem";
-                    letterSpacing = "0.6rem";
+                    fontSize = "5.5rem";
+                    letterSpacing = "0.4rem";
                 }
 
                 displayText.style.fontSize = fontSize;
                 displayText.style.letterSpacing = letterSpacing;
-                displayText.style.gap = "0.15em";
-                displayText.style.maxWidth = "95vw";
-                displayText.style.overflow = "hidden";
+                displayText.style.gap = "0.05em";
+                displayText.style.maxWidth = "90vw";
+                displayText.style.overflow = "visible";
+                displayText.style.whiteSpace = "nowrap";
+                displayText.style.textAlign = "center";
 
                 // Add background glow effect
                 const backgroundGlow = document.createElement("div");
@@ -5494,15 +6321,8 @@
                         display: inline-block;
                         font-weight: 900;
                         margin: 0 ${letter.char === "·" ? "0.1em" : "0.05em"};
-                        text-shadow: ${
-                            letter.char === "·"
-                                ? `0 0 20px ${letter.color}, 0 0 40px ${letter.color}, 0 0 60px ${letter.color}`
-                                : `0 0 15px rgba(254, 235, 234, 0.8), 0 0 30px rgba(254, 235, 234, 0.6), 0 0 45px rgba(254, 235, 234, 0.4)`
-                        };
-                        animation: letterGlow 2s ease-in-out infinite alternate;
                         transform-origin: center bottom;
                         position: relative;
-                        animation-delay: ${index * 0.1}s;
                     `;
 
                     displayText.appendChild(letterElement);
@@ -5884,12 +6704,12 @@
                             clearTimeout(whoSingingTimer);
                             isListeningForYou = false;
                             keySequence = [];
-                            const badmoodAudioData = {
-                                name: "Bad Mood",
-                                src: "./phoebe/badmood.mp3",
+                            const danceAudioData = {
+                                name: "Dance",
+                                src: "./phoebe/dance.mp3",
                                 type: "Keyboard Response"
                             };
-                            addAudioToPlaylist(badmoodAudioData);
+                            addAudioToPlaylist(danceAudioData);
                             showEasterEggNotification(isEnglish ? "Playing dance music..." : "播放舞曲...");
                         } else {
                             console.log("❌ 'dance' requires ALL easter eggs to be triggered first!");
@@ -5906,10 +6726,37 @@
                             clearTimeout(whoSingingTimer);
                             isListeningForYou = false;
                             keySequence = [];
-                            playAudio('tearsicantholdback.mp3');
+                            const tearsAudioData = {
+                                name: "Tears",
+                                src: "./phoebe/tears.mp3",
+                                type: "Keyboard Response"
+                            };
+                            addAudioToPlaylist(tearsAudioData);
                             showEasterEggNotification(isEnglish ? "Playing tears I can't hold back..." : "播放眼泪止不住...");
                         } else {
                             console.log("❌ 'xiaop' requires ALL easter eggs to be triggered first!");
+                            showEasterEggNotification(isEnglish ? "Need ALL easter eggs first!" : "需要先触发所有彩蛋！");
+                        }
+                    } else if (currentSequence.endsWith("peng")) {
+                        // 'peng' requires ALL easter eggs to be triggered
+                        const allPhoebe = Object.values(easterEggTriggered).every((state) => state);
+                        const allOthers = cyberpunkEasterEggTriggered && zeldaEasterEggTriggered && runawayEasterEggTriggered && smellyCatEasterEggTriggered && roseQuoteEasterEggTriggered;
+                        if (allPhoebe && allOthers) {
+                            console.log(
+                                "User typed 'peng'! Playing bad mood...",
+                            );
+                            clearTimeout(whoSingingTimer);
+                            isListeningForYou = false;
+                            keySequence = [];
+                            const badmoodAudioData = {
+                                name: "Bad Mood",
+                                src: "./phoebe/badmood.mp3",
+                                type: "Keyboard Response"
+                            };
+                            addAudioToPlaylist(badmoodAudioData);
+                            showEasterEggNotification(isEnglish ? "Playing bad mood..." : "播放坏心情...");
+                        } else {
+                            console.log("❌ 'peng' requires ALL easter eggs to be triggered first!");
                             showEasterEggNotification(isEnglish ? "Need ALL easter eggs first!" : "需要先触发所有彩蛋！");
                         }
                     } else {
@@ -7175,7 +8022,241 @@
                     `;
                 }
                 
+                // Trigger "LOOK AT YOU!" easter egg effect
+                triggerLookAtYouEffect();
+                
+                // Remove all Zima Blue squares
+                removeAllZimaBlueSquares();
+                
                 console.log("✅ Content changed to Runaway mode!");
+            }
+            
+            function triggerLookAtYouEffect() {
+                console.log("👀 Starting LOOK AT YOU! effect...");
+                
+                let textCount = 0;
+                const maxTexts = 42;
+                const interval = 300; // 0.3 seconds
+                const textElements = [];
+                
+                // Function to remove all LOOK AT YOU texts
+                const removeAllLookAtYouTexts = () => {
+                    textElements.forEach(element => {
+                        if (document.body.contains(element)) {
+                            element.style.transition = "opacity 0.5s ease-out";
+                            element.style.opacity = "0";
+                            setTimeout(() => {
+                                if (document.body.contains(element)) {
+                                    document.body.removeChild(element);
+                                }
+                            }, 500);
+                        }
+                    });
+                    textElements.length = 0; // Clear the array
+                };
+                
+                // Set up midnight auto-removal
+                const setupMidnightRemoval = () => {
+                    const now = new Date();
+                    const midnight = new Date();
+                    midnight.setHours(24, 0, 0, 0); // Next midnight
+                    const timeToMidnight = midnight.getTime() - now.getTime();
+                    
+                    setTimeout(() => {
+                        console.log("🕛 Midnight reached, removing all LOOK AT YOU texts...");
+                        removeAllLookAtYouTexts();
+                    }, timeToMidnight);
+                };
+                
+                const showLookAtYouText = () => {
+                    if (textCount >= maxTexts) {
+                        console.log("👀 All LOOK AT YOU! texts displayed, starting fade out...");
+                        // Start fade out all texts together
+                        textElements.forEach((element, index) => {
+                            setTimeout(() => {
+                                if (document.body.contains(element)) {
+                                    element.style.transition = "opacity 2s ease-out";
+                                    element.style.opacity = "0";
+                                    setTimeout(() => {
+                                        if (document.body.contains(element)) {
+                                            document.body.removeChild(element);
+                                        }
+                                    }, 2000);
+                                }
+                            }, index * 100); // Stagger the fade out slightly
+                        });
+                        console.log("👀 LOOK AT YOU! effect completed!");
+                        return;
+                    }
+                    
+                    // Create random positioned text
+                    const lookAtYouText = document.createElement("div");
+                    
+                    // Responsive design for different screen sizes
+                    const isMobile = window.innerWidth <= 768;
+                    const isSmallMobile = window.innerWidth <= 480;
+                    
+                    // Responsive margins and positioning
+                    const marginX = isSmallMobile ? 30 : isMobile ? 40 : 50;
+                    const marginY = isSmallMobile ? 40 : isMobile ? 50 : 50;
+                    const maxWidth = window.innerWidth - (marginX * 2);
+                    const maxHeight = window.innerHeight - (marginY * 2);
+                    
+                    // Random position (avoid edges with responsive margins)
+                    const randomX = Math.random() * (maxWidth - 100) + marginX;
+                    const randomY = Math.random() * (maxHeight - 60) + marginY;
+                    
+                    // Responsive font size
+                    let minSize, maxSize;
+                    if (isSmallMobile) {
+                        minSize = 20;
+                        maxSize = 60;
+                    } else if (isMobile) {
+                        minSize = 30;
+                        maxSize = 100;
+                    } else {
+                        minSize = 40;
+                        maxSize = 160;
+                    }
+                    const randomSize = Math.random() * (maxSize - minSize) + minSize;
+                    
+                    // Random rotation between -45 and 45 degrees
+                    const randomRotation = (Math.random() - 0.5) * 90;
+                    
+                    // Responsive text shadow
+                    const textShadow = isSmallMobile 
+                        ? "1px 1px 2px rgba(0,0,0,0.8), 0 0 5px rgba(255,255,255,0.3)"
+                        : isMobile 
+                        ? "2px 2px 3px rgba(0,0,0,0.8), 0 0 8px rgba(255,255,255,0.3)"
+                        : "2px 2px 4px rgba(0,0,0,0.8), 0 0 10px rgba(255,255,255,0.3)";
+                    
+                    lookAtYouText.style.cssText = `
+                        position: fixed;
+                        left: ${randomX}px;
+                        top: ${randomY}px;
+                        color: white;
+                        font-family: "Impact", "Arial Black", sans-serif;
+                        font-size: ${randomSize}px;
+                        font-weight: 900;
+                        text-shadow: ${textShadow};
+                        z-index: 25000;
+                        pointer-events: auto;
+                        user-select: none;
+                        opacity: 1;
+                        transform: rotate(${randomRotation}deg);
+                        cursor: pointer;
+                        transition: transform 0.2s ease, opacity 0.2s ease;
+                        max-width: ${isSmallMobile ? '200px' : isMobile ? '300px' : '400px'};
+                        word-wrap: break-word;
+                        text-align: center;
+                    `;
+                    
+                    lookAtYouText.textContent = "LOOK AT YOU!";
+                    
+                    // Add click/touch to remove functionality
+                    const removeText = () => {
+                        if (document.body.contains(lookAtYouText)) {
+                            lookAtYouText.style.transition = "opacity 0.3s ease-out, transform 0.3s ease-out";
+                            lookAtYouText.style.opacity = "0";
+                            lookAtYouText.style.transform = `rotate(${randomRotation}deg) scale(0.5)`;
+                            setTimeout(() => {
+                                if (document.body.contains(lookAtYouText)) {
+                                    document.body.removeChild(lookAtYouText);
+                                    // Remove from textElements array
+                                    const index = textElements.indexOf(lookAtYouText);
+                                    if (index > -1) {
+                                        textElements.splice(index, 1);
+                                    }
+                                }
+                            }, 300);
+                        }
+                    };
+                    
+                    // Add click to remove functionality
+                    lookAtYouText.addEventListener('click', removeText);
+                    
+                    // Add hover/touch effects (responsive)
+                    if (!isMobile) {
+                        // Desktop hover effects
+                        lookAtYouText.addEventListener('mouseenter', () => {
+                            lookAtYouText.style.transform = `rotate(${randomRotation}deg) scale(1.1)`;
+                        });
+                        
+                        lookAtYouText.addEventListener('mouseleave', () => {
+                            lookAtYouText.style.transform = `rotate(${randomRotation}deg) scale(1)`;
+                        });
+                    } else {
+                        // Mobile touch feedback and removal
+                        let touchStartTime = 0;
+                        
+                        lookAtYouText.addEventListener('touchstart', (e) => {
+                            touchStartTime = Date.now();
+                            lookAtYouText.style.transform = `rotate(${randomRotation}deg) scale(1.05)`;
+                        }, { passive: true });
+                        
+                        lookAtYouText.addEventListener('touchend', (e) => {
+                            const touchDuration = Date.now() - touchStartTime;
+                            
+                            // If it's a quick tap (less than 300ms), remove the text
+                            if (touchDuration < 300) {
+                                removeText();
+                            } else {
+                                // Otherwise, just reset the scale
+                                setTimeout(() => {
+                                    if (document.body.contains(lookAtYouText)) {
+                                        lookAtYouText.style.transform = `rotate(${randomRotation}deg) scale(1)`;
+                                    }
+                                }, 100);
+                            }
+                        }, { passive: true });
+                        
+                        // Prevent context menu on long press
+                        lookAtYouText.addEventListener('contextmenu', (e) => {
+                            e.preventDefault();
+                        });
+                    }
+                    
+                    document.body.appendChild(lookAtYouText);
+                    textElements.push(lookAtYouText);
+                    
+                    textCount++;
+                    
+                    // Schedule next text
+                    if (textCount < maxTexts) {
+                        setTimeout(showLookAtYouText, interval);
+                    }
+                };
+                
+                // Set up midnight removal
+                setupMidnightRemoval();
+                
+                // Start the effect after 3 seconds delay
+                setTimeout(() => {
+                    console.log("👀 Starting LOOK AT YOU! text display after 3 second delay...");
+                    showLookAtYouText();
+                }, 3000);
+            }
+            
+            function removeAllZimaBlueSquares() {
+                console.log("🔵 Removing all Zima Blue squares...");
+                
+                // Stop the Zima Blue system
+                stopZimaBlueSystem();
+                
+                // Remove all existing squares from DOM
+                const existingSquares = document.querySelectorAll('.zima-square');
+                existingSquares.forEach(square => {
+                    if (square.parentNode) {
+                        square.parentNode.removeChild(square);
+                    }
+                });
+                
+                // Clear the zimaSquares array
+                if (typeof zimaSquares !== 'undefined') {
+                    zimaSquares.length = 0;
+                }
+                
+                console.log("✅ All Zima Blue squares removed!");
             }
             
             function restoreOriginalContent() {
@@ -7326,7 +8407,21 @@
 
             // 无缝滚动功能 - 兼容Firefox和移动端
             function scrollToSection(sectionId) {
-                const section = document.getElementById(sectionId);
+                // Select the correct section based on current language
+                let section;
+                if (sectionId === 'quote-section' || sectionId === 'meditation' || sectionId === 'essence' || sectionId === 'phoebe-section') {
+                    // For content sections, select from the appropriate language container
+                    const container = isEnglish ? '#englishContent' : '#chineseContent';
+                    section = document.querySelector(`${container} .${sectionId.replace('-section', '-section')}, ${container} .${sectionId.replace('-section', '')}`);
+                    if (!section) {
+                        // Fallback: try to find by class name
+                        section = document.querySelector(`${container} .${sectionId}`);
+                    }
+                } else {
+                    // For header and color sections, use the original method
+                    section = document.getElementById(sectionId);
+                }
+                
                 if (section) {
                     // 检测浏览器是否支持smooth scrolling
                     if ('scrollBehavior' in document.documentElement.style) {
@@ -7496,51 +8591,505 @@
             <source src="https://eta.vgmtreasurechest.com/soundtracks/cyberpunk-2077-radio-vol.-2-original-soundtrack/liojiacuhf/05.%20I%20Really%20Want%20to%20Stay%20at%20Your%20House.mp3" type="audio/mpeg">
         </audio>
 
+        <!-- Virtual Keyboard for Mobile -->
+        <div id="virtualKeyboard" class="virtual-keyboard hidden">
+            <div class="keyboard-header">
+            </div>
+            <div class="resize-handle"></div>
+            <div class="keyboard-keys">
+                <div class="key-row">
+                    <button class="key" data-key="1">1</button>
+                    <button class="key" data-key="2">2</button>
+                    <button class="key" data-key="3">3</button>
+                    <button class="key" data-key="4">4</button>
+                    <button class="key" data-key="5">5</button>
+                    <button class="key" data-key="6">6</button>
+                    <button class="key" data-key="7">7</button>
+                    <button class="key" data-key="8">8</button>
+                    <button class="key" data-key="9">9</button>
+                    <button class="key" data-key="0">0</button>
+                </div>
+                <div class="key-row">
+                    <button class="key" data-key="q">Q</button>
+                    <button class="key" data-key="w">W</button>
+                    <button class="key" data-key="e">E</button>
+                    <button class="key" data-key="r">R</button>
+                    <button class="key" data-key="t">T</button>
+                    <button class="key" data-key="y">Y</button>
+                    <button class="key" data-key="u">U</button>
+                    <button class="key" data-key="i">I</button>
+                    <button class="key" data-key="o">O</button>
+                    <button class="key" data-key="p">P</button>
+                </div>
+                <div class="key-row">
+                    <button class="key" data-key="a">A</button>
+                    <button class="key" data-key="s">S</button>
+                    <button class="key" data-key="d">D</button>
+                    <button class="key" data-key="f">F</button>
+                    <button class="key" data-key="g">G</button>
+                    <button class="key" data-key="h">H</button>
+                    <button class="key" data-key="j">J</button>
+                    <button class="key" data-key="k">K</button>
+                    <button class="key" data-key="l">L</button>
+                </div>
+                <div class="key-row">
+                    <button class="key" data-key="z">Z</button>
+                    <button class="key" data-key="x">X</button>
+                    <button class="key" data-key="c">C</button>
+                    <button class="key" data-key="v">V</button>
+                    <button class="key" data-key="b">B</button>
+                    <button class="key" data-key="n">N</button>
+                    <button class="key" data-key="m">M</button>
+                </div>
+                <div class="key-row arrow-keys">
+                    <button class="key arrow-key" data-key="ArrowUp">↑</button>
+                    <button class="key arrow-key" data-key="ArrowDown">↓</button>
+                    <button class="key arrow-key" data-key="ArrowLeft">←</button>
+                    <button class="key arrow-key" data-key="ArrowRight">→</button>
+                </div>
+            </div>
+        </div>
+
+
+
         <!-- Debug Panel -->
         <button id="debugToggle" class="debug-toggle"><span id="debugButton">Debug</span></button>
         <div id="debugPanel" class="debug-panel">
-            <h4>🎮 Easter Egg Debug</h4>
-            <p><strong>Target:</strong> All 3 cards show:<br/>
-            "你是个天生的边缘行者" (中文)<br/>
-            "You're a natural-born Edgerunner." (英文)</p>
+            <h4>Debug Panel</h4>
+            <p><strong>Target:</strong> Match all 3 cards</p>
             <div class="easter-egg-hint">
-                💡 Tip: Click cards to change quotes until all 3 match!
+                Tip: Click cards to change quotes
             </div>
 
-            
             <div class="quick-set-buttons">
-                <button id="setCyberpunkBtn" class="quick-set-btn" title="一键设置所有卡片为赛博朋克边缘行者内容">🤖 Set Cyberpunk</button>
-                <button id="setRoseBtn" class="quick-set-btn" title="一键设置所有卡片为小王子玫瑰内容">🌹 Set Rose Quote</button>
-                <button id="triggerRunawayBtn" class="quick-set-btn" title="直接触发钢琴序列完成效果，播放Runaway音乐">🎹 Trigger Runaway</button>
+                <button id="setCyberpunkBtn" class="quick-set-btn" title="Set all cards to Cyberpunk content">Set Cyberpunk</button>
+                <button id="setRoseBtn" class="quick-set-btn" title="Set all cards to Rose quote content">Set Rose Quote</button>
+                <button id="triggerRunawayBtn" class="quick-set-btn" title="Trigger Runaway effect">Trigger Runaway</button>
             </div>
             
             <div class="easter-egg-controls">
-                <h5>Easter Egg States</h5>
+                <h5>States</h5>
                 <div class="egg-state-buttons">
-                    <button id="toggleLangBtn" class="state-btn" title="切换语言切换彩蛋状态">Lang Toggle</button>
-                    <button id="togglePengBtn" class="state-btn" title="切换企鹅点击彩蛋状态">Peng Click</button>
-                    <button id="toggleTributeBtn" class="state-btn" title="切换致敬点击彩蛋状态">Tribute Click</button>
-                    <button id="toggleEssenceBtn" class="state-btn" title="切换本质卡片彩蛋状态">Essence Card</button>
-                    <button id="toggleWisdomBtn" class="state-btn" title="切换菲比智慧彩蛋状态">Phoebe Wisdom</button>
+                    <button id="toggleLangBtn" class="state-btn" title="Toggle language switch">Lang</button>
+                    <button id="togglePengBtn" class="state-btn" title="Toggle peng click">Peng</button>
+                    <button id="toggleTributeBtn" class="state-btn" title="Toggle tribute click">Tribute</button>
+                    <button id="toggleEssenceBtn" class="state-btn" title="Toggle essence card">Essence</button>
+                    <button id="toggleWisdomBtn" class="state-btn" title="Toggle wisdom">Wisdom</button>
+                    <button id="toggleBossBtn" class="state-btn" title="Toggle boss">Boss</button>
+                    <button id="toggleEmailBtn" class="state-btn" title="Toggle email">Email</button>
+                    <button id="toggleWechatBtn" class="state-btn" title="Toggle wechat">WeChat</button>
                 </div>
                 <div class="egg-state-buttons">
-                    <button id="toggleCyberpunkBtn" class="state-btn" title="切换赛博朋克彩蛋状态">🤖 Cyberpunk</button>
-                    <button id="toggleZeldaBtn" class="state-btn" title="切换塞尔达彩蛋状态">🗡️ Zelda</button>
-                    <button id="toggleRunawayBtn" class="state-btn" title="切换Runaway彩蛋状态">🎹 Runaway</button>
-                    <button id="toggleSmellyCatBtn" class="state-btn" title="切换臭猫彩蛋状态">🐱 Smelly Cat</button>
-                    <button id="toggleRoseBtn" class="state-btn" title="切换玫瑰引用彩蛋状态">🌹 Rose Quote</button>
+                    <button id="toggleCyberpunkBtn" class="state-btn" title="Toggle cyberpunk">Cyberpunk</button>
+                    <button id="toggleZeldaBtn" class="state-btn" title="Toggle zelda">Zelda</button>
+                    <button id="toggleRunawayBtn" class="state-btn" title="Toggle runaway">Runaway</button>
+                    <button id="toggleSmellyCatBtn" class="state-btn" title="Toggle smelly cat">Cat</button>
+                    <button id="toggleRoseBtn" class="state-btn" title="Toggle rose quote">Rose</button>
                 </div>
                 <div class="egg-state-buttons">
-                    <button id="resetAllBtn" class="state-btn reset-btn" title="重置所有彩蛋状态">Reset All</button>
-                    <button id="triggerAllBtn" class="state-btn trigger-btn" title="触发所有彩蛋状态">Trigger All</button>
+                    <button id="resetAllBtn" class="state-btn reset-btn" title="Reset all states">Reset</button>
+                    <button id="triggerAllBtn" class="state-btn trigger-btn" title="Trigger all states">Trigger</button>
                 </div>
             </div>
             
             <div id="currentQuotes" class="current-quotes">
-                <p><strong>Current Cards:</strong></p>
+                <p><strong>Cards:</strong></p>
                 <div id="quotesList"></div>
             </div>
         </div>
+
+        <script>
+            // Virtual Keyboard Functionality
+            class VirtualKeyboard {
+                constructor() {
+                    this.keyboard = document.getElementById('virtualKeyboard');
+                    this.keys = document.querySelectorAll('.key');
+                    this.mainTitles = document.querySelectorAll('.main-title');
+                    
+                    this.isVisible = false;
+                    this.clickCount = 0;
+                    this.clickTimer = null;
+                    this.isFirstOpen = true;
+                    
+                    // Dragging properties
+                    this.isDragging = false;
+                    this.dragStartX = 0;
+                    this.dragStartY = 0;
+                    this.keyboardStartX = 0;
+                    this.keyboardStartY = 0;
+                    
+                    // Resizing properties
+                    this.isResizing = false;
+                    this.resizeStartX = 0;
+                    this.keyboardStartWidth = 0;
+                    
+                    this.init();
+                }
+                
+                init() {
+                    // Check if device is mobile
+                    this.checkMobileDevice();
+                    
+                    // Bind events
+                    this.bindEvents();
+                }
+                
+                checkMobileDevice() {
+                    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+                                   (window.matchMedia && window.matchMedia('(hover: none) and (pointer: coarse)').matches);
+                    
+                    this.isMobileDevice = isMobile;
+                    
+                    if (isMobile) {
+                        console.log('📱 Mobile device detected, virtual keyboard enabled');
+                    } else {
+                        this.keyboard.classList.add('hidden');
+                        this.keyboard.style.display = 'none'; // 完全隐藏虚拟键盘
+                        console.log('🖥️ Desktop device detected, virtual keyboard completely disabled');
+                    }
+                }
+                
+                bindEvents() {
+                    // Only bind events if on mobile device
+                    if (!this.isMobileDevice) {
+                        console.log('🖥️ Desktop detected: Virtual keyboard events disabled');
+                        return;
+                    }
+                    
+                    // Main title triple click for first open, single click for toggle
+                    this.mainTitles.forEach(mainTitle => {
+                        mainTitle.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            
+                            if (this.isFirstOpen) {
+                                // First time: require triple click
+                                this.clickCount++;
+                                
+                                if (this.clickTimer) {
+                                    clearTimeout(this.clickTimer);
+                                }
+                                
+                                this.clickTimer = setTimeout(() => {
+                                    this.clickCount = 0;
+                                }, 500); // Reset after 500ms
+                                
+                                if (this.clickCount >= 3) {
+                                    this.clickCount = 0;
+                                    this.isFirstOpen = false;
+                                    this.showKeyboard();
+                                    console.log('🎹 Virtual keyboard activated with triple click');
+                                }
+                            } else {
+                                // After first open: single click to toggle
+                                this.toggleKeyboard();
+                            }
+                        });
+                    });
+                    
+                    // Key clicks
+                    this.keys.forEach(key => {
+                        key.addEventListener('click', () => {
+                            const keyValue = key.getAttribute('data-key');
+                            this.simulateKeyPress(keyValue);
+                        });
+                    });
+                    
+                    // Dragging events
+                    this.bindDragEvents();
+                    
+                    // Resizing events
+                    this.bindResizeEvents();
+                    
+                    // Click outside to close
+                    document.addEventListener('click', (e) => {
+                        if (this.isVisible && 
+                            !this.keyboard.contains(e.target) && 
+                            !Array.from(this.mainTitles).some(title => title.contains(e.target))) {
+                            this.hideKeyboard();
+                        }
+                    });
+                    
+                    // Prevent keyboard from closing when clicking inside
+                    this.keyboard.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                    });
+                }
+                
+                bindDragEvents() {
+                    const header = this.keyboard.querySelector('.keyboard-header');
+                    if (!header) return;
+                    
+                    // Mouse events
+                    header.addEventListener('mousedown', (e) => {
+                        this.startDrag(e.clientX, e.clientY);
+                        e.preventDefault();
+                    });
+                    
+                    document.addEventListener('mousemove', (e) => {
+                        if (this.isDragging) {
+                            this.drag(e.clientX, e.clientY);
+                        }
+                    });
+                    
+                    document.addEventListener('mouseup', () => {
+                        this.stopDrag();
+                    });
+                    
+                    // Touch events
+                    header.addEventListener('touchstart', (e) => {
+                        const touch = e.touches[0];
+                        this.startDrag(touch.clientX, touch.clientY);
+                        e.preventDefault();
+                    }, { passive: false });
+                    
+                    document.addEventListener('touchmove', (e) => {
+                        if (this.isDragging && e.touches.length > 0) {
+                            const touch = e.touches[0];
+                            this.drag(touch.clientX, touch.clientY);
+                            e.preventDefault();
+                        }
+                    }, { passive: false });
+                    
+                    document.addEventListener('touchend', () => {
+                        this.stopDrag();
+                    });
+                }
+                
+                bindResizeEvents() {
+                    const resizeHandle = this.keyboard.querySelector('.resize-handle');
+                    if (!resizeHandle) return;
+                    
+                    // Mouse events
+                    resizeHandle.addEventListener('mousedown', (e) => {
+                        this.startResize(e.clientX);
+                        e.preventDefault();
+                        e.stopPropagation();
+                    });
+                    
+                    document.addEventListener('mousemove', (e) => {
+                        if (this.isResizing) {
+                            this.resize(e.clientX);
+                        }
+                    });
+                    
+                    document.addEventListener('mouseup', () => {
+                        this.stopResize();
+                    });
+                    
+                    // Touch events
+                    resizeHandle.addEventListener('touchstart', (e) => {
+                        const touch = e.touches[0];
+                        this.startResize(touch.clientX);
+                        e.preventDefault();
+                        e.stopPropagation();
+                    }, { passive: false });
+                    
+                    document.addEventListener('touchmove', (e) => {
+                        if (this.isResizing && e.touches.length > 0) {
+                            const touch = e.touches[0];
+                            this.resize(touch.clientX);
+                            e.preventDefault();
+                        }
+                    }, { passive: false });
+                    
+                    document.addEventListener('touchend', () => {
+                        this.stopResize();
+                    });
+                }
+                
+                startDrag(clientX, clientY) {
+                    this.isDragging = true;
+                    this.dragStartX = clientX;
+                    this.dragStartY = clientY;
+                    
+                    const rect = this.keyboard.getBoundingClientRect();
+                    this.keyboardStartX = rect.left;
+                    this.keyboardStartY = rect.top;
+                    
+                    this.keyboard.style.transition = 'none';
+                    document.body.style.userSelect = 'none';
+                }
+                
+                drag(clientX, clientY) {
+                    if (!this.isDragging) return;
+                    
+                    const deltaX = clientX - this.dragStartX;
+                    const deltaY = clientY - this.dragStartY;
+                    
+                    let newX = this.keyboardStartX + deltaX;
+                    let newY = this.keyboardStartY + deltaY;
+                    
+                    // Constrain to viewport
+                    const rect = this.keyboard.getBoundingClientRect();
+                    const maxX = window.innerWidth - rect.width;
+                    const maxY = window.innerHeight - rect.height;
+                    
+                    newX = Math.max(0, Math.min(newX, maxX));
+                    newY = Math.max(0, Math.min(newY, maxY));
+                    
+                    this.keyboard.style.left = newX + 'px';
+                    this.keyboard.style.top = newY + 'px';
+                    this.keyboard.style.bottom = 'auto';
+                }
+                
+                stopDrag() {
+                    if (this.isDragging) {
+                        this.isDragging = false;
+                        this.keyboard.style.transition = 'transform 0.3s ease-in-out';
+                        document.body.style.userSelect = '';
+                    }
+                }
+                
+                startResize(clientX) {
+                    this.isResizing = true;
+                    this.resizeStartX = clientX;
+                    this.keyboardStartWidth = this.keyboard.offsetWidth;
+                    
+                    this.keyboard.style.transition = 'none';
+                    document.body.style.userSelect = 'none';
+                }
+                
+                resize(clientX) {
+                    if (!this.isResizing) return;
+                    
+                    const deltaX = clientX - this.resizeStartX;
+                    let newWidth = this.keyboardStartWidth + deltaX;
+                    
+                    // Constrain width
+                    const minWidth = 300;
+                    const maxWidth = window.innerWidth - 20;
+                    
+                    newWidth = Math.max(minWidth, Math.min(newWidth, maxWidth));
+                    
+                    this.keyboard.style.width = newWidth + 'px';
+                }
+                
+                stopResize() {
+                    if (this.isResizing) {
+                        this.isResizing = false;
+                        this.keyboard.style.transition = 'transform 0.3s ease-in-out';
+                        document.body.style.userSelect = '';
+                    }
+                }
+                
+                toggleKeyboard() {
+                    // 只在移动设备上允许切换虚拟键盘
+                    if (!this.isMobileDevice) {
+                        console.log('🖥️ Desktop detected: Virtual keyboard toggle disabled');
+                        return;
+                    }
+                    
+                    if (this.isVisible) {
+                        this.hideKeyboard();
+                    } else {
+                        this.showKeyboard();
+                    }
+                }
+                
+                showKeyboard() {
+                    // 只在移动设备上显示虚拟键盘
+                    if (!this.isMobileDevice) {
+                        console.log('🖥️ Desktop detected: Virtual keyboard cannot be shown');
+                        return;
+                    }
+                    
+                    this.keyboard.classList.remove('hidden');
+                    this.keyboard.style.display = 'block';
+                    this.isVisible = true;
+                    
+                    // Add animation class after a brief delay
+                    setTimeout(() => {
+                        this.keyboard.style.transform = 'translateY(0)';
+                    }, 10);
+                    
+                    console.log('⌨️ Virtual keyboard shown');
+                }
+                
+                hideKeyboard() {
+                    this.keyboard.style.transform = 'translateY(100%)';
+                    
+                    setTimeout(() => {
+                        this.keyboard.classList.add('hidden');
+                        this.isVisible = false;
+                    }, 300);
+                    
+                    console.log('⌨️ Virtual keyboard hidden');
+                }
+                
+                simulateKeyPress(keyValue) {
+                    // Add visual feedback
+                    const keyElement = document.querySelector(`[data-key="${keyValue}"]`);
+                    if (keyElement) {
+                        keyElement.style.transform = 'scale(0.95)';
+                        setTimeout(() => {
+                            keyElement.style.transform = '';
+                        }, 100);
+                    }
+                    
+                    // Create and dispatch keyboard event
+                    let event;
+                    
+                    if (keyValue.startsWith('Arrow')) {
+                        // Handle arrow keys
+                        event = new KeyboardEvent('keydown', {
+                            key: keyValue,
+                            code: keyValue,
+                            keyCode: this.getArrowKeyCode(keyValue),
+                            which: this.getArrowKeyCode(keyValue),
+                            bubbles: true
+                        });
+                    } else {
+                        // Handle letter and number keys
+                        const key = keyValue.toLowerCase();
+                        event = new KeyboardEvent('keydown', {
+                            key: key,
+                            code: isNaN(key) ? `Key${key.toUpperCase()}` : `Digit${key}`,
+                            keyCode: key.toUpperCase().charCodeAt(0),
+                            which: key.toUpperCase().charCodeAt(0),
+                            bubbles: true
+                        });
+                    }
+                    
+                    // Dispatch the event to trigger existing handlers
+                    document.dispatchEvent(event);
+                    
+                    console.log(`⌨️ Simulated key press: ${keyValue}`);
+                }
+                
+                getArrowKeyCode(arrowKey) {
+                    const codes = {
+                        'ArrowUp': 38,
+                        'ArrowDown': 40,
+                        'ArrowLeft': 37,
+                        'ArrowRight': 39
+                    };
+                    return codes[arrowKey] || 0;
+                }
+
+            }
+            
+            // Initialize virtual keyboard when DOM is loaded
+            document.addEventListener('DOMContentLoaded', () => {
+                const virtualKeyboard = new VirtualKeyboard();
+                console.log('🎹 Virtual keyboard initialized');
+            });
+            
+            // Re-check mobile device on window resize
+            window.addEventListener('resize', () => {
+                const keyboard = document.getElementById('virtualKeyboard');
+                
+                const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+                               (window.matchMedia && window.matchMedia('(hover: none) and (pointer: coarse)').matches);
+                
+                if (!isMobile) {
+                    keyboard.classList.add('hidden');
+                    keyboard.style.display = 'none'; // 完全隐藏虚拟键盘
+                    console.log('🖥️ Window resize: Virtual keyboard disabled on desktop');
+                } else {
+                    keyboard.style.display = 'block'; // 在移动设备上恢复显示
+                }
+            });
+        </script>
     </body>
 </html>
 </text>
