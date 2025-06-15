@@ -35,6 +35,16 @@
             /* 添加平滑滚动支持 */
             html {
                 scroll-behavior: smooth;
+                /* 隐藏滚动条 */
+                scrollbar-width: none; /* Firefox */
+                -ms-overflow-style: none; /* IE 10+ */
+            }
+
+            /* 隐藏 Webkit 浏览器的滚动条 */
+            html::-webkit-scrollbar {
+                display: none;
+                width: 0;
+                height: 0;
             }
 
             body {
@@ -56,6 +66,16 @@
                 -ms-user-select: none;
                 /* 增强滚动性能 */
                 scroll-behavior: smooth;
+                /* 隐藏滚动条 */
+                scrollbar-width: none; /* Firefox */
+                -ms-overflow-style: none; /* IE 10+ */
+            }
+
+            /* 隐藏 Webkit 浏览器的滚动条 */
+            body::-webkit-scrollbar {
+                display: none;
+                width: 0;
+                height: 0;
             }
 
             /* 滚动容器优化 */
@@ -9010,22 +9030,34 @@
                 }, 200);
             }
 
+            // 统一的section查找函数 - 提高代码复用性和解耦
+            function findSectionElement(sectionId) {
+                // 根据当前语言模式选择正确的容器
+                const container = isEnglish ? '#englishContent' : '#chineseContent';
+                
+                // 对于所有section，都优先在当前语言容器中查找
+                let section = document.querySelector(`${container} .${sectionId}`);
+                
+                // 如果在容器中没找到，尝试其他查找方式
+                if (!section) {
+                    // 对于带-section后缀的，尝试去掉后缀查找
+                    if (sectionId.includes('-section')) {
+                        const baseName = sectionId.replace('-section', '');
+                        section = document.querySelector(`${container} .${baseName}`);
+                    }
+                    
+                    // 如果还是没找到，尝试直接用ID查找（兼容旧版本）
+                    if (!section) {
+                        section = document.getElementById(sectionId);
+                    }
+                }
+                
+                return section;
+            }
+
             // 无缝滚动功能 - 兼容Firefox和移动端
             function scrollToSection(sectionId) {
-                // Select the correct section based on current language
-                let section;
-                if (sectionId === 'quote-section' || sectionId === 'meditation' || sectionId === 'essence' || sectionId === 'phoebe-section') {
-                    // For content sections, select from the appropriate language container
-                    const container = isEnglish ? '#englishContent' : '#chineseContent';
-                    section = document.querySelector(`${container} .${sectionId.replace('-section', '-section')}, ${container} .${sectionId.replace('-section', '')}`);
-                    if (!section) {
-                        // Fallback: try to find by class name
-                        section = document.querySelector(`${container} .${sectionId}`);
-                    }
-                } else {
-                    // For header and color sections, use the original method
-                    section = document.getElementById(sectionId);
-                }
+                const section = findSectionElement(sectionId);
                 
                 if (section) {
                     // 检测浏览器是否支持smooth scrolling
@@ -9094,14 +9126,14 @@
                 }
             });
 
-            // 导航点高亮
+            // 导航点高亮 - 使用统一的section查找函数
             window.addEventListener('scroll', function() {
                 const sections = ['header', 'color-display', 'quote-section', 'meditation', 'essence', 'phoebe-section'];
                 const navDots = document.querySelectorAll('.nav-dot');
                 
                 let currentSection = '';
                 sections.forEach(sectionId => {
-                    const section = document.getElementById(sectionId);
+                    const section = findSectionElement(sectionId);
                     if (section) {
                         const rect = section.getBoundingClientRect();
                         if (rect.top <= 100 && rect.bottom >= 100) {
@@ -9727,6 +9759,7 @@
             }
             
             // Handle meditation dot clicks for JOJO easter egg
+            // 中文模式下复用英文的4下点击逻辑
             function handleMeditationClick() {
                 const now = Date.now();
                 
@@ -9757,6 +9790,7 @@
                         );
                         
                         if (validClicks.length === meditationClickTracker.requiredClicks && !meditationClickTracker.isJojoPlaying) {
+                            // 中文和英文模式统一调用相同的触发函数
                             triggerJojoEasterEgg();
                             // Reset clicks after triggering
                             meditationClickTracker.clicks = [];
@@ -9774,6 +9808,7 @@
             }
             
             // Trigger JOJO easter egg
+            // 中文和英文模式统一使用此函数，确保逻辑一致
             function triggerJojoEasterEgg() {
                 meditationClickTracker.isJojoPlaying = true;
                 
