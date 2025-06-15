@@ -78,6 +78,21 @@
                 height: 0;
             }
 
+            /* 无缝滚动容器样式 */
+            #infinite-scroll-container {
+                height: 100vh;
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none; /* Firefox */
+                -ms-overflow-style: none; /* IE 10+ */
+            }
+            #infinite-scroll-container::-webkit-scrollbar {
+                display: none; /* Chrome/Safari/Webkit */
+            }
+            body {
+                overflow: hidden !important; /* 防止body出现滚动条 */
+            }
+
             /* 滚动容器优化 */
             .container {
                 scroll-behavior: smooth;
@@ -2869,11 +2884,12 @@
         </style>
     </head>
     <body>
-        <div class="lang-toggle" onclick="toggleLanguage()" ontouchend="event.preventDefault(); toggleLanguage();">
-            <span id="langChinese" class="lang-option inactive">中</span>
-            <span class="lang-separator">/</span>
-            <span id="langEnglish" class="lang-option active">EN</span>
-        </div>
+        <div id="infinite-scroll-container">
+            <div class="lang-toggle" onclick="toggleLanguage()" ontouchend="event.preventDefault(); toggleLanguage();">
+                <span id="langChinese" class="lang-option inactive">中</span>
+                <span class="lang-separator">/</span>
+                <span id="langEnglish" class="lang-option active">EN</span>
+            </div>
 
         <div class="copy-notification" id="copyNotification">
             <span id="copyText">Copied to clipboard</span>
@@ -10876,6 +10892,71 @@ let zoteCycleCount = 0; // Track how many complete cycles through all 57 precept
                 }
             });
         </script>
+
+        <!-- 无缝滚动JavaScript代码 -->
+        <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const container = document.getElementById('infinite-scroll-container');
+            const content = container.querySelector('.container');
+            const contentHTML = content.innerHTML;
+
+            // 在前面复制一份
+            const before = document.createElement('div');
+            before.className = 'container';
+            before.innerHTML = contentHTML;
+            container.insertBefore(before, content);
+
+            // 在后面复制一份
+            const after = document.createElement('div');
+            after.className = 'container';
+            after.innerHTML = contentHTML;
+            container.appendChild(after);
+
+            // 计算内容高度
+            function getContentHeight() {
+                return content.offsetHeight;
+            }
+
+            // 初始滚动到中间（原始内容位置）
+            function setInitialScroll() {
+                const contentHeight = getContentHeight();
+                container.scrollTop = contentHeight;
+            }
+            setTimeout(setInitialScroll, 100);
+
+            // 监听滚动，循环调整
+            let isJumping = false;
+            container.addEventListener('scroll', function () {
+                if (isJumping) return;
+                
+                const contentHeight = getContentHeight();
+                const scrollTop = container.scrollTop;
+                const containerHeight = container.clientHeight;
+                const totalHeight = contentHeight * 3;
+                
+                // 更精确的边界检测
+                if (scrollTop <= 3) {
+                    // 滚动到最顶部，跳到第二份内容的相应位置
+                    isJumping = true;
+                    container.scrollTop = contentHeight * 2 + scrollTop;
+                    setTimeout(() => { isJumping = false; }, 30);
+                } else if (scrollTop >= totalHeight - containerHeight - 3) {
+                    // 滚动到最底部，跳到第一份内容的相应位置
+                    isJumping = true;
+                    // 计算在当前内容中的相对位置
+                    const relativePosition = scrollTop - (contentHeight * 2);
+                    container.scrollTop = contentHeight + relativePosition;
+                    setTimeout(() => { isJumping = false; }, 30);
+                }
+            });
+
+            // 窗口大小变化时重新定位
+            window.addEventListener('resize', function () {
+                setTimeout(setInitialScroll, 100);
+            });
+        });
+        </script>
+        </div> <!-- 关闭 infinite-scroll-container -->
     </body>
 </html>
 </text>
