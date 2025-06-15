@@ -1402,9 +1402,10 @@
                 height: 100vh;
                 background: linear-gradient(
                     135deg,
-                    #ff69b4 0%,
-                    #ff1493 50%,
-                    #dc143c 100%
+                    #000000 0%,
+                    #feebea 30%,
+                    #000000 70%,
+                    #feebea 100%
                 );
                 display: flex;
                 justify-content: center;
@@ -1425,7 +1426,8 @@
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                gap: 2rem;
+                flex-direction: column;
+                gap: 3rem;
                 animation: cyberpunkEntry 3s ease-out forwards;
             }
 
@@ -1457,16 +1459,156 @@
 
             .cyberpunk-text {
                 font-family: "Courier New", monospace;
-                font-size: 8rem;
-                color: #ffffff;
+                font-size: clamp(2rem, 8vw, 6rem);
+                color: #feebea;
                 text-shadow:
-                    0 0 10px #ffffff,
-                    0 0 20px #ffffff,
-                    0 0 30px #ffffff;
+                    0 0 10px #feebea,
+                    0 0 20px #feebea,
+                    0 0 30px #feebea;
                 font-weight: bold;
-                letter-spacing: 0.5rem;
+                letter-spacing: clamp(0.1rem, 0.5vw, 0.3rem);
                 animation: cyberpunkGlow 1.5s ease-in-out infinite alternate;
                 user-select: none;
+                text-align: center;
+                word-break: break-word;
+                max-width: 90vw;
+            }
+
+            .cyberpunk-image {
+                max-width: min(450px, 85vw);
+                max-height: min(450px, 65vh);
+                width: auto;
+                height: auto;
+                border-radius: 20px;
+                box-shadow:
+                    0 0 20px rgba(254, 235, 234, 0.3),
+                    0 0 40px rgba(254, 235, 234, 0.2),
+                    0 0 60px rgba(254, 235, 234, 0.1);
+                animation: imageGlow 2s ease-in-out infinite alternate;
+                user-select: none;
+                object-fit: contain;
+                display: block;
+                /* GIF优化 - 确保动画正常播放 */
+                image-rendering: auto;
+                -webkit-image-rendering: auto;
+                /* 防止在高DPI屏幕上模糊 */
+                image-rendering: -webkit-optimize-contrast;
+                /* 移动端优化 */
+                -webkit-transform: translateZ(0);
+                transform: translateZ(0);
+                /* 硬件加速 */
+                will-change: transform;
+                /* 防止图片拖拽 */
+                -webkit-user-drag: none;
+                -khtml-user-drag: none;
+                -moz-user-drag: none;
+                -o-user-drag: none;
+                user-drag: none;
+                /* 确保在所有浏览器中正确显示 */
+                vertical-align: middle;
+            }
+
+            @keyframes imageGlow {
+                0% {
+                    transform: scale(1) translateZ(0);
+                    box-shadow:
+                        0 0 20px rgba(254, 235, 234, 0.3),
+                        0 0 40px rgba(254, 235, 234, 0.2),
+                        0 0 60px rgba(254, 235, 234, 0.1);
+                }
+                100% {
+                    transform: scale(1.02) translateZ(0);
+                    box-shadow:
+                        0 0 30px rgba(254, 235, 234, 0.4),
+                        0 0 50px rgba(254, 235, 234, 0.3),
+                        0 0 70px rgba(254, 235, 234, 0.2);
+                }
+            }
+
+            /* Zelda-specific styles */
+            .zelda-content {
+                animation: zeldaEntry 1s ease-out;
+            }
+            
+            .zelda-text {
+                font-family: 'Cinzel', 'Times New Roman', serif;
+                font-weight: bold;
+                text-transform: uppercase;
+                background: linear-gradient(45deg, #feebea, #ffd700, #feebea);
+                background-size: 200% 200%;
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+                animation: gradientShift 3s ease-in-out infinite, cyberpunkGlow 2s ease-in-out infinite alternate;
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+                letter-spacing: clamp(0.15rem, 0.8vw, 0.4rem);
+            }
+            
+            .zelda-image {
+                max-width: min(60vw, 500px);
+                max-height: min(60vh, 400px);
+            }
+            
+            @keyframes gradientShift {
+                0% { background-position: 0% 50%; }
+                50% { background-position: 100% 50%; }
+                100% { background-position: 0% 50%; }
+            }
+            
+            /* Loading state styles */
+            .zelda-loading {
+                animation: loadingPulse 1.5s ease-in-out infinite;
+            }
+            
+            @keyframes loadingPulse {
+                0%, 100% { opacity: 0.6; }
+                50% { opacity: 1; }
+            }
+
+            /* 移动端优化 */
+            @media (max-width: 768px) {
+                .cyberpunk-image {
+                    max-width: min(320px, 90vw);
+                    max-height: min(320px, 55vh);
+                    /* 移动端减少动画强度以提升性能 */
+                    animation: none;
+                }
+                
+                .zelda-image {
+                    max-width: min(350px, 85vw);
+                    max-height: min(350px, 55vh);
+                }
+                
+                .cyberpunk-content {
+                    gap: 2rem;
+                    padding: 1rem;
+                }
+                
+                .cyberpunk-text {
+                    font-size: clamp(1.5rem, 6vw, 4rem);
+                    letter-spacing: clamp(0.05rem, 0.3vw, 0.2rem);
+                }
+                
+                .zelda-text {
+                    font-size: clamp(1.6rem, 6.5vw, 4.2rem);
+                }
+            }
+
+            /* 小屏幕设备进一步优化 */
+            @media (max-width: 480px) {
+                .cyberpunk-image {
+                    max-width: min(270px, 85vw);
+                    max-height: min(270px, 45vh);
+                }
+                
+                .zelda-image {
+                    max-width: min(280px, 90vw);
+                    max-height: min(280px, 45vh);
+                }
+                
+                .cyberpunk-content {
+                    gap: 1.5rem;
+                }
             }
 
             @keyframes cyberpunkEntry {
@@ -1484,21 +1626,36 @@
                 }
             }
 
+            @keyframes zeldaEntry {
+                0% {
+                    opacity: 0;
+                    transform: scale(2);
+                }
+                50% {
+                    opacity: 1;
+                    transform: scale(1.2);
+                }
+                100% {
+                    opacity: 0.9;
+                    transform: scale(1);
+                }
+            }
+
             @keyframes cyberpunkGlow {
                 0% {
                     opacity: 0.8;
                     text-shadow:
-                        0 0 10px #ffffff,
-                        0 0 20px #ffffff,
-                        0 0 30px #ffffff;
+                        0 0 10px #feebea,
+                        0 0 20px #feebea,
+                        0 0 30px #feebea;
                 }
                 100% {
                     opacity: 1;
                     text-shadow:
-                        0 0 15px #ffffff,
-                        0 0 30px #ffffff,
-                        0 0 45px #ffffff,
-                        0 0 60px #ffffff;
+                        0 0 15px #feebea,
+                        0 0 30px #feebea,
+                        0 0 45px #feebea,
+                        0 0 60px #feebea;
                 }
             }
 
@@ -1978,6 +2135,17 @@
                 cursor: pointer;
                 transition: all 0.3s ease;
                 position: relative;
+                /* 确保在所有浏览器中可点击 */
+                -webkit-tap-highlight-color: transparent;
+                user-select: none;
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+            }
+
+            .nav-dot:focus {
+                outline: 2px solid #feebea;
+                outline-offset: 2px;
             }
 
             .nav-dot:hover {
@@ -2088,16 +2256,16 @@
 
         <!-- 导航菜单 -->
         <nav class="navigation">
-            <div class="nav-dot" data-tooltip="Top" onclick="scrollToSection('header')"></div>
-            <div class="nav-dot" data-tooltip="Color" onclick="scrollToSection('color-display')"></div>
-            <div class="nav-dot" data-tooltip="Quote" onclick="scrollToSection('quote-section')"></div>
-            <div class="nav-dot" data-tooltip="Meditation" onclick="scrollToSection('meditation')"></div>
-            <div class="nav-dot" data-tooltip="Essence" onclick="scrollToSection('essence')"></div>
-            <div class="nav-dot" data-tooltip="Phoebe" onclick="scrollToSection('phoebe-section')"></div>
+            <div class="nav-dot" data-tooltip="Top" data-section="header"></div>
+            <div class="nav-dot" data-tooltip="Color" data-section="color-display"></div>
+            <div class="nav-dot" data-tooltip="Quote" data-section="quote-section"></div>
+            <div class="nav-dot" data-tooltip="Meditation" data-section="meditation"></div>
+            <div class="nav-dot" data-tooltip="Essence" data-section="essence"></div>
+            <div class="nav-dot" data-tooltip="Phoebe" data-section="phoebe-section"></div>
         </nav>
 
         <!-- 回到顶部按钮 -->
-        <button class="back-to-top" onclick="scrollToTop()">
+        <button class="back-to-top" id="backToTopBtn" aria-label="回到顶部">
             ↑
         </button>
 
@@ -2359,7 +2527,7 @@
                             class="essence-title quote-clickable"
                             onclick="event.stopPropagation(); copyQuoteText(this)"
                         >
-                            我有宿醉。宿醉上的宿醉
+                            我宿醉了。比宿醉还醉的宿醉
                         </h3>
                         <p
                             class="essence-desc quote-clickable"
@@ -2390,7 +2558,7 @@
                         "Maybe this is what's meant to be.<br />
                         也许这就是命中注定的<br />
                         Like, maybe the universe has a plan for us."<br />
-                        也许宇宙对我们有它的安排
+                        也许宇宙对我们另有安排
                     </p>
                 </section>
 
@@ -2423,10 +2591,18 @@
                     isEnglish ? "English" : "Chinese",
                 );
                 if (clickCounters.langToggle === 3) {
-                    console.log("🎉 Language toggle easter egg triggered!");
+                    // Check if this easter egg has reached its trigger limit (3 times)
+                    if (easterEggTriggerCounts.langToggle >= 3) {
+                        console.log("Language toggle easter egg has reached maximum triggers (3/3)");
+                        clickCounters.langToggle = 0;
+                        return;
+                    }
+                    
+                    console.log("Language toggle easter egg triggered!");
                     easterEggTriggered.langToggle = true;
+                    easterEggTriggerCounts.langToggle++;
                     setTimeout(() => {
-                        console.log("🎵 About to play they-dont-know.mp3");
+                        console.log("About to play they-dont-know.mp3");
                         playAudio("they-dont-know.mp3");
                         showEasterEggNotification(
                             isEnglish
@@ -3284,6 +3460,17 @@
                 phoebeWisdom: false, // i-wish-i-could-but-i-dont-want-to-101soundboards.mp3
             };
 
+            // Trigger count limits for Phoebe easter eggs (max 3 times each)
+            let easterEggTriggerCounts = {
+                langToggle: 0,
+                pengClick: 0,
+                tributeClick: 0,
+                essenceCard: 0,
+                phoebeWisdom: 0,
+                phoebeKeyboard: 0,
+                c137: 0,
+            };
+
             let clickCounters = {
                 langToggle: 0, // cumulative counter
                 pengClick: 0, // rapid click counter
@@ -3328,6 +3515,11 @@
             let phoebeKeySequence = [];
             let phoebeKeyTimer = null;
 
+            // C137 easter egg keyboard tracking variables
+            let c137KeySequence = [];
+            let c137KeyTimer = null;
+            let c137Triggered = false;
+
             // Additional Easter Egg state variables
             let zeldaEasterEggTriggered = false;
             let runawayEasterEggTriggered = false;
@@ -3342,10 +3534,7 @@
         // Audio playlist - starts empty, populated by easter eggs
         let audioPlaylist = [];
 
-            // Auto click variables
-            let autoClickRunning = false;
-            let autoClickInterval = null;
-            let currentAutoClickIndex = 0;
+
 
             // Function to change quote in a card
             function changeQuote(cardIndex) {
@@ -3709,6 +3898,10 @@
                                 };
                                 addAudioToPlaylist(runawayAudioData);
                                 runawayEasterEggTriggered = true;
+                                
+                                // Change content when runaway easter egg is triggered via piano sequence
+                                changeToRunawayContent();
+                                
                                 console.log("🎹 Piano sequence completed! Added Runaway to playlist");
                                 console.log("🎹 Runaway easter egg triggered!");
                             } catch (error) {
@@ -3754,34 +3947,107 @@
                 startRoseAudio();
             }
 
-            // Show heart overlay (reusing cyberpunk overlay structure)
+            // Show zelda overlay with preloading and 20-second duration
             function showHeartOverlay() {
-                const overlay = document.createElement('div');
-                overlay.className = 'cyberpunk-overlay';
-                overlay.innerHTML = `
-                    <div class="cyberpunk-content">
-                        <div class="broken-heart">❤️</div>
-                        <div class="cyberpunk-text">Rose</div>
-                    </div>
-                `;
+                // Create loading overlay first
+                const loadingOverlay = document.createElement('div');
+                loadingOverlay.className = 'cyberpunk-easter-egg zelda-easter-egg';
+                loadingOverlay.innerHTML = `
+                     <div class="cyberpunk-content zelda-content">
+                         <div class="cyberpunk-text zelda-text zelda-loading">Loading...</div>
+                     </div>
+                 `;
+                document.body.appendChild(loadingOverlay);
+                loadingOverlay.classList.add('show');
                 
-                document.body.appendChild(overlay);
+                // Preload GIF and audio
+                const gifImg = new Image();
+                let gifLoaded = false;
+                let audioReady = false;
                 
-                // Show overlay
-                setTimeout(() => {
-                    overlay.classList.add('show');
-                }, 100);
+                // Preload GIF
+                gifImg.onload = () => {
+                    gifLoaded = true;
+                    checkReadyToShow();
+                };
+                gifImg.src = './phoebe/zelda.gif';
                 
-                // Hide overlay after 3 seconds
-                setTimeout(() => {
-                    overlay.classList.remove('show');
-                    setTimeout(() => {
-                        if (overlay.parentNode) {
-                            overlay.parentNode.removeChild(overlay);
-                        }
-                    }, 500);
-                }, 3000);
+                // Initialize audio system and prepare audio
+                if (!cyberpunkAudio) {
+                    initializeAudioSystem();
+                }
+                
+                // Prepare audio (mark as ready immediately since we're using remote URL)
+                audioReady = true;
+                checkReadyToShow();
+                
+                function checkReadyToShow() {
+                    if (gifLoaded && audioReady) {
+                        // Remove loading overlay
+                        loadingOverlay.classList.remove('show');
+                        setTimeout(() => {
+                            if (loadingOverlay.parentNode) {
+                                loadingOverlay.parentNode.removeChild(loadingOverlay);
+                            }
+                        }, 500);
+                        
+                        // Create main overlay
+                        const overlay = document.createElement('div');
+                        overlay.className = 'cyberpunk-easter-egg zelda-easter-egg';
+                        overlay.innerHTML = `
+                            <div class="cyberpunk-content zelda-content">
+                                <div class="cyberpunk-text zelda-text">The LEGEND OF ZELDA</div>
+                                <img src="./phoebe/zelda.gif" alt="The Legend of Zelda" class="cyberpunk-image zelda-image" />
+                            </div>
+                            <div class="close-easter-egg" onclick="closeZeldaOverlay(this.parentElement)">×</div>
+                        `;
+                        
+                        document.body.appendChild(overlay);
+                        
+                        // Show overlay and start audio
+                        setTimeout(() => {
+                            overlay.classList.add('show');
+                            // Start audio playback
+                            startRoseAudio();
+                        }, 100);
+                        
+                        // Auto-hide overlay after 20 seconds
+                        setTimeout(() => {
+                            closeZeldaOverlay(overlay);
+                        }, 20000);
+                        
+                        // Store overlay reference for manual closing
+                         window.currentZeldaOverlay = overlay;
+                         
+                         // Add keyboard listener for ESC key
+                         window.zeldaEscapeHandler = (e) => {
+                             if (e.key === 'Escape' && window.currentZeldaOverlay) {
+                                 closeZeldaOverlay(window.currentZeldaOverlay);
+                             }
+                         };
+                         document.addEventListener('keydown', window.zeldaEscapeHandler);
+                    }
+                }
             }
+            
+            // Function to close Zelda overlay
+             function closeZeldaOverlay(overlay) {
+                 if (overlay && overlay.classList.contains('show')) {
+                     overlay.classList.remove('show');
+                     setTimeout(() => {
+                         if (overlay.parentNode) {
+                             overlay.parentNode.removeChild(overlay);
+                         }
+                     }, 500);
+                     
+                     // Clear reference and remove event listeners
+                     if (window.currentZeldaOverlay === overlay) {
+                         window.currentZeldaOverlay = null;
+                         // Remove any existing escape key listeners
+                         document.removeEventListener('keydown', window.zeldaEscapeHandler);
+                     }
+                 }
+             }
 
             // Start rose audio
             function startRoseAudio() {
@@ -3825,7 +4091,7 @@
                     if (lowerInput === 'xiaop') {
                         // Play tearsicantholdback.mp3
                         playAudio('tearsicantholdback.mp3');
-                        showEasterEggNotification(isEnglish ? "🎵 Playing tears I can't hold back..." : "🎵 播放眼泪止不住...");
+                        showEasterEggNotification(isEnglish ? "Playing tears I can't hold back..." : "播放眼泪止不住...");
                     } else if (lowerInput === 'me') {
                         // Add whenyou.mp3 to playlist
                         const whenyouAudioData = {
@@ -3834,7 +4100,7 @@
                             type: "Singer Response"
                         };
                         addAudioToPlaylist(whenyouAudioData);
-                        showEasterEggNotification(isEnglish ? "🎵 Playing when you..." : "🎵 播放当你...");
+                        showEasterEggNotification(isEnglish ? "Playing when you..." : "播放当你...");
                     } else if (lowerInput === 'you') {
                         // Keep original behavior - trigger smelly cat + friends
                         showSmellyCatContent();
@@ -3846,9 +4112,9 @@
                             type: "Singer Response"
                         };
                         addAudioToPlaylist(badmoodAudioData);
-                        showEasterEggNotification(isEnglish ? "🎵 Playing bad mood..." : "🎵 播放坏心情...");
+                        showEasterEggNotification(isEnglish ? "Playing bad mood..." : "播放坏心情...");
                     } else {
-                        showEasterEggNotification(isEnglish ? "❌ Wrong answer!" : "❌ 答案错误！");
+                        showEasterEggNotification(isEnglish ? "Wrong answer!" : "答案错误！");
                     }
                 }
                 isListeningForSinger = false;
@@ -3919,8 +4185,7 @@
                 const closeBtn = document.getElementById('closeEasterEgg');
 
                 if (audioPanel) {
-                    audioPanel.classList.add('show'); // First show the panel
-                    audioPanel.classList.add('hidden-during-fullscreen'); // Then hide it during fullscreen
+                    audioPanel.classList.add('hidden-during-fullscreen'); // Hide it during fullscreen
                 }
 
                 if (closeBtn) {
@@ -3948,8 +4213,7 @@
                 setTimeout(() => {
                     if (audioPanel) {
                         audioPanel.classList.remove('hidden-during-fullscreen');
-                        // Ensure audio panel stays visible permanently after first trigger
-                        audioPanel.classList.add('show');
+                        // Audio panel visibility is now managed by updateAudioPanelVisibility
                     }
                     if (closeBtn) {
                         closeBtn.classList.remove('hidden-during-fullscreen');
@@ -3966,6 +4230,12 @@
                     cyberpunkAudio.volume = 0.3;
                     isAudioPlaying = false;
                     updateAudioButton();
+                    
+                    // Add event listener for auto-playing next track
+                    cyberpunkAudio.addEventListener('ended', () => {
+                        console.log('🎵 Current track ended, playing next...');
+                        playNextTrack();
+                    });
                     
                     // Initialize empty playlist UI
                     initializePlaylist();
@@ -4057,6 +4327,8 @@
                                     cyberpunkAudio.currentTime = 60; // Start at 1 minute
                                 } else if (audioData.name === "Runaway") {
                                     cyberpunkAudio.currentTime = 38.5; // Start at 38.5 seconds
+                                } else if (audioData.name === "Who Is The Best") {
+                                    cyberpunkAudio.currentTime = 44; // Start at 43 seconds
                                 }
                                 // Mark as played
                                 audioData.hasPlayedBefore = true;
@@ -4072,11 +4344,52 @@
                 }
             }
             
+            function playNextTrack() {
+                if (audioPlaylist.length === 0) {
+                    console.log('📭 No tracks in playlist');
+                    return;
+                }
+                
+                // Calculate next track index (loop back to 0 if at end)
+                const nextIndex = (currentAudioIndex + 1) % audioPlaylist.length;
+                console.log(`🔄 Playing next track: ${nextIndex + 1}/${audioPlaylist.length}`);
+                
+                // Load and play next track
+                loadAudio(nextIndex);
+                
+                // Auto-play the next track
+                setTimeout(() => {
+                    if (cyberpunkAudio) {
+                        cyberpunkAudio.play().then(() => {
+                            isAudioPlaying = true;
+                            updateAudioButton();
+                            console.log(`▶️ Auto-playing: ${audioPlaylist[nextIndex].name}`);
+                        }).catch(error => {
+                            console.log('❌ Auto-play failed:', error);
+                        });
+                    }
+                }, 100);
+            }
+            
             function initializePlaylist() {
                 const playlistContainer = document.getElementById('playlistItems');
+                const playlistSidebar = document.getElementById('audioPlaylistSidebar');
                 if (!playlistContainer) return;
                 
                 playlistContainer.innerHTML = '';
+                
+                // Control sidebar visibility based on playlist content
+                if (audioPlaylist.length === 0) {
+                    // Hide sidebar when no songs
+                    if (playlistSidebar) {
+                        playlistSidebar.style.display = 'none';
+                    }
+                } else {
+                    // Show sidebar when there are songs
+                    if (playlistSidebar) {
+                        playlistSidebar.style.display = 'block';
+                    }
+                }
                 
                 audioPlaylist.forEach((audio, index) => {
                     const item = document.createElement('div');
@@ -4116,6 +4429,9 @@
                 });
                 
                 updatePlaylistUI();
+                
+                // Update audio panel visibility based on playlist content
+                updateAudioPanelVisibility();
             }
             
             function updatePlaylistUI() {
@@ -4129,12 +4445,30 @@
                 });
             }
 
+            function updateAudioPanelVisibility() {
+                const audioPanel = document.getElementById('audioControlPanel');
+                if (!audioPanel) return;
+                
+                // Show panel only if there are songs in the playlist
+                if (audioPlaylist.length > 0) {
+                    audioPanel.classList.add('show');
+                } else {
+                    audioPanel.classList.remove('show');
+                }
+            }
+            
             function setupAudioControl() {
                 const audioBtn = document.getElementById('audioControlBtn');
+                const audioPanel = document.getElementById('audioControlPanel');
 
                 if (audioBtn && !audioBtn.hasAttribute('data-initialized')) {
                     audioBtn.addEventListener('click', toggleAudio);
                     audioBtn.setAttribute('data-initialized', 'true');
+                }
+                
+                // Show audio panel at startup, but control visibility based on playlist
+                if (audioPanel) {
+                    updateAudioPanelVisibility();
                 }
             }
 
@@ -4236,11 +4570,15 @@
             let konamiSequence = [];
             let konamiTarget = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'KeyB', 'KeyA', 'KeyB', 'KeyA'];
             let konamiTimer = null;
+            
+            // 调试权限序列变量
+            let debugSequence = [];
+            let debugTarget = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'KeyB', 'KeyA', 'KeyB', 'KeyA', 'KeyP', 'KeyE', 'KeyN', 'KeyG'];
+            let debugTimer = null;
 
             function setupDebugPanel() {
                 const debugToggle = document.getElementById('debugToggle');
                 const debugPanel = document.getElementById('debugPanel');
-                const autoClickBtn = document.getElementById('autoClickBtn');
 
                 if (debugToggle && debugPanel) {
                     debugToggle.addEventListener('click', function() {
@@ -4261,9 +4599,7 @@
                     }, 2000);
                 }
 
-                if (autoClickBtn) {
-                    autoClickBtn.addEventListener('click', toggleAutoClick);
-                }
+
 
                 // Add event listeners for quick-set buttons
                 const setCyberpunkBtn = document.getElementById('setCyberpunkBtn');
@@ -4435,6 +4771,9 @@
                 smellyCatEasterEggTriggered = false;
                 roseQuoteEasterEggTriggered = false;
                 
+                // Restore original content when resetting
+                restoreOriginalContent();
+                
                 // Update all button states
                 updateEasterEggButtonStates();
                 
@@ -4518,12 +4857,12 @@
                     const titleEl = card.querySelector(".essence-title");
                     const title = titleEl ? titleEl.textContent.trim() : '';
                     const isMatch = title === targetText;
-                    const isCurrentTarget = autoClickRunning && index === currentAutoClickIndex;
+                    const isCurrentTarget = false;
 
                     if (isMatch) matchCount++;
 
                     html += `<p style="color: ${isMatch ? '#00ff00' : '#ff6b6b'}; ${isCurrentTarget ? 'background: rgba(255, 255, 0, 0.2); padding: 0.2rem; border-radius: 3px;' : ''}">
-                        Card ${index + 1}: ${isMatch ? '✅' : '❌'} ${isCurrentTarget ? '🎯' : ''}<br/>
+                        Card ${index + 1}: ${isMatch ? 'Match' : 'No Match'} ${isCurrentTarget ? 'Target' : ''}<br/>
                         <small>"${title.substring(0, 25)}${title.length > 25 ? '...' : ''}"</small>
                     </p>`;
                 });
@@ -4534,19 +4873,19 @@
 
                 // Add easter egg status display
                 html += `<div style="margin-top: 1rem; padding: 0.5rem; background: rgba(0,0,0,0.3); border-radius: 5px;">`;
-                html += `<p style="color: #ffd700; font-weight: bold; margin: 0 0 0.5rem 0;">🎯 Easter Egg Status:</p>`;
+                html += `<p style="color: #ffd700; font-weight: bold; margin: 0 0 0.5rem 0;">Easter Egg Status:</p>`;
                 
                 // Phoebe easter eggs
                 const phoebeEggs = [
-                    { key: 'langToggle', name: '🌐 Lang Toggle' },
-                    { key: 'pengClick', name: '🐧 Peng Click' },
-                    { key: 'tributeClick', name: '💝 Tribute Click' },
-                    { key: 'essenceCard', name: '✨ Essence Card' },
-                    { key: 'phoebeWisdom', name: '🧠 Phoebe Wisdom' }
+                    { key: 'langToggle', name: 'Lang Toggle' },
+                    { key: 'pengClick', name: 'Peng Click' },
+                    { key: 'tributeClick', name: 'Tribute Click' },
+                    { key: 'essenceCard', name: 'Essence Card' },
+                    { key: 'phoebeWisdom', name: 'Phoebe Wisdom' },
                 ];
                 
                 phoebeEggs.forEach(egg => {
-                    const status = easterEggTriggered[egg.key] ? '✅' : '❌';
+                    const status = easterEggTriggered[egg.key] ? 'ON' : 'OFF';
                     const color = easterEggTriggered[egg.key] ? '#00ff00' : '#ff6b6b';
                     html += `<span style="color: ${color}; font-size: 0.8rem; margin-right: 0.5rem;">${egg.name} ${status}</span>`;
                 });
@@ -4563,18 +4902,14 @@
                 ];
                 
                 otherEggs.forEach(egg => {
-                    const status = egg.var ? '✅' : '❌';
+                    const status = egg.var ? 'ON' : 'OFF';
                     const color = egg.var ? '#00ff00' : '#ff6b6b';
                     html += `<span style="color: ${color}; font-size: 0.8rem; margin-right: 0.5rem;">${egg.name} ${status}</span>`;
                 });
                 
                 html += `</div>`;
 
-                if (autoClickRunning) {
-                    html += `<p style="color: #ffd700; font-weight: bold; font-size: 0.75rem;">
-                        🤖 Auto-clicking card ${currentAutoClickIndex + 1}...
-                    </p>`;
-                }
+
 
                 if (matchCount === 3) {
                     html += `<p style="color: #00ff00; font-weight: bold; animation: pulse 1s infinite;">
@@ -4585,188 +4920,15 @@
                 quotesList.innerHTML = html;
             }
 
-            function toggleAutoClick() {
-                if (!debugPermission) {
-                    showEasterEggNotification(
-                        isEnglish 
-                            ? "❌ No permission! Use Morse code on Pickle Rick first." 
-                            : "❌ 无权限！请先在Pickle Rick上使用摩尔斯电码。"
-                    );
-                    return;
-                }
-                
-                const autoClickBtn = document.getElementById('autoClickBtn');
 
-                if (!autoClickRunning) {
-                    startAutoClick();
-                    autoClickBtn.textContent = '⏹️ Stop Auto';
-                    autoClickBtn.classList.add('running');
-                } else {
-                    stopAutoClick();
-                    autoClickBtn.textContent = '🤖 Auto Click';
-                    autoClickBtn.classList.remove('running');
-                }
-            }
 
-            function startAutoClick() {
-                if (autoClickRunning || cyberpunkEasterEggTriggered) {
-                    return;
-                }
 
-                console.log("🤖 Starting auto click...");
-                autoClickRunning = true;
-                currentAutoClickIndex = 0;
 
-                // Start immediately, then use variable intervals
-                performAutoClick();
-            }
 
-            function stopAutoClick() {
-                if (autoClickInterval) {
-                    clearInterval(autoClickInterval);
-                    autoClickInterval = null;
-                }
-                autoClickRunning = false;
-                currentAutoClickIndex = 0;
-                console.log("⏹️ Auto click stopped");
 
-                // Reset button appearance
-                const autoClickBtn = document.getElementById('autoClickBtn');
-                if (autoClickBtn && !cyberpunkEasterEggTriggered) {
-                    autoClickBtn.textContent = '🤖 Auto Click';
-                    autoClickBtn.classList.remove('running');
-                    autoClickBtn.style.background = '';
-                    autoClickBtn.style.borderColor = '';
-                    autoClickBtn.style.color = '';
-                }
-            }
 
-            function performAutoClick() {
-                if (!autoClickRunning || cyberpunkEasterEggTriggered) {
-                    stopAutoClick();
-                    return;
-                }
 
-                const currentCards = document.querySelectorAll(
-                    isEnglish
-                        ? "#englishContent .essence-card"
-                        : "#chineseContent .essence-card",
-                );
 
-                const targetText = isEnglish
-                    ? "You're a natural-born Edgerunner."
-                    : "你是个天生的边缘行者。";
-
-                // Check current card
-                const currentCard = currentCards[currentAutoClickIndex];
-                if (!currentCard) {
-                    stopAutoClick();
-                    return;
-                }
-
-                const titleEl = currentCard.querySelector(".essence-title");
-                const currentText = titleEl ? titleEl.textContent.trim() : '';
-
-                console.log(`🎯 Auto-click [${currentAutoClickIndex + 1}/3]: "${currentText.substring(0, 30)}..."`);
-
-                if (currentText === targetText) {
-                    // Current card matches, move to next with celebration
-                    console.log(`✅ Card ${currentAutoClickIndex + 1} matches! Moving to next...`);
-
-                    // Add success visual feedback
-                    currentCard.style.border = '2px solid #00ff00';
-                    currentCard.style.boxShadow = '0 0 15px rgba(0, 255, 0, 0.5)';
-                    setTimeout(() => {
-                        currentCard.style.border = '';
-                        currentCard.style.boxShadow = '';
-                    }, 1000);
-
-                    currentAutoClickIndex++;
-
-                    if (currentAutoClickIndex >= 3) {
-                        // Check if all cards match
-                        checkAllCardsAndComplete(currentCards, targetText);
-                    } else {
-                        // Move to next card with a short delay
-                        setTimeout(() => {
-                            if (autoClickRunning) {
-                                performAutoClick();
-                            }
-                        }, 600);
-                    }
-                } else {
-                    // Click the current card to change its quote
-                    console.log(`🖱️ Clicking card ${currentAutoClickIndex + 1} to change quote...`);
-
-                    // Enhanced visual feedback
-                    currentCard.style.transform = 'scale(0.95)';
-                    currentCard.style.border = '2px solid #ffff00';
-                    currentCard.style.boxShadow = '0 0 15px rgba(255, 255, 0, 0.5)';
-
-                    setTimeout(() => {
-                        currentCard.style.transform = '';
-                        currentCard.style.border = '';
-                        currentCard.style.boxShadow = '';
-                    }, 300);
-
-                    currentCard.click();
-
-                    // Schedule next click with random delay for natural feeling
-                    const delay = 600 + Math.random() * 400; // 600-1000ms
-                    setTimeout(() => {
-                        if (autoClickRunning) {
-                            performAutoClick();
-                        }
-                    }, delay);
-                }
-            }
-
-            function checkAllCardsAndComplete(currentCards, targetText) {
-                let matchCount = 0;
-                currentCards.forEach(card => {
-                    const title = card.querySelector(".essence-title");
-                    if (title && title.textContent.trim() === targetText) {
-                        matchCount++;
-                    }
-                });
-
-                if (matchCount === 3) {
-                    console.log("🎉 Mission accomplished! All cards match!");
-                    stopAutoClick();
-                    const autoClickBtn = document.getElementById('autoClickBtn');
-                    if (autoClickBtn) {
-                        autoClickBtn.textContent = '🎉 Success!';
-                        autoClickBtn.classList.remove('running');
-                        autoClickBtn.style.background = 'rgba(0, 255, 0, 0.3)';
-                        autoClickBtn.style.borderColor = '#00ff00';
-                        autoClickBtn.style.color = '#00ff00';
-                    }
-
-                    // Show celebration effect
-                    currentCards.forEach((card, index) => {
-                        setTimeout(() => {
-                            card.style.border = '2px solid #00ff00';
-                            card.style.boxShadow = '0 0 20px rgba(0, 255, 0, 0.8)';
-                            card.style.transform = 'scale(1.05)';
-
-                            setTimeout(() => {
-                                card.style.border = '';
-                                card.style.boxShadow = '';
-                                card.style.transform = '';
-                            }, 1500);
-                        }, index * 200);
-                    });
-                } else {
-                    // Not all match yet, restart from first card
-                    console.log(`🔄 Only ${matchCount}/3 cards match. Restarting...`);
-                    currentAutoClickIndex = 0;
-                    setTimeout(() => {
-                        if (autoClickRunning) {
-                            performAutoClick();
-                        }
-                    }, 800);
-                }
-            }
 
             // Handle window resize to reposition squares if needed
             window.addEventListener("resize", function () {
@@ -4806,6 +4968,8 @@
                 setTimeout(() => {
                     setupAudioControl();
                     setupCloseButton();
+                    // Initialize empty playlist at startup
+                    initializePlaylist();
                 }, 100);
 
                 // Note: Close button will only be shown after easter egg is triggered
@@ -5003,9 +5167,17 @@
 
                 // Check if triple clicked
                 if (clickCounters[eggType] === 3) {
-                    console.log(`🎉 ${eggType} easter egg triggered!`);
+                    // Check if this easter egg has reached its trigger limit (3 times)
+                    if (easterEggTriggerCounts[eggType] >= 3) {
+                        console.log(`${eggType} easter egg has reached maximum triggers (3/3)`);
+                        clickCounters[eggType] = 0;
+                        return;
+                    }
+                    
+                    console.log(`${eggType} easter egg triggered! (${easterEggTriggerCounts[eggType] + 1}/3)`);
                     easterEggTriggered[eggType] = true;
-                    console.log(`🎵 Playing audio: ${audioFile}`);
+                    easterEggTriggerCounts[eggType]++;
+                    console.log(`Playing audio: ${audioFile}`);
                     playAudio(audioFile);
                     showEasterEggNotification(message);
                     clickCounters[eggType] = 0;
@@ -5217,7 +5389,7 @@
                         0 0 120px rgba(254, 235, 234, 0.2);
                     line-height: 1;
                     animation: glow 2s ease-in-out infinite alternate, scaleIn 1s ease-out;
-                    padding: 1rem;
+                    padding: 1rem 2rem;
                     box-sizing: border-box;
                     width: 100%;
                     display: flex;
@@ -5226,29 +5398,35 @@
                     justify-content: center;
                     min-height: 100vh;
                     flex-wrap: nowrap;
+                    margin: 0 auto;
                 `;
 
-                // Adjust font size for different screen sizes
+                // Adjust font size for different screen sizes with better responsiveness
                 const screenWidth = window.innerWidth;
                 let fontSize, letterSpacing;
 
                 if (screenWidth < 480) {
-                    fontSize = "3rem";
-                    letterSpacing = "0.3rem";
+                    fontSize = "2.5rem";
+                    letterSpacing = "0.2rem";
                 } else if (screenWidth < 768) {
-                    fontSize = "5rem";
-                    letterSpacing = "0.5rem";
+                    fontSize = "4rem";
+                    letterSpacing = "0.3rem";
                 } else if (screenWidth < 1024) {
+                    fontSize = "5rem";
+                    letterSpacing = "0.4rem";
+                } else if (screenWidth < 1440) {
                     fontSize = "6rem";
-                    letterSpacing = "0.6rem";
+                    letterSpacing = "0.5rem";
                 } else {
-                    fontSize = "8rem";
-                    letterSpacing = "0.8rem";
+                    fontSize = "7rem";
+                    letterSpacing = "0.6rem";
                 }
 
                 displayText.style.fontSize = fontSize;
                 displayText.style.letterSpacing = letterSpacing;
-                displayText.style.gap = "0.2em";
+                displayText.style.gap = "0.15em";
+                displayText.style.maxWidth = "95vw";
+                displayText.style.overflow = "hidden";
 
                 // Add background glow effect
                 const backgroundGlow = document.createElement("div");
@@ -5398,6 +5576,68 @@
                         .then(() => {
                             console.log(
                                 "🎉 Audio playing successfully:",
+                                currentPath,
+                            );
+                        })
+                        .catch((error) => {
+                            console.warn(
+                                `⚠️ Path ${currentPathIndex + 1} failed:`,
+                                error.message,
+                            );
+                            currentPathIndex++;
+                            tryNextPath();
+                        });
+                }
+
+                tryNextPath();
+            }
+
+            function playAudioFromTime(filename, startTime) {
+                console.log(`🎵 Playing audio from ${startTime}s:`, filename);
+
+                // Try multiple possible paths, prioritizing phoebe folder
+                const paths = [
+                    `./phoebe/${filename}`,
+                    `phoebe/${filename}`,
+                    `./audio/${filename}`,
+                    `audio/${filename}`,
+                    filename,
+                ];
+
+                let currentPathIndex = 0;
+
+                function tryNextPath() {
+                    if (currentPathIndex >= paths.length) {
+                        console.error(
+                            "❌ All audio paths failed for:",
+                            filename,
+                        );
+                        return;
+                    }
+
+                    const currentPath = paths[currentPathIndex];
+                    console.log(
+                        `🔄 Trying path ${currentPathIndex + 1}:`,
+                        currentPath,
+                    );
+
+                    const audio = new Audio(currentPath);
+
+                    audio.addEventListener("canplay", () => {
+                        console.log("✅ Audio ready to play:", currentPath);
+                        // Set the start time when audio is ready
+                        audio.currentTime = startTime;
+                    });
+
+                    audio.addEventListener("ended", () => {
+                        console.log("🎵 Audio finished playing:", currentPath);
+                    });
+
+                    audio
+                        .play()
+                        .then(() => {
+                            console.log(
+                                `🎉 Audio playing successfully from ${startTime}s:`,
                                 currentPath,
                             );
                         })
@@ -5609,7 +5849,7 @@
                             triggerFinalFriendsEasterEgg();
                         } else {
                             console.log("❌ 'you' requires all Phoebe easter eggs to be triggered first!");
-                            showEasterEggNotification(isEnglish ? "❌ Need all Phoebe easter eggs first!" : "❌ 需要先触发所有Phoebe彩蛋！");
+                            showEasterEggNotification(isEnglish ? "Need all Phoebe easter eggs first!" : "需要先触发所有Phoebe彩蛋！");
                         }
                     } else if (currentSequence.endsWith("me")) {
                         // 'me' requires ALL easter eggs to be triggered
@@ -5628,10 +5868,10 @@
                                 type: "Keyboard Response"
                             };
                             addAudioToPlaylist(whenyouAudioData);
-                            showEasterEggNotification(isEnglish ? "🎵 Playing when you..." : "🎵 播放当你...");
+                            showEasterEggNotification(isEnglish ? "Playing when you..." : "播放当你...");
                         } else {
                             console.log("❌ 'me' requires ALL easter eggs to be triggered first!");
-                            showEasterEggNotification(isEnglish ? "❌ Need ALL easter eggs first!" : "❌ 需要先触发所有彩蛋！");
+                            showEasterEggNotification(isEnglish ? "Need ALL easter eggs first!" : "需要先触发所有彩蛋！");
                         }
                     } else if (currentSequence.endsWith("dance")) {
                         // 'dance' requires ALL easter eggs to be triggered
@@ -5650,10 +5890,10 @@
                                 type: "Keyboard Response"
                             };
                             addAudioToPlaylist(badmoodAudioData);
-                            showEasterEggNotification(isEnglish ? "🎵 Playing dance music..." : "🎵 播放舞曲...");
+                            showEasterEggNotification(isEnglish ? "Playing dance music..." : "播放舞曲...");
                         } else {
                             console.log("❌ 'dance' requires ALL easter eggs to be triggered first!");
-                            showEasterEggNotification(isEnglish ? "❌ Need ALL easter eggs first!" : "❌ 需要先触发所有彩蛋！");
+                            showEasterEggNotification(isEnglish ? "Need ALL easter eggs first!" : "需要先触发所有彩蛋！");
                         }
                     } else if (currentSequence.endsWith("xiaop")) {
                         // 'xiaop' requires ALL easter eggs to be triggered
@@ -5667,10 +5907,10 @@
                             isListeningForYou = false;
                             keySequence = [];
                             playAudio('tearsicantholdback.mp3');
-                            showEasterEggNotification(isEnglish ? "🎵 Playing tears I can't hold back..." : "🎵 播放眼泪止不住...");
+                            showEasterEggNotification(isEnglish ? "Playing tears I can't hold back..." : "播放眼泪止不住...");
                         } else {
                             console.log("❌ 'xiaop' requires ALL easter eggs to be triggered first!");
-                            showEasterEggNotification(isEnglish ? "❌ Need ALL easter eggs first!" : "❌ 需要先触发所有彩蛋！");
+                            showEasterEggNotification(isEnglish ? "Need ALL easter eggs first!" : "需要先触发所有彩蛋！");
                         }
                     } else {
                         console.log(
@@ -5704,6 +5944,58 @@
                     console.log("🎮 Konami sequence reset due to timeout");
                 }, 3000);
                 
+                // Handle Debug Permission sequence (上上下下左右左右baba + peng)
+                debugSequence.push(e.code);
+                
+                // Keep only last 16 keys for debug sequence
+                if (debugSequence.length > 16) {
+                    debugSequence.shift();
+                }
+                
+                // Clear debug timer if exists
+                if (debugTimer) {
+                    clearTimeout(debugTimer);
+                }
+                
+                // Set timer to reset debug sequence after 3 seconds of inactivity
+                debugTimer = setTimeout(() => {
+                    debugSequence = [];
+                    console.log("🔧 Debug sequence reset due to timeout");
+                }, 3000);
+                
+                // Check if debug permission sequence matches (上上下下左右左右baba + peng)
+                if (debugSequence.length >= debugTarget.length) {
+                    const lastKeys = debugSequence.slice(-debugTarget.length);
+                    if (JSON.stringify(lastKeys) === JSON.stringify(debugTarget)) {
+                        console.log("🔧 Debug Permission Code activated! Full debug access granted");
+                        debugSequence = [];
+                        
+                        // 授予调试权限
+                         debugPermission = true;
+                        
+                        // 显示调试按钮和面板
+                        const debugToggle = document.getElementById('debugToggle');
+                        const debugPanel = document.getElementById('debugPanel');
+                        
+                        // 显示调试按钮
+                        debugToggle.classList.add('show');
+                        
+                        if (!debugPanelVisible) {
+                            debugPanelVisible = true;
+                            debugPanel.classList.add('show');
+                            updateDebugInfo();
+                        }
+                        
+                        showEasterEggNotification(
+                            isEnglish 
+                                ? "🔧 Debug Permission Granted! Full access unlocked" 
+                                : "🔧 调试权限已授予！完全访问权限已解锁"
+                        );
+                        
+                        return; // 跳过普通Konami代码检测
+                    }
+                }
+                
                 // Check if konami sequence matches
                 if (konamiSequence.length >= konamiTarget.length) {
                     const lastKeys = konamiSequence.slice(-konamiTarget.length);
@@ -5733,6 +6025,7 @@
                 }
                 
                 console.log(`🎮 Konami progress: [${konamiSequence.map(code => code.replace('Arrow', '').replace('Key', '')).join(',')}]`);
+                console.log(`🔧 Debug permission progress: [${debugSequence.map(code => code.replace('Arrow', '').replace('Key', '')).join(',')}]`);
 
                 // Handle Rick portal sequence
                 rickKeySequence.push(key);
@@ -5853,14 +6146,62 @@
                 
                 // Check for Phoebe triggers
                 if (phoebeSeq.includes("phoebe") || phoebeSeq.includes("buffay") || phoebeSeq.includes("feebea")) {
-                    console.log("🎵 Phoebe easter egg triggered! Playing Phoebe audio");
+                    // Check if keyboard Phoebe easter egg has reached its trigger limit (3 times)
+                    if (easterEggTriggerCounts.phoebeKeyboard >= 3) {
+                        console.log("Phoebe keyboard easter egg has reached maximum triggers (3/3)");
+                        phoebeKeySequence = [];
+                        return;
+                    }
+                    
+                    console.log(`Phoebe easter egg triggered! Playing Phoebe audio (${easterEggTriggerCounts.phoebeKeyboard + 1}/3)`);
+                    easterEggTriggerCounts.phoebeKeyboard++;
                     playAudio("im-phoebe-buffay-hi.mp3");
                     showEasterEggNotification(
                         isEnglish 
-                            ? "🎵 Hi, I'm Phoebe Buffay!" 
-                            : "🎵 嗨，我是菲比·布菲！"
+                            ? "I'm Phoebe Buffay, Hi!" 
+                            : "嗨，我是菲比·布菲！"
                     );
                     phoebeKeySequence = [];
+                }
+
+                // Handle C137 sequence
+                c137KeySequence.push(key);
+
+                // Keep only last 4 characters for "c137"
+                if (c137KeySequence.length > 4) {
+                    c137KeySequence.shift();
+                }
+
+                // Check if "c137" was typed and not already triggered
+                if (
+                    c137KeySequence.join("") === "c137" &&
+                    !c137Triggered
+                ) {
+                    // Check if picklerick easter egg has been triggered first
+                    if (pickleRickTriggered) {
+                        console.log(
+                            "🎯 User typed 'c137'! Triggering C137 easter egg!",
+                        );
+                        c137KeySequence = [];
+                        c137Triggered = true;
+                        easterEggTriggerCounts.c137++;
+                        triggerC137EasterEgg();
+                    } else {
+                        console.log(
+                            "❌ 'c137' requires picklerick easter egg to be triggered first!",
+                        );
+                        showEasterEggNotification(
+                            isEnglish 
+                                ? "Need to trigger picklerick first!" 
+                                : "需要先触发picklerick彩蛋！"
+                        );
+                        c137KeySequence = [];
+                    }
+                } else {
+                    console.log(
+                        "Current c137 sequence:",
+                        c137KeySequence.join(""),
+                    );
                 }
 
                 // Reset sequences after 5 seconds of inactivity
@@ -5873,6 +6214,7 @@
                     wubbaKeySequence = [];
                     languageKeySequence = [];
                     phoebeKeySequence = [];
+                    c137KeySequence = [];
                     console.log("Key sequences reset due to timeout");
                 }, 5000);
             });
@@ -6233,6 +6575,149 @@
                 }, 3000);
             }
 
+            function triggerC137EasterEgg() {
+                console.log("🎯 C137 EASTER EGG ACTIVATED!");
+                
+                // Show C137 fullscreen text first
+                showC137Text();
+                
+                // Show notification after fullscreen text (3.3s = 2.5s display + 0.8s fadeout)
+                setTimeout(() => {
+                    showEasterEggNotification(
+                        isEnglish
+                            ? "Welcome to dimension C-137!"
+                            : "欢迎来到C-137维度！"
+                    );
+                }, 3300);
+                
+                try {
+                    // Initialize audio system if not already done
+                    if (!cyberpunkAudio) {
+                        initializeAudioSystem();
+                    }
+                    
+                    // Add whoisthebest.mp3 to playlist
+                    const c137AudioData = {
+                        name: "Who Is The Best",
+                        src: "./phoebe/whoisthebest.mp3",
+                        type: "C-137 Dimension"
+                    };
+                    addAudioToPlaylist(c137AudioData);
+                    
+                    console.log("✅ whoisthebest.mp3 added to playlist successfully!");
+                    console.log("🎯 C137 easter egg triggered!");
+                } catch (error) {
+                    console.log('❌ Failed to add whoisthebest.mp3 to playlist:', error);
+                }
+                
+                
+            }
+            
+            function showC137Text() {
+                // Create fullscreen overlay for C137 text
+                const overlay = document.createElement("div");
+                overlay.style.cssText = `
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100vw;
+                    height: 100vh;
+                    background: #000000;
+                    z-index: 15000;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    animation: fadeIn 0.8s ease-out;
+                `;
+
+                // Create the main text container
+                const textContainer = document.createElement("div");
+                const isMobile = window.innerWidth <= 768;
+                textContainer.style.cssText = `
+                    text-align: center;
+                    position: relative;
+                    padding: ${isMobile ? "20px" : "40px"};
+                    transform: rotate(-5deg);
+                `;
+
+                // Create C137 text
+                const c137Text = document.createElement("div");
+                c137Text.style.cssText = `
+                    font-family: 'Arial Black', sans-serif;
+                    font-size: ${isMobile ? "clamp(3rem, 15vw, 6rem)" : "clamp(4rem, 10vw, 10rem)"};
+                    font-weight: 900;
+                    color: #FFFFFF;
+                    text-transform: uppercase;
+                    letter-spacing: ${isMobile ? "0.1em" : "0.15em"};
+                    margin-bottom: ${isMobile ? "20px" : "30px"};
+                    overflow: hidden;
+                    white-space: nowrap;
+                `;
+
+                // Create second line text
+                const secondText = document.createElement("div");
+                secondText.style.cssText = `
+                    font-family: 'Arial Black', sans-serif;
+                    font-size: ${isMobile ? "clamp(1.5rem, 8vw, 3rem)" : "clamp(2rem, 5vw, 5rem)"};
+                    font-weight: 700;
+                    color: #FFFFFF;
+                    letter-spacing: ${isMobile ? "0.05em" : "0.1em"};
+                    overflow: hidden;
+                    white-space: nowrap;
+                `;
+
+                textContainer.appendChild(c137Text);
+                textContainer.appendChild(secondText);
+                overlay.appendChild(textContainer);
+                document.body.appendChild(overlay);
+
+                // Typewriter effect for C137
+                const c137FullText = "C137";
+                let c137Index = 0;
+                c137Text.textContent = "";
+                
+                const c137TypeWriter = () => {
+                    if (c137Index < c137FullText.length) {
+                        c137Text.textContent += c137FullText.charAt(c137Index);
+                        c137Index++;
+                        setTimeout(c137TypeWriter, 150);
+                    } else {
+                        // Start second text after C137 is complete
+                        setTimeout(startSecondText, 300);
+                    }
+                };
+
+                // Typewriter effect for second text
+                const secondFullText = "怎么可能被干掉";
+                let secondIndex = 0;
+                secondText.textContent = "";
+                
+                const startSecondText = () => {
+                    const secondTypeWriter = () => {
+                        if (secondIndex < secondFullText.length) {
+                            secondText.textContent += secondFullText.charAt(secondIndex);
+                            secondIndex++;
+                            setTimeout(secondTypeWriter, 160);
+                        }
+                    };
+                    secondTypeWriter();
+                };
+
+                // Start typewriter effect
+                setTimeout(c137TypeWriter, 500);
+
+                // Remove after 2.5 seconds with fade out (extended time for typewriter effect)
+                setTimeout(() => {
+                    overlay.style.animation = "fadeOut 0.8s ease-out forwards";
+                    setTimeout(() => {
+                        if (document.body.contains(overlay)) {
+                            document.body.removeChild(overlay);
+                        }
+                    }, 800);
+                }, 2500);
+            }
+            
             function showPickleRickText() {
                 // Create fullscreen overlay for Pickle Rick text
                 const overlay = document.createElement("div");
@@ -6603,11 +7088,200 @@
                     };
                     addAudioToPlaylist(runawayAudioData);
                     runawayEasterEggTriggered = true;
+                    
+                    // Change content when runaway easter egg is triggered
+                    changeToRunawayContent();
+                    
                     console.log("✅ Runaway added to playlist successfully!");
                     console.log("🎹 Runaway easter egg triggered!");
                 } catch (error) {
                     console.log('❌ Failed to add runaway1.mp3 to playlist:', error);
                 }
+            }
+            
+            function changeToRunawayContent() {
+                console.log("🎵 Changing content to Runaway mode...");
+                
+                // Change Phoebe's Wisdom to Donda's Wisdom for English content
+                const englishPhoebeTitle = document.querySelector('#englishContent .phoebe-title');
+                const englishPhoebeQuote = document.querySelector('#englishContent .phoebe-quote');
+                
+                if (englishPhoebeTitle && englishPhoebeQuote) {
+                    englishPhoebeTitle.textContent = "Donda's Wisdom";
+                    englishPhoebeQuote.innerHTML = `
+                        "… you got a lot of confidence that come off a little arrogant even though you're humble and everything –– but it be important to remember that the giant looks himself in the mirror and sees nothing…"
+                    `;
+                }
+                
+                // Change Chinese Phoebe section
+                const chinesePhoebeTitle = document.querySelector('#chineseContent .phoebe-title');
+                const chinesePhoebeQuote = document.querySelector('#chineseContent .phoebe-quote');
+                
+                if (chinesePhoebeTitle && chinesePhoebeQuote) {
+                    chinesePhoebeTitle.textContent = "Donda的智慧";
+                    chinesePhoebeQuote.innerHTML = `
+                        "你有很多的自信，这让你看起来有点傲慢，虽然你很谦虚。但重要的是要记住，巨人照镜子时什么也看不到。"<br />
+                        "… you got a lot of confidence that come off a little arrogant even though you're humble and everything –– but it be important to remember that the giant looks himself in the mirror and sees nothing…"
+                    `;
+                }
+                
+                // Change meditation content for English page
+                const englishMeditationText = document.querySelector('#englishContent .meditation-text');
+                if (englishMeditationText) {
+                    englishMeditationText.innerHTML = `
+                        And I always find, yeah, I always find somethin' wrong<br />
+                        You been puttin' up wit' my shit just way too long<br />
+                        I'm so gifted at findin' what I don't like the most<br />
+                        So I think it's time for us to have a toast<br />
+                        Let's have a toast for the douchebags,<br />
+                        Let's have a toast for the assholes<br />
+                        Let's have a toast for the scumbags,<br />
+                        Every one of them that I know<br />
+                        Let's have a toast to the jerkoffs<br />
+                        That'll never take work off<br />
+                        Baby, I got a plan<br />
+                        Run away fast as you can
+                    `;
+                }
+                
+                // Change meditation content for Chinese page
+                const chineseMeditationText = document.querySelector('#chineseContent .meditation-text');
+                if (chineseMeditationText) {
+                    chineseMeditationText.innerHTML = `
+                        And I always find, yeah, I always find somethin' wrong<br />
+                        我总能发现，我总是发现不对劲的事<br />
+                        You been puttin' up wit' my shit just way too long<br />
+                        你忍受我的胡闹已经太久了<br />
+                        I'm so gifted at findin' what I don't like the most<br />
+                        我的天赋就是发现自己讨厌什么<br />
+                        So I think it's time for us to have a toast<br />
+                        所以我觉得,是时候为我们干杯了<br />
+                        Let's have a toast for the douchebags,<br />
+                        让我们为那些混蛋干杯<br />
+                        Let's have a toast for the assholes<br />
+                        让我们为那些王八蛋干杯<br />
+                        Let's have a toast for the scumbags,<br />
+                        让我们为那些人渣干杯<br />
+                        Every one of them that I know<br />
+                        致每一个他们<br />
+                        Let's have a toast to the jerkoffs<br />
+                        让我们为那些混球干杯<br />
+                        That'll never take work off<br />
+                        那些永远都不会奏效<br />
+                        Baby, I got a plan<br />
+                        宝贝，我有一个计划<br />
+                        Run away fast as you can
+                        尽你所能快速逃离
+                    `;
+                }
+                
+                console.log("✅ Content changed to Runaway mode!");
+            }
+            
+            function restoreOriginalContent() {
+                console.log("🔄 Restoring original content...");
+                
+                // Restore English Phoebe's Wisdom
+                const englishPhoebeTitle = document.querySelector('#englishContent .phoebe-title');
+                const englishPhoebeQuote = document.querySelector('#englishContent .phoebe-quote');
+                
+                if (englishPhoebeTitle && englishPhoebeQuote) {
+                    englishPhoebeTitle.textContent = "Phoebe's Wisdom";
+                    englishPhoebeQuote.innerHTML = `
+                        "Maybe this is what's meant to be.<br />
+                        Like, maybe the universe has a plan for us."
+                    `;
+                }
+                
+                // Restore Chinese Phoebe section
+                const chinesePhoebeTitle = document.querySelector('#chineseContent .phoebe-title');
+                const chinesePhoebeQuote = document.querySelector('#chineseContent .phoebe-quote');
+                
+                if (chinesePhoebeTitle && chinesePhoebeQuote) {
+                    chinesePhoebeTitle.textContent = "菲比的智慧";
+                    chinesePhoebeQuote.innerHTML = `
+                        "Maybe this is what's meant to be.<br />
+                        也许这就是命中注定的<br />
+                        Like, maybe the universe has a plan for us."<br />
+                        也许宇宙对我们有它的安排
+                    `;
+                }
+                
+                // Restore English meditation content
+                const englishMeditationText = document.querySelector('#englishContent .meditation-text');
+                if (englishMeditationText) {
+                    englishMeditationText.innerHTML = `
+                        "Sometimes, it's difficult even for me<br />
+                        to understand what I've become.<br />
+                        And harder still to remember what I once was.<br />
+                        The blue of the tiles...<br />
+                        Zima Blue, the manufacturer called it.<br />
+                        The first thing I ever saw.<br />
+                        This was where I began.<br />
+                        A crude little machine with<br />
+                        barely enough intelligence to steer itself.<br />
+                        But it was my world.<br />
+                        It was all I knew, all I needed to know.<br />
+                        And now?<br />
+                        I will immerse myself.<br />
+                        And as I do, I will slowly shut down my higher brain functions...<br />
+                        un-making myself...<br />
+                        leaving just enough to appreciate my surroundings...<br />
+                        to extract some simple pleasure<br />
+                        from the execution of a task well done.<br />
+                        My search for truth is finished at last.<br />
+                        I'm going home."
+                    `;
+                }
+                
+                // Restore Chinese meditation content
+                const chineseMeditationText = document.querySelector('#chineseContent .meditation-text');
+                if (chineseMeditationText) {
+                    chineseMeditationText.innerHTML = `
+                        "Sometimes, it's difficult even for me<br />
+                        有时候 连我自己都很难理解<br />
+                        to understand what I've become.<br />
+                        我到底成为了什么<br />
+                        And harder still to remember what I once was.<br />
+                        更难记清楚我曾经是什么样子<br />
+                        The blue of the tiles...<br />
+                        瓷砖的蓝色<br />
+                        Zima Blue, the manufacturer called it.<br />
+                        齐马蓝 制作商这样称呼<br />
+                        The first thing I ever saw.<br />
+                        我见到的第一件物品<br />
+                        This was where I began.<br />
+                        一切从这里开始<br />
+                        A crude little machine with<br />
+                        一个简陋的小机器<br />
+                        barely enough intelligence to steer itself.<br />
+                        几乎没有足够智能操控自己<br />
+                        But it was my world.<br />
+                        但那是我的世界<br />
+                        It was all I knew, all I needed to know.<br />
+                        是我了解的一切 也是我需要了解的一切<br />
+                        And now?<br />
+                        现在呢<br />
+                        I will immerse myself.<br />
+                        我将浸入泳池<br />
+                        And as I do, I will slowly shut down my higher brain functions...<br />
+                        与此同时 我会逐渐关闭我的高级脑功能<br />
+                        un-making myself...<br />
+                        拆解自己<br />
+                        leaving just enough to appreciate my surroundings...<br />
+                        只留下必要的组件来欣赏周围环境<br />
+                        to extract some simple pleasure<br />
+                        从高效完成任务中<br />
+                        from the execution of a task well done.<br />
+                        感受简单的愉悦<br />
+                        My search for truth is finished at last.<br />
+                        我对真相的探索终于结束了<br />
+                        I'm going home."<br />
+                        我要回家了
+                    `;
+                }
+                
+                console.log("✅ Original content restored!");
             }
             
             function setSpecificQuote(cardIndex, quoteIndex) {
@@ -6650,22 +7324,60 @@
                 }, 200);
             }
 
-            // 无缝滚动功能
+            // 无缝滚动功能 - 兼容Firefox和移动端
             function scrollToSection(sectionId) {
                 const section = document.getElementById(sectionId);
                 if (section) {
-                    section.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
+                    // 检测浏览器是否支持smooth scrolling
+                    if ('scrollBehavior' in document.documentElement.style) {
+                        section.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    } else {
+                        // Firefox兼容性处理
+                        const targetPosition = section.offsetTop;
+                        smoothScrollTo(targetPosition);
+                    }
                 }
             }
 
+            // 手动实现平滑滚动 - Firefox兼容
+            function smoothScrollTo(targetPosition) {
+                const startPosition = window.pageYOffset;
+                const distance = targetPosition - startPosition;
+                const duration = 800;
+                let start = null;
+
+                function animation(currentTime) {
+                    if (start === null) start = currentTime;
+                    const timeElapsed = currentTime - start;
+                    const run = ease(timeElapsed, startPosition, distance, duration);
+                    window.scrollTo(0, run);
+                    if (timeElapsed < duration) requestAnimationFrame(animation);
+                }
+
+                function ease(t, b, c, d) {
+                    t /= d / 2;
+                    if (t < 1) return c / 2 * t * t + b;
+                    t--;
+                    return -c / 2 * (t * (t - 2) - 1) + b;
+                }
+
+                requestAnimationFrame(animation);
+            }
+
             function scrollToTop() {
-                window.scrollTo({
-                    top: 0,
-                    behavior: 'smooth'
-                });
+                // 检测浏览器是否支持smooth scrolling
+                if ('scrollBehavior' in document.documentElement.style) {
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                } else {
+                    // Firefox兼容性处理
+                    smoothScrollTo(0);
+                }
             }
 
             // 显示/隐藏回到顶部按钮
@@ -6706,13 +7418,57 @@
                     }
                 });
             });
+
+            // 初始化导航点事件监听器 - 兼容性更好
+            document.addEventListener('DOMContentLoaded', function() {
+                const navDots = document.querySelectorAll('.nav-dot');
+                navDots.forEach(dot => {
+                    const sectionId = dot.getAttribute('data-section');
+                    if (sectionId) {
+                        // 添加点击事件
+                        dot.addEventListener('click', function(e) {
+                            e.preventDefault();
+                            scrollToSection(sectionId);
+                        });
+                        
+                        // 添加键盘支持 - 无障碍访问
+                        dot.addEventListener('keydown', function(e) {
+                            if (e.key === 'Enter' || e.key === ' ') {
+                                e.preventDefault();
+                                scrollToSection(sectionId);
+                            }
+                        });
+                        
+                        // 添加tabindex使其可聚焦
+                        dot.setAttribute('tabindex', '0');
+                        dot.setAttribute('role', 'button');
+                        dot.setAttribute('aria-label', `跳转到${dot.getAttribute('data-tooltip')}部分`);
+                    }
+                });
+                
+                // 初始化回到顶部按钮
+                const backToTopBtn = document.getElementById('backToTopBtn');
+                if (backToTopBtn) {
+                    backToTopBtn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        scrollToTop();
+                    });
+                    
+                    backToTopBtn.addEventListener('keydown', function(e) {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            scrollToTop();
+                        }
+                    });
+                }
+            });
         </script>
 
         <!-- Cyberpunk 2077 Easter Egg -->
         <div id="cyberpunkEasterEgg" class="cyberpunk-easter-egg">
             <div class="cyberpunk-content">
-                <div class="broken-heart">💔</div>
-                <div class="cyberpunk-text">808</div>
+                <div class="cyberpunk-text">CYBERPUNK: EDGERUNNERS</div>
+                <img src="./phoebe/cyberpunk-edgerunners.gif" alt="Cyberpunk Edgerunners" class="cyberpunk-image" />
             </div>
         </div>
 
@@ -6736,7 +7492,7 @@
         </div>
 
         <!-- Hidden Audio Element -->
-        <audio id="cyberpunkAudio" loop preload="auto">
+        <audio id="cyberpunkAudio" preload="auto">
             <source src="https://eta.vgmtreasurechest.com/soundtracks/cyberpunk-2077-radio-vol.-2-original-soundtrack/liojiacuhf/05.%20I%20Really%20Want%20to%20Stay%20at%20Your%20House.mp3" type="audio/mpeg">
         </audio>
 
@@ -6750,7 +7506,7 @@
             <div class="easter-egg-hint">
                 💡 Tip: Click cards to change quotes until all 3 match!
             </div>
-            <button id="autoClickBtn" class="auto-click-btn" title="Automatically click cards until all 3 show the target text">🤖 Auto Click</button>
+
             
             <div class="quick-set-buttons">
                 <button id="setCyberpunkBtn" class="quick-set-btn" title="一键设置所有卡片为赛博朋克边缘行者内容">🤖 Set Cyberpunk</button>
@@ -6759,13 +7515,13 @@
             </div>
             
             <div class="easter-egg-controls">
-                <h5>🎯 Easter Egg States</h5>
+                <h5>Easter Egg States</h5>
                 <div class="egg-state-buttons">
-                    <button id="toggleLangBtn" class="state-btn" title="切换语言切换彩蛋状态">🌐 Lang Toggle</button>
-                    <button id="togglePengBtn" class="state-btn" title="切换企鹅点击彩蛋状态">🐧 Peng Click</button>
-                    <button id="toggleTributeBtn" class="state-btn" title="切换致敬点击彩蛋状态">💝 Tribute Click</button>
-                    <button id="toggleEssenceBtn" class="state-btn" title="切换本质卡片彩蛋状态">✨ Essence Card</button>
-                    <button id="toggleWisdomBtn" class="state-btn" title="切换菲比智慧彩蛋状态">🧠 Phoebe Wisdom</button>
+                    <button id="toggleLangBtn" class="state-btn" title="切换语言切换彩蛋状态">Lang Toggle</button>
+                    <button id="togglePengBtn" class="state-btn" title="切换企鹅点击彩蛋状态">Peng Click</button>
+                    <button id="toggleTributeBtn" class="state-btn" title="切换致敬点击彩蛋状态">Tribute Click</button>
+                    <button id="toggleEssenceBtn" class="state-btn" title="切换本质卡片彩蛋状态">Essence Card</button>
+                    <button id="toggleWisdomBtn" class="state-btn" title="切换菲比智慧彩蛋状态">Phoebe Wisdom</button>
                 </div>
                 <div class="egg-state-buttons">
                     <button id="toggleCyberpunkBtn" class="state-btn" title="切换赛博朋克彩蛋状态">🤖 Cyberpunk</button>
@@ -6775,8 +7531,8 @@
                     <button id="toggleRoseBtn" class="state-btn" title="切换玫瑰引用彩蛋状态">🌹 Rose Quote</button>
                 </div>
                 <div class="egg-state-buttons">
-                    <button id="resetAllBtn" class="state-btn reset-btn" title="重置所有彩蛋状态">🔄 Reset All</button>
-                    <button id="triggerAllBtn" class="state-btn trigger-btn" title="触发所有彩蛋状态">🎉 Trigger All</button>
+                    <button id="resetAllBtn" class="state-btn reset-btn" title="重置所有彩蛋状态">Reset All</button>
+                    <button id="triggerAllBtn" class="state-btn trigger-btn" title="触发所有彩蛋状态">Trigger All</button>
                 </div>
             </div>
             
