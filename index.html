@@ -1516,6 +1516,37 @@
 
             /* Touch device optimizations */
             @media (hover: none) and (pointer: coarse) {
+                /* Ensure minimum touch target size */
+                .lang-toggle, .essence-card, .email-icon, .wechat-icon, .close-easter-egg {
+                    min-height: 44px;
+                    min-width: 44px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+                
+                /* Touch feedback for interactive elements */
+                .lang-toggle:active {
+                    background: rgba(254, 235, 234, 0.25);
+                    transform: scale(0.95);
+                }
+                
+                .email-icon:active, .wechat-icon:active {
+                    background: rgba(254, 235, 234, 0.1);
+                    border-radius: 4px;
+                    transform: scale(0.95);
+                }
+                
+                .close-easter-egg:active {
+                    background: rgba(255, 255, 255, 0.2);
+                    transform: scale(0.9);
+                }
+                
+                .final-text:active, .tribute:active {
+                    background: rgba(254, 235, 234, 0.1);
+                    border-radius: 4px;
+                }
+                
                 .code-item:active {
                     color: #fff;
                     text-shadow: 0 0 10px rgba(254, 235, 234, 0.5);
@@ -1697,6 +1728,140 @@
             @keyframes loadingPulse {
                 0%, 100% { opacity: 0.6; }
                 50% { opacity: 1; }
+            }
+
+            /* JOJO Text Effects Styles */
+            .jojo-text-normal,
+            .jojo-text-fullscreen {
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%) scale(0);
+                z-index: 99999;
+                font-family: 'Impact', 'Arial Black', sans-serif;
+                font-weight: 900;
+                color: white;
+                text-shadow: 
+                    0 0 10px white,
+                    0 0 20px white,
+                    0 0 30px white,
+                    3px 3px 0px #333,
+                    6px 6px 0px #666;
+                letter-spacing: 0.2em;
+                text-align: center;
+                pointer-events: none;
+                opacity: 0;
+                transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            }
+            
+            .jojo-text-normal {
+                font-size: clamp(3rem, 8vw, 6rem);
+            }
+            
+            .jojo-text-fullscreen {
+                font-size: clamp(8rem, 20vw, 25rem);
+                animation: jojo-shake 0.5s ease-in-out infinite;
+            }
+            
+            .jojo-text-normal.show,
+            .jojo-text-fullscreen.show {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+            
+            @keyframes rainbow-gradient {
+                0% { background-position: 0% 50%; }
+                50% { background-position: 100% 50%; }
+                100% { background-position: 0% 50%; }
+            }
+            
+            @keyframes jojo-shake {
+                0%, 100% { transform: translate(-50%, -50%) scale(1) rotate(0deg); }
+                25% { transform: translate(-50%, -50%) scale(1.05) rotate(-1deg); }
+                75% { transform: translate(-50%, -50%) scale(0.95) rotate(1deg); }
+            }
+            
+            @keyframes jojoFadeInOut {
+                0% { 
+                    opacity: 0;
+                    transform: translate(-50%, -50%) scale(0.5);
+                }
+                20% {
+                    opacity: 1;
+                    transform: translate(-50%, -50%) scale(1.1);
+                }
+                80% {
+                    opacity: 1;
+                    transform: translate(-50%, -50%) scale(1);
+                }
+                100% {
+                    opacity: 0;
+                    transform: translate(-50%, -50%) scale(0.8);
+                }
+            }
+
+            @keyframes jojoExplosiveShake {
+                0% {
+                    opacity: 0;
+                    transform: translate(-50%, -50%) scale(0.1) rotate(0deg);
+                }
+                5% {
+                    opacity: 1;
+                    transform: translate(-50%, -50%) scale(1.5) rotate(-2deg);
+                }
+                10% {
+                    transform: translate(-50%, -50%) scale(1.3) rotate(2deg);
+                }
+                15% {
+                    transform: translate(-50%, -50%) scale(1.4) rotate(-1deg);
+                }
+                20% {
+                    transform: translate(-50%, -50%) scale(1.2) rotate(1deg);
+                }
+                25% {
+                    transform: translate(-50%, -50%) scale(1.35) rotate(-0.5deg);
+                }
+                30% {
+                    transform: translate(-50%, -50%) scale(1.25) rotate(0.5deg);
+                }
+                35% {
+                    transform: translate(-50%, -50%) scale(1.3) rotate(-0.3deg);
+                }
+                40% {
+                    transform: translate(-50%, -50%) scale(1.2) rotate(0.3deg);
+                }
+                50% {
+                    transform: translate(-50%, -50%) scale(1.1) rotate(0deg);
+                }
+                70% {
+                    opacity: 1;
+                    transform: translate(-50%, -50%) scale(1) rotate(0deg);
+                }
+                100% {
+                    opacity: 0;
+                    transform: translate(-50%, -50%) scale(0.8) rotate(0deg);
+                }
+            }
+            
+            /* Responsive adjustments for JOJO text */
+            @media (max-width: 768px) {
+                .jojo-text-normal {
+                    font-size: clamp(2rem, 12vw, 4rem);
+                }
+                
+                .jojo-text-fullscreen {
+                    font-size: clamp(6rem, 25vw, 15rem);
+                }
+            }
+            
+            @media (max-width: 480px) {
+                .jojo-text-normal {
+                    font-size: clamp(1.5rem, 15vw, 3rem);
+                }
+                
+                .jojo-text-fullscreen {
+                    font-size: clamp(4rem, 30vw, 12rem);
+                }
             }
 
             /* Virtual Keyboard Styles */
@@ -2024,7 +2189,7 @@
 
             .audio-control-panel {
                 position: fixed;
-                left: 1.5rem;
+                left: -60px;
                 top: 50%;
                 transform: translateY(-50%);
                 z-index: 9999;
@@ -2038,6 +2203,17 @@
             .audio-control-panel.show {
                 opacity: 1;
                 visibility: visible;
+                left: 1rem;
+            }
+
+            .audio-control-panel:hover {
+                left: 1rem;
+            }
+
+            .audio-control-panel.mobile-show {
+                opacity: 1;
+                visibility: visible;
+                left: 1rem;
             }
 
             .audio-control-panel.hidden-during-fullscreen {
@@ -2120,18 +2296,18 @@
                 border-radius: 50%;
                 cursor: pointer;
                 transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-                width: 28px;
-                height: 28px;
+                width: 24px;
+                height: 24px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                box-shadow: 0 4px 12px rgba(254, 235, 234, 0.3);
+                box-shadow: 0 3px 8px rgba(254, 235, 234, 0.3);
                 flex-shrink: 0;
             }
 
             .audio-control-btn:hover {
                 background: #feebea;
-                box-shadow: 0 6px 20px rgba(254, 235, 234, 0.5);
+                box-shadow: 0 4px 12px rgba(254, 235, 234, 0.5);
                 transform: scale(1.05);
             }
 
@@ -2140,10 +2316,45 @@
             }
 
             .audio-control-btn svg {
-                width: 12px;
-                height: 12px;
+                width: 10px;
+                height: 10px;
                 fill: currentColor;
                 transition: all 0.3s ease;
+            }
+            
+            .play-mode-btn {
+                position: absolute;
+                top: -32px;
+                left: 0;
+                opacity: 0;
+                visibility: hidden;
+                transform: translateY(10px);
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                width: 20px;
+                height: 20px;
+            }
+            
+            .audio-control-panel:hover .play-mode-btn {
+                opacity: 1;
+                visibility: visible;
+                transform: translateY(0);
+            }
+            
+            .play-mode-btn .mode-icon {
+                width: 8px;
+                height: 8px;
+            }
+            
+            .play-mode-btn[data-mode="stop"] .mode-icon path {
+                d: path("M6 6h12v12H6z");
+            }
+            
+            .play-mode-btn[data-mode="repeat-one"] .mode-icon {
+                transform: scale(0.9);
+            }
+            
+            .play-mode-btn[data-mode="repeat-all"] .mode-icon {
+                transform: scale(0.9);
             }
 
             .close-easter-egg {
@@ -2216,14 +2427,34 @@
                 }
 
                 .audio-control-panel {
-                    right: 0.5rem;
-                    padding: 0.8rem;
+                    left: -80px; /* 完全隐藏在屏幕外 */
+                }
+
+                .audio-control-panel.show,
+                .audio-control-panel:hover,
+                .audio-control-panel.mobile-show {
+                    left: 0.8rem;
                 }
 
                 .audio-control-btn {
-                    width: 45px;
-                    height: 45px;
-                    font-size: 1.2rem;
+                    width: 36px;
+                    height: 36px;
+                }
+
+                .audio-control-btn svg {
+                    width: 14px;
+                    height: 14px;
+                }
+
+                .play-mode-btn {
+                    width: 28px;
+                    height: 28px;
+                    top: -38px;
+                }
+
+                .play-mode-btn .mode-icon {
+                    width: 12px;
+                    height: 12px;
                 }
             }
 
@@ -2238,14 +2469,34 @@
                 }
 
                 .audio-control-panel {
-                    right: 0.3rem;
-                    padding: 0.6rem;
+                    left: -80px; /* 完全隐藏在屏幕外 */
+                }
+
+                .audio-control-panel.show,
+                .audio-control-panel:hover,
+                .audio-control-panel.mobile-show {
+                    left: 0.5rem;
                 }
 
                 .audio-control-btn {
-                    width: 40px;
-                    height: 40px;
-                    font-size: 1rem;
+                    width: 32px;
+                    height: 32px;
+                }
+
+                .audio-control-btn svg {
+                    width: 12px;
+                    height: 12px;
+                }
+
+                .play-mode-btn {
+                    width: 24px;
+                    height: 24px;
+                    top: -34px;
+                }
+
+                .play-mode-btn .mode-icon {
+                    width: 10px;
+                    height: 10px;
                 }
             }
 
@@ -2598,7 +2849,7 @@
         </style>
     </head>
     <body>
-        <div class="lang-toggle" onclick="toggleLanguage()">
+        <div class="lang-toggle" onclick="toggleLanguage()" ontouchend="event.preventDefault(); toggleLanguage();">
             <span id="langChinese" class="lang-option inactive">中</span>
             <span class="lang-separator">/</span>
             <span id="langEnglish" class="lang-option active">EN</span>
@@ -2688,7 +2939,7 @@
                 </section>
 
                 <section class="essence" id="essence">
-                    <div class="essence-card" onclick="changeQuote(0)">
+                    <div class="essence-card" onclick="changeQuote(0)" ontouchend="event.preventDefault(); changeQuote(0);">
                         <h3 class="essence-title">
                             The night is dark and full of terrors
                         </h3>
@@ -2696,7 +2947,7 @@
                             Game of Thrones
                         </p>
                     </div>
-                    <div class="essence-card" onclick="changeQuote(1)">
+                    <div class="essence-card" onclick="changeQuote(1)" ontouchend="event.preventDefault(); changeQuote(1);">
                         <h3 class="essence-title">
                             I have a hangover. A hangover with a hangover
                         </h3>
@@ -2704,7 +2955,7 @@
                             Black Books
                         </p>
                     </div>
-                    <div class="essence-card" onclick="changeQuote(2)">
+                    <div class="essence-card" onclick="changeQuote(2)" ontouchend="event.preventDefault(); changeQuote(2);">
                         <h3 class="essence-title">
                             Life is a beautiful robe crawling with lice
                         </h3>
@@ -2712,7 +2963,7 @@
                             Zhang Ailing
                         </p>
                     </div>
-                    <div class="essence-card" onclick="changeQuote(3)">
+                    <div class="essence-card" onclick="changeQuote(3)" ontouchend="event.preventDefault(); changeQuote(3);">
                         <h3 class="essence-title">
                             Sometimes you have to run before you can walk
                         </h3>
@@ -2733,13 +2984,13 @@
                     <div class="footer-content">
                         <p class="final-text">Peng</p>
                         <div class="contact-icons">
-                            <span class="email-icon" title="Email: pjlpcc@qq.com" onclick="copyToClipboard('pjlpcc@qq.com')">
+                            <span class="email-icon" title="Email: pjlpcc@qq.com" onclick="copyToClipboard('pjlpcc@qq.com')" ontouchend="event.preventDefault(); copyToClipboard('pjlpcc@qq.com');">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="#feebea" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M20 4H4C2.9 4 2 4.9 2 6V18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6C22 4.9 21.1 4 20 4ZM20 8L12 13L4 8V6L12 11L20 6V8Z"/>
                                 </svg>
                                 pjlpcc@qq.com
                             </span>
-                            <span class="wechat-icon" title="WeChat: wx3dot1415926" onclick="copyToClipboard('wx3dot1415926')">
+                            <span class="wechat-icon" title="WeChat: wx3dot1415926" onclick="copyToClipboard('wx3dot1415926')" ontouchend="event.preventDefault(); copyToClipboard('wx3dot1415926');">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="#feebea" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M8.5 12C9.33 12 10 11.33 10 10.5S9.33 9 8.5 9 7 9.67 7 10.5 7.67 12 8.5 12ZM15.5 12C16.33 12 17 11.33 17 10.5S16.33 9 15.5 9 14 9.67 14 10.5 14.67 12 15.5 12ZM18 10.5C18 6.36 14.64 3 10.5 3S3 6.36 3 10.5C3 12.83 4.24 14.86 6.07 16.05C5.73 17.74 4.21 19.81 4.21 19.81S7.5 19.5 9.08 18.29C9.54 18.38 10.01 18.43 10.5 18.43C14.64 18.43 18 15.07 18 10.5Z"/>
                                 </svg>
@@ -2833,7 +3084,7 @@
                 </section>
 
                 <section class="essence">
-                    <div class="essence-card" onclick="changeQuote(0)">
+                    <div class="essence-card" onclick="changeQuote(0)" ontouchend="event.preventDefault(); changeQuote(0);">
                         <h3 class="essence-title">
                             长夜漫漫，处处险恶
                         </h3>
@@ -2841,7 +3092,7 @@
                             权力的游戏
                         </p>
                     </div>
-                    <div class="essence-card" onclick="changeQuote(1)">
+                    <div class="essence-card" onclick="changeQuote(1)" ontouchend="event.preventDefault(); changeQuote(1);">
                         <h3 class="essence-title">
                             我宿醉了。比宿醉还醉的宿醉
                         </h3>
@@ -2849,7 +3100,7 @@
                             布莱克书店
                         </p>
                     </div>
-                    <div class="essence-card" onclick="changeQuote(2)">
+                    <div class="essence-card" onclick="changeQuote(2)" ontouchend="event.preventDefault(); changeQuote(2);">
                         <h3 class="essence-title">
                             人生是一袭华美的袍，爬满了虱子
                         </h3>
@@ -2857,7 +3108,7 @@
                             张爱玲
                         </p>
                     </div>
-                    <div class="essence-card" onclick="changeQuote(3)">
+                    <div class="essence-card" onclick="changeQuote(3)" ontouchend="event.preventDefault(); changeQuote(3);">
                         <h3 class="essence-title">
                             有时候你必须先跑起来，才能学会走路
                         </h3>
@@ -2878,13 +3129,13 @@
                     <div class="footer-content">
                         <p class="final-text">Peng</p>
                         <div class="contact-icons">
-                            <span class="email-icon" title="Email: pjlpcc@qq.com" onclick="copyToClipboard('pjlpcc@qq.com')">
+                            <span class="email-icon" title="Email: pjlpcc@qq.com" onclick="copyToClipboard('pjlpcc@qq.com')" ontouchend="event.preventDefault(); copyToClipboard('pjlpcc@qq.com');">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="#feebea" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M20 4H4C2.9 4 2 4.9 2 6V18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6C22 4.9 21.1 4 20 4ZM20 8L12 13L4 8V6L12 11L20 6V8Z"/>
                                 </svg>
                                 pjlpcc@qq.com
                             </span>
-                            <span class="wechat-icon" title="WeChat: wx3dot1415926" onclick="copyToClipboard('wx3dot1415926')">
+                            <span class="wechat-icon" title="WeChat: wx3dot1415926" onclick="copyToClipboard('wx3dot1415926')" ontouchend="event.preventDefault(); copyToClipboard('wx3dot1415926');">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="#feebea" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M8.5 12C9.33 12 10 11.33 10 10.5S9.33 9 8.5 9 7 9.67 7 10.5 7.67 12 8.5 12ZM15.5 12C16.33 12 17 11.33 17 10.5S16.33 9 15.5 9 14 9.67 14 10.5 14.67 12 15.5 12ZM18 10.5C18 6.36 14.64 3 10.5 3S3 6.36 3 10.5C3 12.83 4.24 14.86 6.07 16.05C5.73 17.74 4.21 19.81 4.21 19.81S7.5 19.5 9.08 18.29C9.54 18.38 10.01 18.43 10.5 18.43C14.64 18.43 18 15.07 18 10.5Z"/>
                                 </svg>
@@ -4128,6 +4379,14 @@
         
         // Audio playlist - starts empty, populated by easter eggs
         let audioPlaylist = [];
+        
+        // Play mode control variables
+        let playMode = 'stop'; // 'stop', 'repeat-one', 'repeat-all'
+        const playModes = {
+            'stop': { icon: 'M6 6h12v12H6z', title: '播放完暂停' },
+            'repeat-one': { icon: 'M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z M12 10v4l3-2-3-2z', title: '单曲循环' },
+            'repeat-all': { icon: 'M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z', title: '列表循环' }
+        };
 
             // HIMYM Quotes System
             const himymQuotes = {
@@ -4734,7 +4993,7 @@
                                 <div class="cyberpunk-text zelda-text">The LEGEND OF ZELDA</div>
                                 <img src="./phoebe/zelda.gif" alt="The Legend of Zelda" class="cyberpunk-image zelda-image" />
                             </div>
-                            <div class="close-easter-egg" onclick="closeZeldaOverlay(this.parentElement)">×</div>
+                            <div class="close-easter-egg" onclick="closeZeldaOverlay(this.parentElement)" ontouchend="event.preventDefault(); closeZeldaOverlay(this.parentElement);">×</div>
                         `;
                         
                         document.body.appendChild(overlay);
@@ -5003,6 +5262,15 @@
             }
             
             function addAudioToPlaylist(audioData) {
+                // Ensure cyberpunkAudio element is initialized
+                if (!cyberpunkAudio) {
+                    cyberpunkAudio = document.getElementById('cyberpunkAudio');
+                    if (!cyberpunkAudio) {
+                        console.error('❌ cyberpunkAudio element not found!');
+                        return;
+                    }
+                }
+                
                 // Check if audio already exists in playlist to avoid duplicates
                 const existingAudio = audioPlaylist.find(audio => 
                     audio.src === audioData.src || audio.name === audioData.name
@@ -5069,6 +5337,15 @@
             }
             
             function loadAudio(index) {
+                // Ensure cyberpunkAudio element is initialized
+                if (!cyberpunkAudio) {
+                    cyberpunkAudio = document.getElementById('cyberpunkAudio');
+                    if (!cyberpunkAudio) {
+                        console.error('❌ cyberpunkAudio element not found in loadAudio!');
+                        return;
+                    }
+                }
+                
                 if (index >= 0 && index < audioPlaylist.length) {
                     const audioData = audioPlaylist[index];
                     currentAudioIndex = index;
@@ -5110,20 +5387,33 @@
                     return;
                 }
                 
-                // Calculate next track index (loop back to 0 if at end)
-                const nextIndex = (currentAudioIndex + 1) % audioPlaylist.length;
-                console.log(`🔄 Playing next track: ${nextIndex + 1}/${audioPlaylist.length}`);
+                console.log(`🎵 Current play mode: ${playMode}`);
                 
-                // Load and play next track
-                loadAudio(nextIndex);
+                if (playMode === 'stop') {
+                    // Stop after current track
+                    console.log('⏹️ Stopping playback (stop mode)');
+                    isAudioPlaying = false;
+                    updateAudioButton();
+                    return;
+                } else if (playMode === 'repeat-one') {
+                    // Repeat current track
+                    console.log(`🔂 Repeating current track: ${audioPlaylist[currentAudioIndex].name}`);
+                    loadAudio(currentAudioIndex);
+                } else {
+                    // Repeat all (default behavior)
+                    const nextIndex = (currentAudioIndex + 1) % audioPlaylist.length;
+                    console.log(`🔄 Playing next track: ${nextIndex + 1}/${audioPlaylist.length}`);
+                    loadAudio(nextIndex);
+                }
                 
-                // Auto-play the next track
+                // Auto-play the track
                 setTimeout(() => {
                     if (cyberpunkAudio) {
                         cyberpunkAudio.play().then(() => {
                             isAudioPlaying = true;
                             updateAudioButton();
-                            console.log(`▶️ Auto-playing: ${audioPlaylist[nextIndex].name}`);
+                            const trackName = audioPlaylist[currentAudioIndex].name;
+                            console.log(`▶️ Auto-playing: ${trackName}`);
                         }).catch(error => {
                             console.log('❌ Auto-play failed:', error);
                         });
@@ -5161,7 +5451,16 @@
                         <span class="playlist-item-type">${audio.type}</span>
                     `;
                     
-                    item.addEventListener('click', () => {
+                    const handlePlaylistItemInteraction = () => {
+                        // Ensure cyberpunkAudio element is initialized
+                        if (!cyberpunkAudio) {
+                            cyberpunkAudio = document.getElementById('cyberpunkAudio');
+                            if (!cyberpunkAudio) {
+                                console.error('❌ cyberpunkAudio element not found in playlist item click!');
+                                return;
+                            }
+                        }
+                        
                         if (currentAudioIndex !== index) {
                             const wasPlaying = isAudioPlaying;
                             if (isAudioPlaying) {
@@ -5183,6 +5482,12 @@
                                 }, 100);
                             }
                         }
+                    };
+                    
+                    item.addEventListener('click', handlePlaylistItemInteraction);
+                    item.addEventListener('touchend', function(e) {
+                        e.preventDefault();
+                        handlePlaylistItemInteraction();
                     });
                     
                     playlistContainer.appendChild(item);
@@ -5217,13 +5522,189 @@
                 }
             }
             
+            function togglePlayMode() {
+                const modes = Object.keys(playModes);
+                const currentIndex = modes.indexOf(playMode);
+                const nextIndex = (currentIndex + 1) % modes.length;
+                playMode = modes[nextIndex];
+                
+                console.log(`🎵 Play mode changed to: ${playMode}`);
+                updatePlayModeButton();
+                showNotification(`播放模式: ${playModes[playMode].title}`);
+            }
+            
+            function updatePlayModeButton() {
+                const playModeBtn = document.getElementById('playModeBtn');
+                if (!playModeBtn) return;
+                
+                const modeData = playModes[playMode];
+                playModeBtn.setAttribute('data-mode', playMode);
+                playModeBtn.setAttribute('title', modeData.title);
+                
+                const iconElement = playModeBtn.querySelector('.mode-icon path');
+                if (iconElement) {
+                    iconElement.setAttribute('d', modeData.icon);
+                }
+            }
+            
             function setupAudioControl() {
                 const audioBtn = document.getElementById('audioControlBtn');
                 const audioPanel = document.getElementById('audioControlPanel');
+                const playModeBtn = document.getElementById('playModeBtn');
 
                 if (audioBtn && !audioBtn.hasAttribute('data-initialized')) {
-                    audioBtn.addEventListener('click', toggleAudio);
+                    let longPressTimer;
+                    let isLongPressing = false;
+                    
+                    // Mouse events for desktop
+                    audioBtn.addEventListener('mousedown', (e) => {
+                        if (window.innerWidth > 768) {
+                            isLongPressing = false;
+                            longPressTimer = setTimeout(() => {
+                                isLongPressing = true;
+                                showAudioControls();
+                            }, 500); // 500ms for long press
+                        }
+                    });
+                    
+                    audioBtn.addEventListener('mouseup', (e) => {
+                        if (window.innerWidth > 768) {
+                            clearTimeout(longPressTimer);
+                            if (!isLongPressing) {
+                                toggleAudio();
+                            }
+                        }
+                    });
+                    
+                    audioBtn.addEventListener('mouseleave', (e) => {
+                        if (window.innerWidth > 768) {
+                            clearTimeout(longPressTimer);
+                        }
+                    });
+                    
+                    // Touch events for mobile
+                    audioBtn.addEventListener('touchstart', (e) => {
+                        if (window.innerWidth <= 768) {
+                            isLongPressing = false;
+                            longPressTimer = setTimeout(() => {
+                                isLongPressing = true;
+                                showAudioControls();
+                            }, 500); // 500ms for long press
+                        }
+                    });
+                    
+                    audioBtn.addEventListener('touchend', function(e) {
+                        e.preventDefault();
+                        clearTimeout(longPressTimer);
+                        if (!isLongPressing) {
+                            toggleAudio();
+                        }
+                    });
+                    
+                    // Fallback click event for compatibility
+                    audioBtn.addEventListener('click', (e) => {
+                        // Prevent double triggering on desktop
+                        if (window.innerWidth <= 768 && !isLongPressing) {
+                            e.preventDefault();
+                        }
+                    });
+                    
                     audioBtn.setAttribute('data-initialized', 'true');
+                }
+                
+                if (playModeBtn && !playModeBtn.hasAttribute('data-initialized')) {
+                    playModeBtn.addEventListener('click', togglePlayMode);
+                    playModeBtn.addEventListener('touchend', function(e) {
+                        e.preventDefault();
+                        togglePlayMode();
+                    });
+                    playModeBtn.setAttribute('data-initialized', 'true');
+                    updatePlayModeButton();
+                }
+                
+                // Setup mobile and desktop interaction for audio panel
+                if (audioPanel && !audioPanel.hasAttribute('data-interaction-initialized')) {
+                    let hideTimeout;
+                    let touchStartX = 0;
+                    let touchStartY = 0;
+                    
+                    // Desktop: Mouse hover detection for left side
+                    const leftTriggerZone = document.createElement('div');
+                    leftTriggerZone.style.cssText = `
+                        position: fixed;
+                        left: 0;
+                        top: 40%;
+                        width: 80px;
+                        height: 20%;
+                        z-index: 9998;
+                        pointer-events: auto;
+                    `;
+                    document.body.appendChild(leftTriggerZone);
+                    
+                    leftTriggerZone.addEventListener('mouseenter', () => {
+                        if (window.innerWidth > 768) {
+                            audioPanel.classList.add('show');
+                            clearTimeout(hideTimeout);
+                        }
+                    });
+                    
+                    leftTriggerZone.addEventListener('mouseleave', () => {
+                        if (window.innerWidth > 768) {
+                            hideTimeout = setTimeout(() => {
+                                if (!audioPanel.matches(':hover')) {
+                                    audioPanel.classList.remove('show');
+                                }
+                            }, 500);
+                        }
+                    });
+                    
+                    audioPanel.addEventListener('mouseenter', () => {
+                        if (window.innerWidth > 768) {
+                            clearTimeout(hideTimeout);
+                        }
+                    });
+                    
+                    audioPanel.addEventListener('mouseleave', () => {
+                        if (window.innerWidth > 768) {
+                            hideTimeout = setTimeout(() => {
+                                audioPanel.classList.remove('show');
+                            }, 500);
+                        }
+                    });
+                    
+                    // Mobile: Touch and swipe detection
+                    leftTriggerZone.addEventListener('touchstart', (e) => {
+                        if (window.innerWidth <= 768) {
+                            touchStartX = e.touches[0].clientX;
+                            touchStartY = e.touches[0].clientY;
+                        }
+                    });
+                    
+                    leftTriggerZone.addEventListener('touchend', (e) => {
+                        if (window.innerWidth <= 768) {
+                            const touchEndX = e.changedTouches[0].clientX;
+                            const touchEndY = e.changedTouches[0].clientY;
+                            const deltaX = touchEndX - touchStartX;
+                            const deltaY = Math.abs(touchEndY - touchStartY);
+                            
+                            // Detect right swipe or tap
+                            if (deltaX > 30 && deltaY < 50) {
+                                // Right swipe
+                                audioPanel.classList.add('mobile-show');
+                                setTimeout(() => {
+                                    audioPanel.classList.remove('mobile-show');
+                                }, 3000);
+                            } else if (Math.abs(deltaX) < 10 && deltaY < 10) {
+                                // Tap
+                                audioPanel.classList.add('mobile-show');
+                                setTimeout(() => {
+                                    audioPanel.classList.remove('mobile-show');
+                                }, 2000);
+                            }
+                        }
+                    });
+                    
+                    audioPanel.setAttribute('data-interaction-initialized', 'true');
                 }
                 
                 // Show audio panel at startup, but control visibility based on playlist
@@ -5237,6 +5718,10 @@
 
                 if (closeBtn && !closeBtn.hasAttribute('data-initialized')) {
                     closeBtn.addEventListener('click', closeCyberpunkEasterEgg);
+                    closeBtn.addEventListener('touchend', function(e) {
+                        e.preventDefault();
+                        closeCyberpunkEasterEgg();
+                    });
                     closeBtn.setAttribute('data-initialized', 'true');
                 }
             }
@@ -5271,8 +5756,13 @@
             }
 
             function toggleAudio() {
+                // Ensure cyberpunkAudio element is initialized
                 if (!cyberpunkAudio) {
-                    return;
+                    cyberpunkAudio = document.getElementById('cyberpunkAudio');
+                    if (!cyberpunkAudio) {
+                        console.error('❌ cyberpunkAudio element not found in toggleAudio!');
+                        return;
+                    }
                 }
 
                 if (isAudioPlaying) {
@@ -5304,6 +5794,57 @@
                         playIcon.style.display = 'block';
                         pauseIcon.style.display = 'none';
                     }
+                }
+            }
+
+            // Show audio controls (play mode button and playlist) on long press
+            function showAudioControls() {
+                const audioPanel = document.getElementById('audioControlPanel');
+                const playModeBtn = document.getElementById('playModeBtn');
+                const playlistSidebar = document.getElementById('audioPlaylistSidebar');
+                
+                if (audioPanel) {
+                    // Show the audio panel
+                    if (window.innerWidth <= 768) {
+                        audioPanel.classList.add('mobile-show');
+                    } else {
+                        audioPanel.classList.add('show');
+                    }
+                    
+                    // Force show play mode button
+                    if (playModeBtn) {
+                        playModeBtn.style.opacity = '1';
+                        playModeBtn.style.visibility = 'visible';
+                    }
+                    
+                    // Force show playlist sidebar
+                    if (playlistSidebar) {
+                        playlistSidebar.style.opacity = '1';
+                        playlistSidebar.style.visibility = 'visible';
+                        playlistSidebar.style.transform = 'translateY(-50%) translateX(0)';
+                    }
+                    
+                    // Auto hide after 5 seconds (longer duration for long press)
+                    setTimeout(() => {
+                        if (window.innerWidth <= 768) {
+                            audioPanel.classList.remove('mobile-show');
+                        } else {
+                            audioPanel.classList.remove('show');
+                        }
+                        
+                        // Reset play mode button visibility
+                        if (playModeBtn) {
+                            playModeBtn.style.opacity = '';
+                            playModeBtn.style.visibility = '';
+                        }
+                        
+                        // Reset playlist sidebar visibility
+                        if (playlistSidebar) {
+                            playlistSidebar.style.opacity = '';
+                            playlistSidebar.style.visibility = '';
+                            playlistSidebar.style.transform = '';
+                        }
+                    }, 5000); // 5 seconds for long press display
                 }
             }
 
@@ -5779,10 +6320,15 @@
                     "🔍 Adding single document-level event listener...",
                 );
 
-                // Use event delegation on document to catch all events
-                document.addEventListener("click", function (e) {
+                // Unified event handler for both click and touch
+                function handleUnifiedInteraction(e) {
                     const target = e.target;
                     const currentTarget = e.currentTarget;
+                    
+                    // Prevent double firing for touch events
+                    if (e.type === 'touchend') {
+                        e.preventDefault();
+                    }
 
                     // 2. Peng triple click - target any .final-text element
                     if (
@@ -5963,7 +6509,11 @@
                         }
                         return;
                     }
-                });
+                }
+                
+                // Register both click and touch event listeners
+                document.addEventListener("click", handleUnifiedInteraction);
+                document.addEventListener("touchend", handleUnifiedInteraction, { passive: false });
             }
 
             // Initialize easter egg events immediately (only once)
@@ -6640,6 +7190,61 @@
                         document.body.removeChild(notification);
                     }
                 }, 5000);
+            }
+
+            // Simple notification function for general use
+            function showNotification(message) {
+                const notification = document.createElement("div");
+                
+                // Detect if message contains Chinese characters
+                const isChinese = /[\u4e00-\u9fff]/.test(message);
+                const fontSize = window.innerWidth <= 480 ? '0.8rem' : (window.innerWidth <= 768 ? '0.9rem' : '1rem');
+                const padding = window.innerWidth <= 480 ? '0.5rem 0.8rem' : (window.innerWidth <= 768 ? '0.6rem 1rem' : '0.7rem 1.2rem');
+                const maxWidth = window.innerWidth <= 480 ? '180px' : (window.innerWidth <= 768 ? '200px' : '220px');
+                
+                notification.style.cssText = `
+                    position: fixed;
+                    top: 15px;
+                    right: 15px;
+                    background: linear-gradient(45deg, rgba(254, 235, 234, 0.95), rgba(255, 255, 255, 0.95));
+                    color: #333;
+                    padding: ${padding};
+                    border-radius: 8px;
+                    font-family: ${isChinese ? '"PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif' : '"Dancing Script", cursive'};
+                    font-size: ${fontSize};
+                    font-weight: ${isChinese ? 'normal' : 'bold'};
+                    text-align: center;
+                    z-index: 10000;
+                    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+                    border: 1px solid rgba(254, 235, 234, 0.8);
+                    backdrop-filter: blur(8px);
+                    max-width: ${maxWidth};
+                    word-wrap: break-word;
+                    pointer-events: none;
+                    opacity: 0;
+                    transform: translateX(100%) scale(0.9);
+                    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                `;
+
+                notification.textContent = message;
+                document.body.appendChild(notification);
+
+                // Animate in
+                setTimeout(() => {
+                    notification.style.opacity = '1';
+                    notification.style.transform = 'translateX(0) scale(1)';
+                }, 10);
+
+                // Animate out and remove
+                setTimeout(() => {
+                    notification.style.opacity = '0';
+                    notification.style.transform = 'translateX(100%) scale(0.9)';
+                    setTimeout(() => {
+                        if (document.body.contains(notification)) {
+                            document.body.removeChild(notification);
+                        }
+                    }, 300);
+                }, 2200);
             }
 
             // Keyboard listener for "you" input
@@ -8514,6 +9119,16 @@
                 });
             });
 
+            // Meditation click tracker for JOJO easter egg
+            const meditationClickTracker = {
+                clicks: [],
+                timeWindow: 2000, // 2 seconds
+                requiredClicks: 4,
+                isJojoPlaying: false,
+                delayTimer: null, // Timer for delay check
+                delayTime: 500 // 500ms delay to ensure user finished clicking
+            };
+
             // 初始化导航点事件监听器 - 兼容性更好
             document.addEventListener('DOMContentLoaded', function() {
                 const navDots = document.querySelectorAll('.nav-dot');
@@ -8523,14 +9138,36 @@
                         // 添加点击事件
                         dot.addEventListener('click', function(e) {
                             e.preventDefault();
-                            scrollToSection(sectionId);
+                            
+                            // Special handling for meditation dot (4th dot)
+                            if (sectionId === 'meditation') {
+                                handleMeditationClick();
+                            } else {
+                                scrollToSection(sectionId);
+                            }
+                        });
+                        
+                        // 添加触屏事件支持 - 移动端兼容
+                        dot.addEventListener('touchend', function(e) {
+                            e.preventDefault();
+                            
+                            // Special handling for meditation dot (4th dot)
+                            if (sectionId === 'meditation') {
+                                handleMeditationClick();
+                            } else {
+                                scrollToSection(sectionId);
+                            }
                         });
                         
                         // 添加键盘支持 - 无障碍访问
                         dot.addEventListener('keydown', function(e) {
                             if (e.key === 'Enter' || e.key === ' ') {
                                 e.preventDefault();
-                                scrollToSection(sectionId);
+                                if (sectionId === 'meditation') {
+                                    handleMeditationClick();
+                                } else {
+                                    scrollToSection(sectionId);
+                                }
                             }
                         });
                         
@@ -8545,6 +9182,11 @@
                 const backToTopBtn = document.getElementById('backToTopBtn');
                 if (backToTopBtn) {
                     backToTopBtn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        scrollToTop();
+                    });
+                    
+                    backToTopBtn.addEventListener('touchend', function(e) {
                         e.preventDefault();
                         scrollToTop();
                     });
@@ -8582,6 +9224,13 @@
                 </svg>
                 <svg class="pause-icon" viewBox="0 0 24 24" style="display: none;">
                     <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                </svg>
+            </button>
+            
+            <!-- Play Mode Control Button -->
+            <button id="playModeBtn" class="audio-control-btn play-mode-btn" title="播放模式" data-mode="stop">
+                <svg class="mode-icon" viewBox="0 0 24 24">
+                    <path d="M6 6h12v12H6z"/>
                 </svg>
             </button>
         </div>
@@ -8758,7 +9407,7 @@
                     
                     // Main title triple click for first open, single click for toggle
                     this.mainTitles.forEach(mainTitle => {
-                        mainTitle.addEventListener('click', (e) => {
+                        const handleTitleInteraction = (e) => {
                             e.preventDefault();
                             
                             if (this.isFirstOpen) {
@@ -8783,12 +9432,21 @@
                                 // After first open: single click to toggle
                                 this.toggleKeyboard();
                             }
-                        });
+                        };
+                        
+                        mainTitle.addEventListener('click', handleTitleInteraction);
+                        mainTitle.addEventListener('touchend', handleTitleInteraction);
                     });
                     
                     // Key clicks
                     this.keys.forEach(key => {
                         key.addEventListener('click', () => {
+                            const keyValue = key.getAttribute('data-key');
+                            this.simulateKeyPress(keyValue);
+                        });
+                        
+                        key.addEventListener('touchend', (e) => {
+                            e.preventDefault();
                             const keyValue = key.getAttribute('data-key');
                             this.simulateKeyPress(keyValue);
                         });
@@ -9067,6 +9725,232 @@
                 }
 
             }
+            
+            // Handle meditation dot clicks for JOJO easter egg
+            function handleMeditationClick() {
+                const now = Date.now();
+                
+                // Add current click time
+                meditationClickTracker.clicks.push(now);
+                
+                // Remove clicks outside the time window
+                meditationClickTracker.clicks = meditationClickTracker.clicks.filter(
+                    clickTime => now - clickTime <= meditationClickTracker.timeWindow
+                );
+                
+                console.log(`Meditation clicks: ${meditationClickTracker.clicks.length}/${meditationClickTracker.requiredClicks}`);
+                
+                // Clear any existing delay timer
+                if (meditationClickTracker.delayTimer) {
+                    clearTimeout(meditationClickTracker.delayTimer);
+                    meditationClickTracker.delayTimer = null;
+                }
+                
+                // Check if we have exactly 4 clicks within the time window
+                if (meditationClickTracker.clicks.length === meditationClickTracker.requiredClicks) {
+                    // Set a delay timer to check if user stops clicking
+                    meditationClickTracker.delayTimer = setTimeout(() => {
+                        // Double check we still have exactly 4 clicks and no more
+                        const currentTime = Date.now();
+                        const validClicks = meditationClickTracker.clicks.filter(
+                            clickTime => currentTime - clickTime <= meditationClickTracker.timeWindow
+                        );
+                        
+                        if (validClicks.length === meditationClickTracker.requiredClicks && !meditationClickTracker.isJojoPlaying) {
+                            triggerJojoEasterEgg();
+                            // Reset clicks after triggering
+                            meditationClickTracker.clicks = [];
+                        }
+                        meditationClickTracker.delayTimer = null;
+                    }, meditationClickTracker.delayTime);
+                } else if (meditationClickTracker.clicks.length > meditationClickTracker.requiredClicks) {
+                    // Reset if more than 4 clicks
+                    meditationClickTracker.clicks = [];
+                    console.log('Too many clicks, resetting meditation click tracker');
+                } else {
+                    // Normal scroll behavior for less than 4 clicks
+                    scrollToSection('meditation');
+                }
+            }
+            
+            // Trigger JOJO easter egg
+            function triggerJojoEasterEgg() {
+                meditationClickTracker.isJojoPlaying = true;
+                
+                // Add JOJO audio to playlist
+                const jojoAudioData = {
+                    name: "JOJO's Bizarre Adventure",
+                    src: "./phoebe/jojo.mp3",
+                    type: "Easter Egg"
+                };
+                
+                try {
+                    // Add to playlist and it will auto-play
+                    addAudioToPlaylist(jojoAudioData);
+                    
+                    // Ensure we have the audio element
+                    if (!cyberpunkAudio) {
+                        cyberpunkAudio = document.getElementById('cyberpunkAudio');
+                    }
+                    
+                    // Reset flag when audio ends and add time listener for text effects
+                    if (cyberpunkAudio) {
+                        // Flag to prevent multiple triggers
+                        let jojoTextTriggered = false;
+                        
+                        cyberpunkAudio.addEventListener('ended', () => {
+                             meditationClickTracker.isJojoPlaying = false;
+                        firstJojoTextTriggered = false; // Reset for next play
+                        secondJojoTextTriggered = false; // Reset for next play
+                        });
+                        
+                        // Add time listener for JOJO text effects at 18.5 and 26 seconds
+                        let firstJojoTextTriggered = false;
+                        let secondJojoTextTriggered = false;
+                        
+                        cyberpunkAudio.addEventListener('timeupdate', () => {
+                            // First display at 18.5 seconds
+                            if (!firstJojoTextTriggered && cyberpunkAudio.currentTime >= 18.5) {
+                                firstJojoTextTriggered = true;
+                                showJojoTextEffects();
+                            }
+                            // Second display at 25.5 seconds
+                            if (!secondJojoTextTriggered && cyberpunkAudio.currentTime >= 25.5) {
+                                secondJojoTextTriggered = true;
+                                showJojoTextEffects();
+                            }
+                        });
+                    }
+                    
+                    // Force play if auto-play failed (backup method)
+                    setTimeout(() => {
+                        if (cyberpunkAudio && cyberpunkAudio.paused) {
+                            cyberpunkAudio.play().then(() => {
+                                isAudioPlaying = true;
+                                updateAudioButton();
+                            }).catch(error => {
+                                // Silent fail
+                            });
+                        }
+                    }, 200);
+                    
+                } catch (error) {
+                    console.error('Failed to add JOJO audio to playlist:', error);
+                    meditationClickTracker.isJojoPlaying = false;
+                }
+            }
+            
+            // Show JOJO text effects at 19 seconds
+            function showJojoTextEffects() {
+                console.log('✨ Showing JOJO text effects at 19 seconds!');
+                
+                let textCount = 0;
+                const maxTexts = 2; // Only show twice
+                const interval = 800; // 0.8 seconds between displays
+                
+                const showJojoText = () => {
+                    if (textCount >= maxTexts) {
+                        console.log('✨ JOJO text effects completed!');
+                        return;
+                    }
+                    
+                    // Create JOJO text element
+                    const jojoText = document.createElement('div');
+                    
+                    // Responsive design
+                    const isMobile = window.innerWidth <= 768;
+                    const isSmallMobile = window.innerWidth <= 480;
+                    
+                    // Center positioning
+                    const centerX = window.innerWidth / 2;
+                    const centerY = window.innerHeight / 2;
+                    
+                    // Different effects for first and second display
+                    let fontSize, animation, duration;
+                    
+                    if (textCount === 0) {
+                        // First display: smaller text with fade effect
+                        if (isSmallMobile) {
+                            fontSize = 40;
+                        } else if (isMobile) {
+                            fontSize = 60;
+                        } else {
+                            fontSize = 80;
+                        }
+                        animation = 'jojoFadeInOut 1.5s ease-in-out';
+                        duration = 1500;
+                    } else {
+                        // Second display: full screen with explosive shake effect
+                        // Calculate font size to fill the entire screen
+                        const screenWidth = window.innerWidth;
+                        const screenHeight = window.innerHeight;
+                        
+                        if (isSmallMobile) {
+                            // For small mobile, use 60% of screen width or 50% of screen height, whichever is smaller
+                            fontSize = Math.min(screenWidth * 0.6, screenHeight * 0.5);
+                        } else if (isMobile) {
+                            // For mobile, use 70% of screen width or 60% of screen height, whichever is smaller
+                            fontSize = Math.min(screenWidth * 0.7, screenHeight * 0.6);
+                        } else {
+                            // For desktop, use 80% of screen width or 70% of screen height, whichever is smaller
+                            fontSize = Math.min(screenWidth * 0.8, screenHeight * 0.7);
+                        }
+                        
+                        // Ensure minimum readable size but allow very large sizes
+                        fontSize = Math.max(fontSize, 100);
+                        
+                        animation = 'jojoExplosiveShake 2s ease-out';
+                        duration = 2000;
+                    }
+                    
+                    // Responsive text shadow
+                    const textShadow = isSmallMobile 
+                        ? "2px 2px 4px rgba(0,0,0,0.8), 0 0 10px rgba(255,255,255,0.5)"
+                        : isMobile 
+                        ? "3px 3px 6px rgba(0,0,0,0.8), 0 0 15px rgba(255,255,255,0.5)"
+                        : "4px 4px 8px rgba(0,0,0,0.8), 0 0 20px rgba(255,255,255,0.5)";
+                    
+                    jojoText.style.cssText = `
+                        position: fixed;
+                        left: 50%;
+                        top: 50%;
+                        transform: translate(-50%, -50%);
+                        color: white;
+                        font-family: "Impact", "Arial Black", sans-serif;
+                        font-size: ${fontSize}px;
+                        font-weight: 900;
+                        text-shadow: ${textShadow};
+                        z-index: 25000;
+                        pointer-events: none;
+                        user-select: none;
+                        opacity: 1;
+                        text-align: center;
+                        animation: ${animation};
+                    `;
+                    
+                    jojoText.textContent = 'JO!';
+                    
+                    document.body.appendChild(jojoText);
+                    
+                    // Remove after animation
+                    setTimeout(() => {
+                        if (document.body.contains(jojoText)) {
+                            document.body.removeChild(jojoText);
+                        }
+                    }, duration);
+                    
+                    textCount++;
+                    
+                    // Schedule next text
+                    if (textCount < maxTexts) {
+                        setTimeout(showJojoText, interval);
+                    }
+                };
+                
+                // Start showing JOJO text
+                showJojoText();
+            }
+
             
             // Initialize virtual keyboard when DOM is loaded
             document.addEventListener('DOMContentLoaded', () => {
