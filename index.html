@@ -3192,6 +3192,9 @@
             </div>
         </div>
 
+        <!-- State Synchronization Script -->
+        <script src="state-sync.js"></script>
+        
         <script>
             let isEnglish = true;
 
@@ -3207,6 +3210,12 @@
 
                 // Handle cumulative click easter egg
                 clickCounters.langToggle++;
+                
+                // Sync language toggle state globally
+                if (window.StateSyncManager) {
+                    window.StateSyncManager.syncEasterEggState('langToggle', clickCounters.langToggle);
+                }
+                
                 console.log(
                     `Language toggle clicked, cumulative count: ${clickCounters.langToggle}`,
                 );
@@ -3219,6 +3228,11 @@
                     if (easterEggTriggerCounts.langToggle >= 3) {
                         console.log("Language toggle easter egg has reached maximum triggers (3/3)");
                         clickCounters.langToggle = 0;
+                        
+                        // Sync reset state globally
+                        if (window.StateSyncManager) {
+                            window.StateSyncManager.syncEasterEggState('langToggle', 0);
+                        }
                         return;
                     }
                     
@@ -3235,6 +3249,11 @@
                         );
                     }, 500);
                     clickCounters.langToggle = 0; // Reset counter after triggering
+                    
+                    // Sync reset state globally
+                    if (window.StateSyncManager) {
+                        window.StateSyncManager.syncEasterEggState('langToggle', 0);
+                    }
                 }
 
                 const debugButton = document.getElementById("debugButton");
@@ -3353,7 +3372,7 @@
                 });
             }
 
-            // Function to initialize touch events for quote sections
+            // Function to initialize touch events for quote sections - 同步所有三个位置
             function initializeQuoteTouchEvents() {
                 // Remove existing event listeners
                 const allQuoteSections = document.querySelectorAll('.quote-section');
@@ -3362,18 +3381,14 @@
                     section.removeEventListener('touchend', handleTouchEnd);
                 });
                 
-                // Add event listeners to the currently visible quote section
-                const currentQuoteSection = isEnglish 
-                    ? document.querySelector('#englishContent .quote-section')
-                    : document.querySelector('#chineseContent .quote-section');
-                    
-                if (currentQuoteSection) {
-                    currentQuoteSection.addEventListener('touchstart', handleTouchStart, { passive: true });
-                    currentQuoteSection.addEventListener('touchend', handleTouchEnd, { passive: true });
+                // Add event listeners to ALL quote sections (三个位置都要监听)
+                allQuoteSections.forEach(section => {
+                    section.addEventListener('touchstart', handleTouchStart, { passive: true });
+                    section.addEventListener('touchend', handleTouchEnd, { passive: true });
                     
                     // Add transition styles for smooth animations
-                    currentQuoteSection.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
-                }
+                    section.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+                });
             }
 
             // Quote font size adaptation based on text length
@@ -5160,36 +5175,33 @@ let zoteCycleCount = 0; // Track how many complete cycles through all 57 precept
 
 
 
-            // Function to update quote section content
+            // Function to update quote section content - 同步所有三个位置的Quote
             function updateQuoteSection() {
-                // Select the correct quote section based on current language
-                const quoteSection = isEnglish 
-                    ? document.querySelector('#englishContent .quote-section')
-                    : document.querySelector('#chineseContent .quote-section');
-                    
-                if (!quoteSection) return;
-
-                const quoteText = quoteSection.querySelector('.quote-text');
-                
-                if (!quoteText) return;
-
                 const currentQuotes = isEnglish ? himymQuotes.english : himymQuotes.chinese;
                 const quote = currentQuotes[currentQuoteIndex];
                 
-                // Add fade out effect
-                quoteSection.style.opacity = '0.3';
-                quoteSection.style.transform = 'translateY(10px)';
+                // 获取所有三个位置的Quote sections
+                const allQuoteSections = document.querySelectorAll('.quote-section');
                 
-                setTimeout(() => {
-                    quoteText.innerHTML = `"${quote.text}" <span class="quote-author">— ${quote.author}</span>`;
+                allQuoteSections.forEach(quoteSection => {
+                    const quoteText = quoteSection.querySelector('.quote-text');
+                    if (!quoteText) return;
                     
-                    // Adapt font size based on content length
-                    adaptQuoteFontSize();
+                    // Add fade out effect
+                    quoteSection.style.opacity = '0.3';
+                    quoteSection.style.transform = 'translateY(10px)';
                     
-                    // Fade back in
-                    quoteSection.style.opacity = '1';
-                    quoteSection.style.transform = 'translateY(0)';
-                }, 200);
+                    setTimeout(() => {
+                        quoteText.innerHTML = `"${quote.text}" <span class="quote-author">— ${quote.author}</span>`;
+                        
+                        // Adapt font size based on content length
+                        adaptQuoteFontSize();
+                        
+                        // Fade back in
+                        quoteSection.style.opacity = '1';
+                        quoteSection.style.transform = 'translateY(0)';
+                    }, 200);
+                });
             }
 
             // Function to go to next quote
@@ -5246,27 +5258,24 @@ let zoteCycleCount = 0; // Track how many complete cycles through all 57 precept
                 currentQuotes[cardIndex] = newQuoteIndex;
                 const quote = activeQuotes[newQuoteIndex];
 
-                // Update the current language version
-                const currentCards = document.querySelectorAll(
-                    isEnglish
-                        ? "#englishContent .essence-card"
-                        : "#chineseContent .essence-card",
-                );
-
-                if (currentCards[cardIndex]) {
-                    const titleEl =
-                        currentCards[cardIndex].querySelector(".essence-title");
-                    const descEl =
-                        currentCards[cardIndex].querySelector(".essence-desc");
-
-                    if (isEnglish) {
-                        titleEl.textContent = quote.en;
-                        descEl.textContent = quote.source;
-                    } else {
-                        titleEl.textContent = quote.zh;
-                        descEl.textContent = quote.source;
+                // 同步更新所有三个位置的essence cards
+                const allCards = document.querySelectorAll('.essence-card');
+                const targetCards = Array.from(allCards).filter((card, index) => index % 4 === cardIndex);
+                
+                targetCards.forEach(card => {
+                    const titleEl = card.querySelector(".essence-title");
+                    const descEl = card.querySelector(".essence-desc");
+                    
+                    if (titleEl && descEl) {
+                        if (isEnglish) {
+                            titleEl.textContent = quote.en;
+                            descEl.textContent = quote.source;
+                        } else {
+                            titleEl.textContent = quote.zh;
+                            descEl.textContent = quote.source;
+                        }
                     }
-                }
+                });
 
                 // Re-adapt font sizes after quote change
                 setTimeout(() => {
@@ -6036,6 +6045,14 @@ let zoteCycleCount = 0; // Track how many complete cycles through all 57 precept
                 // Switch to the newly added audio and play it
                 const newIndex = audioPlaylist.length - 1;
                 loadAudio(newIndex, true); // Auto-play new audio
+                
+                // Sync audio state globally
+                if (window.StateSyncManager) {
+                    window.StateSyncManager.syncAudioState({
+                        currentPlaylist: [...audioPlaylist],
+                        currentIndex: newIndex
+                    });
+                }
             }
             
             function loadAudio(index, autoPlay = false) {
@@ -6054,6 +6071,15 @@ let zoteCycleCount = 0; // Track how many complete cycles through all 57 precept
                     
                     // Update playlist UI immediately
                     updatePlaylistUI();
+                    
+                    // Sync audio state globally
+                    if (window.StateSyncManager) {
+                        window.StateSyncManager.syncAudioState({
+                            currentPlaylist: [...audioPlaylist],
+                            currentIndex: index,
+                            currentAudio: audioData
+                        });
+                    }
                     
                     // Lazy loading: only load audio when needed
                     if (autoPlay) {
@@ -7375,6 +7401,14 @@ let zoteCycleCount = 0; // Track how many complete cycles through all 57 precept
                         target.closest(".color-circle")
                     ) {
                         colorCircleEventCount++;
+                        
+                        // Sync color circle state globally
+                        if (window.StateSyncManager) {
+                            window.StateSyncManager.syncColorCircleState({
+                                eventCount: colorCircleEventCount
+                            });
+                        }
+                        
                         console.log(
                             `🎨 Color circle clicked! (Event #${colorCircleEventCount})`,
                         );
@@ -7391,7 +7425,12 @@ let zoteCycleCount = 0; // Track how many complete cycles through all 57 precept
                         e.stopImmediatePropagation();
 
                         // Debounce mechanism to prevent multiple rapid calls
-                        if (!window.colorCircleProcessing) {
+                        const globalColorState = window.globalState?.colorCircle || { processing: false };
+                        if (!globalColorState.processing) {
+                            // Sync processing state globally
+                            if (window.StateSyncManager) {
+                                window.StateSyncManager.syncColorCircleState({ processing: true });
+                            }
                             window.colorCircleProcessing = true;
                             console.log("🎨 Processing color circle click...");
 
@@ -7399,6 +7438,9 @@ let zoteCycleCount = 0; // Track how many complete cycles through all 57 precept
 
                             // Reset processing flag after a short delay
                             setTimeout(() => {
+                                if (window.StateSyncManager) {
+                                    window.StateSyncManager.syncColorCircleState({ processing: false });
+                                }
                                 window.colorCircleProcessing = false;
                                 console.log(
                                     "🎨 Color circle processing flag reset",
@@ -7427,6 +7469,12 @@ let zoteCycleCount = 0; // Track how many complete cycles through all 57 precept
 
             function handleTripleClick(eggType, audioFile, message) {
                 clickCounters[eggType]++;
+                
+                // Sync easter egg state globally
+                if (window.StateSyncManager) {
+                    window.StateSyncManager.syncEasterEggState(eggType, clickCounters[eggType]);
+                }
+                
                 console.log(
                     `🎯 ${eggType} clicked, count: ${clickCounters[eggType]}`,
                 );
@@ -7443,6 +7491,11 @@ let zoteCycleCount = 0; // Track how many complete cycles through all 57 precept
                 clickTimers[eggType] = setTimeout(() => {
                     console.log(`⏰ ${eggType} counter reset to 0 (timeout)`);
                     clickCounters[eggType] = 0;
+                    
+                    // Sync reset state globally
+                    if (window.StateSyncManager) {
+                        window.StateSyncManager.syncEasterEggState(eggType, 0);
+                    }
                 }, 1000);
 
                 // Check if triple clicked
@@ -9938,25 +9991,24 @@ let zoteCycleCount = 0; // Track how many complete cycles through all 57 precept
                     currentQuotes[cardIndex] = quoteIndex;
                     const quote = activeQuotes[quoteIndex];
                     
-                    // Update the current language version
-                    const currentCards = document.querySelectorAll(
-                        isEnglish
-                            ? "#englishContent .essence-card"
-                            : "#chineseContent .essence-card",
-                    );
+                    // 同步更新所有三个位置的essence cards
+                    const allCards = document.querySelectorAll('.essence-card');
+                    const targetCards = Array.from(allCards).filter((card, index) => index % 4 === cardIndex);
                     
-                    if (currentCards[cardIndex]) {
-                        const titleEl = currentCards[cardIndex].querySelector(".essence-title");
-                        const descEl = currentCards[cardIndex].querySelector(".essence-desc");
+                    targetCards.forEach(card => {
+                        const titleEl = card.querySelector(".essence-title");
+                        const descEl = card.querySelector(".essence-desc");
                         
-                        if (isEnglish) {
-                            titleEl.textContent = quote.en;
-                            descEl.textContent = quote.source;
-                        } else {
-                            titleEl.textContent = quote.zh;
-                            descEl.textContent = quote.source;
+                        if (titleEl && descEl) {
+                            if (isEnglish) {
+                                titleEl.textContent = quote.en;
+                                descEl.textContent = quote.source;
+                            } else {
+                                titleEl.textContent = quote.zh;
+                                descEl.textContent = quote.source;
+                            }
                         }
-                    }
+                    });
                 }
                 
                 // Re-adapt font sizes after quote change
@@ -10334,9 +10386,20 @@ let zoteCycleCount = 0; // Track how many complete cycles through all 57 precept
                     this.mainTitles = document.querySelectorAll('.main-title');
                     
                     this.isVisible = false;
-                    this.clickCount = 0;
-                    this.clickTimer = null;
-                    this.isFirstOpen = true;
+                    
+                    // Use global state for synchronization across all positions
+                    this.getGlobalState = () => window.globalState?.virtualKeyboard || {
+                        isFirstOpen: true,
+                        clickCount: 0,
+                        clickTimer: null,
+                        isVisible: false
+                    };
+                    
+                    this.syncState = (newState) => {
+                        if (window.StateSyncManager) {
+                            window.StateSyncManager.syncVirtualKeyboardState(newState);
+                        }
+                    };
                     
                     // Dragging properties
                     this.isDragging = false;
@@ -10388,21 +10451,31 @@ let zoteCycleCount = 0; // Track how many complete cycles through all 57 precept
                         const handleTitleInteraction = (e) => {
                             e.preventDefault();
                             
-                            if (this.isFirstOpen) {
+                            const globalState = this.getGlobalState();
+                            
+                            if (globalState.isFirstOpen) {
                                 // First time: require triple click
-                                this.clickCount++;
+                                const newClickCount = globalState.clickCount + 1;
                                 
-                                if (this.clickTimer) {
-                                    clearTimeout(this.clickTimer);
+                                if (globalState.clickTimer) {
+                                    clearTimeout(globalState.clickTimer);
                                 }
                                 
-                                this.clickTimer = setTimeout(() => {
-                                    this.clickCount = 0;
+                                const newTimer = setTimeout(() => {
+                                    this.syncState({ clickCount: 0 });
                                 }, 500); // Reset after 500ms
                                 
-                                if (this.clickCount >= 3) {
-                                    this.clickCount = 0;
-                                    this.isFirstOpen = false;
+                                this.syncState({ 
+                                    clickCount: newClickCount,
+                                    clickTimer: newTimer
+                                });
+                                
+                                if (newClickCount >= 3) {
+                                    this.syncState({ 
+                                        clickCount: 0,
+                                        isFirstOpen: false,
+                                        clickTimer: null
+                                    });
                                     this.showKeyboard();
                                     console.log('🎹 Virtual keyboard activated with triple click');
                                 }
