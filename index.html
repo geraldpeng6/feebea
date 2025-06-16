@@ -5341,20 +5341,54 @@ let zoteCycleCount = 0; // Track how many complete cycles through all 57 precept
                     adaptFontSizeResponsive();
                 }, 50);
 
-                // Check for Cyberpunk 2077 Easter Egg
-                setTimeout(() => {
-                    checkCyberpunkEasterEgg();
-                }, 100);
-                
-                // Check for Zote Easter Egg
-                setTimeout(() => {
-                    checkZoteEasterEgg();
-                }, 150);
+                // 使用统一的彩蛋触发控制系统
+                if (window.handleCardEasterEgg && typeof window.handleCardEasterEgg === 'function') {
+                    // 传递卡片索引、类型和检查函数
+                    const shouldTriggerCyberpunk = window.handleCardEasterEgg(cardIndex, 'cyberpunk', () => {
+                        return !cyberpunkEasterEggTriggered && checkCyberpunkConditions();
+                    });
+                    
+                    if (shouldTriggerCyberpunk) {
+                        setTimeout(() => {
+                            checkCyberpunkEasterEgg();
+                        }, 100);
+                    }
+                    
+                    // 触发左特彩蛋
+                    const shouldTriggerZote = window.handleCardEasterEgg(cardIndex, 'zote', () => {
+                        return !zoteEasterEggTriggered && checkZoteConditions();
+                    });
+                    
+                    if (shouldTriggerZote) {
+                        setTimeout(() => {
+                            checkZoteEasterEgg();
+                        }, 150);
+                    }
+                    
+                    // 触发玫瑰彩蛋
+                    const shouldTriggerRose = window.handleCardEasterEgg(cardIndex, 'rose', () => {
+                        return !roseQuoteEasterEggTriggered && checkRoseQuoteConditions();
+                    });
+                    
+                    if (shouldTriggerRose) {
+                        setTimeout(() => {
+                            checkRoseQuoteEasterEgg();
+                        }, 100);
+                    }
+                } else {
+                    // 兼容旧代码，如果新系统不可用，依然使用原有检查方式
+                    setTimeout(() => {
+                        checkCyberpunkEasterEgg();
+                    }, 100);
+                    
+                    setTimeout(() => {
+                        checkZoteEasterEgg();
+                    }, 150);
 
-                // Check for Rose Quote Easter Egg (Phase 2)
-                setTimeout(() => {
-                    checkRoseQuoteEasterEgg();
-                }, 100);
+                    setTimeout(() => {
+                        checkRoseQuoteEasterEgg();
+                    }, 100);
+                }
             }
 
             // Function removed - no longer copying quote text
@@ -5473,6 +5507,41 @@ let zoteCycleCount = 0; // Track how many complete cycles through all 57 precept
             let isRoseAudioPlaying = false;
             let isListeningForSinger = false;
 
+            // 彩蛋触发条件检查函数
+            function checkCyberpunkConditions() {
+                // 检查是否满足触发赛博朋克彩蛋的条件
+                // 这里可以添加具体的检查逻辑
+                return true; // 默认返回true，实际使用时应有具体条件
+            }
+            
+            function checkZoteConditions() {
+                // 检查是否满足触发左特彩蛋的条件
+                return true; // 默认返回true，实际使用时应有具体条件
+            }
+            
+            function checkRoseQuoteConditions() {
+                // 检查是否满足触发玫瑰引用彩蛋的条件
+                const currentCards = document.querySelectorAll(
+                    isEnglish
+                        ? "#englishContent .essence-card"
+                        : "#chineseContent .essence-card"
+                );
+
+                let roseQuoteCount = 0;
+                const targetText = isEnglish 
+                    ? "It is the time you have wasted for your rose that makes your rose so important"
+                    : "正是你为你的玫瑰花费的时光使你的玫瑰变得如此重要";
+
+                currentCards.forEach(card => {
+                    const titleEl = card.querySelector(".essence-title");
+                    if (titleEl && titleEl.textContent.trim() === targetText) {
+                        roseQuoteCount++;
+                    }
+                });
+                
+                return roseQuoteCount >= 1; // 只要有一个卡片包含玫瑰引用即满足条件
+            }
+            
             // Rose Quote Easter Egg function
             function checkRoseQuoteEasterEgg() {
                 if (roseQuoteEasterEggTriggered) {
@@ -6597,14 +6666,13 @@ let zoteCycleCount = 0; // Track how many complete cycles through all 57 precept
             }
             
             function replacePhoebeWithZote() {
-                // Convert precept number to array index: 56->0, 57->1, 1->2
-                let arrayIndex;
-                if (currentZotePrecept === 56) {
-                    arrayIndex = 0;
-                } else if (currentZotePrecept === 57) {
-                    arrayIndex = 1;
-                } else if (currentZotePrecept === 1) {
-                    arrayIndex = 2;
+                // Convert precept number to array index: 1->0, 2->1, ..., 57->56
+                let arrayIndex = currentZotePrecept - 1;
+                
+                // 确保索引在有效范围内
+                if (arrayIndex < 0 || arrayIndex >= zotePrecepts.length) {
+                    console.error(`Invalid Zote precept index: ${arrayIndex} for precept ${currentZotePrecept}`);
+                    arrayIndex = 0; // 默认使用第一个戒律
                 }
                 
                 const currentPrecept = zotePrecepts[arrayIndex];
@@ -6855,6 +6923,7 @@ let zoteCycleCount = 0; // Track how many complete cycles through all 57 precept
             let debugSequence = [];
             let debugTarget = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'KeyB', 'KeyA', 'KeyB', 'KeyA', 'KeyP', 'KeyE', 'KeyN', 'KeyG'];
             let debugTimer = null;
+            let debugPermissionGranted = false; // 防止重复触发
 
             function setupDebugPanel() {
                 const debugToggle = document.getElementById('debugToggle');
@@ -7589,16 +7658,36 @@ let zoteCycleCount = 0; // Track how many complete cycles through all 57 precept
                     if (easterEggTriggerCounts[eggType] >= 3) {
                         console.log(`${eggType} easter egg has reached maximum triggers (3/3)`);
                         clickCounters[eggType] = 0;
+                        
+                        // Sync reset state globally
+                        if (window.StateSyncManager) {
+                            window.StateSyncManager.syncEasterEggState(eggType, 0);
+                        }
                         return;
                     }
                     
                     console.log(`${eggType} easter egg triggered! (${easterEggTriggerCounts[eggType] + 1}/3)`);
                     easterEggTriggered[eggType] = true;
                     easterEggTriggerCounts[eggType]++;
+                    
+                    // 触发彩蛋时播放音频和显示通知
                     console.log(`Playing audio: ${audioFile}`);
                     playAudio(audioFile);
                     showEasterEggNotification(message);
+                    
+                    // 重置点击计数
                     clickCounters[eggType] = 0;
+                    
+                    // Sync reset and trigger state globally
+                    if (window.StateSyncManager) {
+                        // 同步重置点击计数
+                        window.StateSyncManager.syncEasterEggState(eggType, 0);
+                        
+                        // 通知StateSyncManager彩蛋已触发，可能需要更新UI
+                        if (window.StateSyncManager.checkEasterEggTrigger) {
+                            window.StateSyncManager.checkEasterEggTrigger(eggType, 3);
+                        }
+                    }
                 }
             }
 
@@ -8456,11 +8545,11 @@ let zoteCycleCount = 0; // Track how many complete cycles through all 57 precept
                 }, 3000);
                 
                 // Check if debug permission sequence matches (上上下下左右左右baba + peng)
-                if (debugSequence.length >= debugTarget.length) {
-                    const lastKeys = debugSequence.slice(-debugTarget.length);
-                    if (JSON.stringify(lastKeys) === JSON.stringify(debugTarget)) {
+                if (debugSequence.length === debugTarget.length && !debugPermissionGranted) {
+                    if (JSON.stringify(debugSequence) === JSON.stringify(debugTarget)) {
                         console.log("🔧 Debug Permission Code activated! Full debug access granted");
                         debugSequence = [];
+                        debugPermissionGranted = true;
                         
                         // 授予调试权限
                          debugPermission = true;
@@ -8488,10 +8577,9 @@ let zoteCycleCount = 0; // Track how many complete cycles through all 57 precept
                     }
                 }
                 
-                // Check if konami sequence matches
-                if (konamiSequence.length >= konamiTarget.length) {
-                    const lastKeys = konamiSequence.slice(-konamiTarget.length);
-                    if (JSON.stringify(lastKeys) === JSON.stringify(konamiTarget)) {
+                // Check if konami sequence matches (只有完整序列才触发)
+                if (konamiSequence.length === konamiTarget.length) {
+                    if (JSON.stringify(konamiSequence) === JSON.stringify(konamiTarget)) {
                         console.log("🎮 Konami Code activated! Debug panel shown (no permission)");
                         konamiSequence = [];
                         
@@ -10859,6 +10947,9 @@ let zoteCycleCount = 0; // Track how many complete cycles through all 57 precept
                     this.keyboard.style.display = 'block';
                     this.isVisible = true;
                     
+                    // 同步状态到全局状态管理器，确保所有虚拟键盘状态同步
+                    this.syncState({ isVisible: true });
+                    
                     // Add animation class after a brief delay
                     setTimeout(() => {
                         this.keyboard.style.transform = 'translateY(0)';
@@ -10869,6 +10960,9 @@ let zoteCycleCount = 0; // Track how many complete cycles through all 57 precept
                 
                 hideKeyboard() {
                     this.keyboard.style.transform = 'translateY(100%)';
+                    
+                    // 同步状态到全局状态管理器，确保所有虚拟键盘状态同步
+                    this.syncState({ isVisible: false });
                     
                     setTimeout(() => {
                         this.keyboard.classList.add('hidden');
@@ -11167,6 +11261,23 @@ let zoteCycleCount = 0; // Track how many complete cycles through all 57 precept
             document.addEventListener('DOMContentLoaded', () => {
                 const virtualKeyboard = new VirtualKeyboard();
                 console.log('🎹 Virtual keyboard initialized');
+                
+                // 初始化状态同步管理器并执行初始同步
+                if (window.StateSyncManager) {
+                    console.log('🔄 初始化所有无缝滚动状态同步');
+                    
+                    // 初始同步Phoebe's Wisdom状态
+                    window.StateSyncManager.updateAllPhoebeWisdom();
+                    
+                    // 初始同步meditation状态
+                    window.StateSyncManager.updateAllMeditations();
+                    
+                    // 初始同步虚拟键盘状态
+                    window.StateSyncManager.updateVirtualKeyboardUI();
+                    
+                    // 创建MutationObserver监听DOM变化
+                    window.StateSyncManager.setupMutationObserver();
+                }
             });
             
             // Re-check mobile device on window resize
