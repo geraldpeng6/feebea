@@ -108,6 +108,52 @@ const StateSyncManager = {
         window.globalState.easterEggs.clickCounters[eggType] = count;
     },
     
+    // Sync essence card state
+    syncEssenceState: function(newState) {
+        if (!window.globalState.essence) {
+            window.globalState.essence = {};
+        }
+        window.globalState.essence = { ...window.globalState.essence, ...newState };
+    },
+    
+    // Sync Zote easter egg state
+    syncZoteState: function(newState) {
+        if (!window.globalState.zote) {
+            window.globalState.zote = {
+                triggered: false,
+                currentPrecept: 56,
+                cycleCount: 0
+            };
+        }
+        window.globalState.zote = { ...window.globalState.zote, ...newState };
+    },
+    
+    // Sync Donda's wisdom state
+    syncDondaWisdomState: function(newState) {
+        if (!window.globalState.dondaWisdom) {
+            window.globalState.dondaWisdom = {
+                isActive: false,
+                englishTitle: "",
+                englishQuote: "",
+                chineseTitle: "",
+                chineseQuote: ""
+            };
+        }
+        window.globalState.dondaWisdom = { ...window.globalState.dondaWisdom, ...newState };
+    },
+    
+    // Sync meditation state
+    syncMeditationState: function(newState) {
+        if (!window.globalState.meditation) {
+            window.globalState.meditation = {
+                isRunawayMode: false,
+                englishContent: "",
+                chineseContent: ""
+            };
+        }
+        window.globalState.meditation = { ...window.globalState.meditation, ...newState };
+    },
+    
     // Initialize state synchronization
     init: function() {
         console.log('🔄 State Synchronization Manager initialized');

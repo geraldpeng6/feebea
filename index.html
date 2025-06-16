@@ -5257,6 +5257,16 @@ let zoteCycleCount = 0; // Track how many complete cycles through all 57 precept
 
                 currentQuotes[cardIndex] = newQuoteIndex;
                 const quote = activeQuotes[newQuoteIndex];
+                
+                // 同步essence卡片状态到全局状态
+                if (window.StateSyncManager && window.StateSyncManager.syncEssenceState) {
+                    window.StateSyncManager.syncEssenceState({
+                        currentQuotes: [...currentQuotes],
+                        cardIndex: cardIndex,
+                        quoteIndex: newQuoteIndex,
+                        isEnglish: isEnglish
+                    });
+                }
 
                 // 同步更新所有三个位置的essence cards
                 const allCards = document.querySelectorAll('.essence-card');
@@ -6494,6 +6504,15 @@ let zoteCycleCount = 0; // Track how many complete cycles through all 57 precept
                 zoteEasterEggTriggered = true;
                 console.log("⚔️ Zote Easter Egg activated!");
                 
+                // 同步Zote彩蛋状态到全局状态
+                if (window.StateSyncManager && window.StateSyncManager.syncZoteState) {
+                    window.StateSyncManager.syncZoteState({
+                        triggered: zoteEasterEggTriggered,
+                        currentPrecept: currentZotePrecept,
+                        cycleCount: zoteCycleCount
+                    });
+                }
+                
                 // Replace Phoebe section with Zote's precepts
                 replacePhoebeWithZote();
                 
@@ -6565,6 +6584,15 @@ let zoteCycleCount = 0; // Track how many complete cycles through all 57 precept
                 if (currentZotePrecept > 57) {
                     currentZotePrecept = 1;
                     zoteCycleCount++; // Increment cycle count when completing all 57 precepts
+                }
+                
+                // 同步戒律状态到全局状态
+                if (window.StateSyncManager && window.StateSyncManager.syncZoteState) {
+                    window.StateSyncManager.syncZoteState({
+                        triggered: zoteEasterEggTriggered,
+                        currentPrecept: currentZotePrecept,
+                        cycleCount: zoteCycleCount
+                    });
                 }
                 
                 // Update the display
@@ -9518,6 +9546,15 @@ let zoteCycleCount = 0; // Track how many complete cycles through all 57 precept
                     englishPhoebeQuote.innerHTML = `
                         "… you got a lot of confidence that come off a little arrogant even though you're humble and everything –– but it be important to remember that the giant looks himself in the mirror and sees nothing…"
                     `;
+                    
+                    // 同步Donda's wisdom状态到全局状态
+                    if (window.StateSyncManager && window.StateSyncManager.syncDondaWisdomState) {
+                        window.StateSyncManager.syncDondaWisdomState({
+                            isActive: true,
+                            englishTitle: "Donda's Wisdom",
+                            englishQuote: englishPhoebeQuote.innerHTML
+                        });
+                    }
                 }
                 
                 // Change Chinese Phoebe section
@@ -9530,6 +9567,15 @@ let zoteCycleCount = 0; // Track how many complete cycles through all 57 precept
                         "你有很多的自信，这让你看起来有点傲慢，虽然你很谦虚。但重要的是要记住，巨人照镜子时什么也看不到。"<br />
                         "… you got a lot of confidence that come off a little arrogant even though you're humble and everything –– but it be important to remember that the giant looks himself in the mirror and sees nothing…"
                     `;
+                    
+                    // 同步中文Donda's wisdom状态到全局状态
+                    if (window.StateSyncManager && window.StateSyncManager.syncDondaWisdomState) {
+                        window.StateSyncManager.syncDondaWisdomState({
+                            isActive: true,
+                            chineseTitle: "Donda的智慧",
+                            chineseQuote: chinesePhoebeQuote.innerHTML
+                        });
+                    }
                 }
                 
                 // Change meditation content for English page
@@ -9549,6 +9595,14 @@ let zoteCycleCount = 0; // Track how many complete cycles through all 57 precept
                         Baby, I got a plan<br />
                         Run away fast as you can
                     `;
+                    
+                    // 同步英文meditation状态到全局状态
+                    if (window.StateSyncManager && window.StateSyncManager.syncMeditationState) {
+                        window.StateSyncManager.syncMeditationState({
+                            isRunawayMode: true,
+                            englishContent: englishMeditationText.innerHTML
+                        });
+                    }
                 }
                 
                 // Change meditation content for Chinese page
@@ -9580,6 +9634,14 @@ let zoteCycleCount = 0; // Track how many complete cycles through all 57 precept
                         Run away fast as you can
                         尽你所能快速逃离
                     `;
+                    
+                    // 同步中文meditation状态到全局状态
+                    if (window.StateSyncManager && window.StateSyncManager.syncMeditationState) {
+                        window.StateSyncManager.syncMeditationState({
+                            isRunawayMode: true,
+                            chineseContent: chineseMeditationText.innerHTML
+                        });
+                    }
                 }
                 
                 // Setup audio event listener to trigger LOOK AT YOU effect after 3 seconds delay
@@ -9891,6 +9953,15 @@ let zoteCycleCount = 0; // Track how many complete cycles through all 57 precept
                         "Maybe this is what's meant to be.<br />
                         Like, maybe the universe has a plan for us."
                     `;
+                    
+                    // 同步恢复Phoebe's wisdom状态到全局状态
+                    if (window.StateSyncManager && window.StateSyncManager.syncDondaWisdomState) {
+                        window.StateSyncManager.syncDondaWisdomState({
+                            isActive: false,
+                            englishTitle: "Phoebe's Wisdom",
+                            englishQuote: englishPhoebeQuote.innerHTML
+                        });
+                    }
                 }
                 
                 // Restore Chinese Phoebe section
@@ -9905,6 +9976,15 @@ let zoteCycleCount = 0; // Track how many complete cycles through all 57 precept
                         Like, maybe the universe has a plan for us."<br />
                         也许宇宙对我们有它的安排
                     `;
+                    
+                    // 同步恢复中文Phoebe's wisdom状态到全局状态
+                    if (window.StateSyncManager && window.StateSyncManager.syncDondaWisdomState) {
+                        window.StateSyncManager.syncDondaWisdomState({
+                            isActive: false,
+                            chineseTitle: "菲比的智慧",
+                            chineseQuote: chinesePhoebeQuote.innerHTML
+                        });
+                    }
                 }
                 
                 // Restore English meditation content
@@ -9932,6 +10012,14 @@ let zoteCycleCount = 0; // Track how many complete cycles through all 57 precept
                         My search for truth is finished at last.<br />
                         I'm going home."
                     `;
+                    
+                    // 同步恢复英文meditation状态到全局状态
+                    if (window.StateSyncManager && window.StateSyncManager.syncMeditationState) {
+                        window.StateSyncManager.syncMeditationState({
+                            isRunawayMode: false,
+                            englishContent: englishMeditationText.innerHTML
+                        });
+                    }
                 }
                 
                 // Restore Chinese meditation content
@@ -9979,6 +10067,14 @@ let zoteCycleCount = 0; // Track how many complete cycles through all 57 precept
                         I'm going home."<br />
                         我要回家了
                     `;
+                    
+                    // 同步恢复中文meditation状态到全局状态
+                    if (window.StateSyncManager && window.StateSyncManager.syncMeditationState) {
+                        window.StateSyncManager.syncMeditationState({
+                            isRunawayMode: false,
+                            chineseContent: chineseMeditationText.innerHTML
+                        });
+                    }
                 }
                 
                 console.log("✅ Original content restored!");
