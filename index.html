@@ -377,6 +377,16 @@
                 border-radius: 0;
                 cursor: pointer;
                 transition: background-color 0.3s ease;
+                /* 移动端触摸优化 */
+                touch-action: manipulation;
+                -webkit-touch-callout: none;
+                -webkit-tap-highlight-color: transparent;
+                /* 增加触摸区域 */
+                min-width: 20px;
+                min-height: 20px;
+                /* 使用padding而不是改变实际尺寸来增加触摸区域 */
+                padding: 4px;
+                margin: -4px;
             }
 
             .zima-square.feebea-flash {
@@ -3656,6 +3666,45 @@
 
             // Initialize font adaptation
             document.addEventListener("DOMContentLoaded", function () {
+                // 强制重置所有彩蛋状态，防止页面重新加载时错误显示彩蛋
+                console.log('🔄 Resetting all easter egg states on page load...');
+                
+                // 重置主要彩蛋状态变量
+                if (typeof cyberpunkEasterEggTriggered !== 'undefined') {
+                    cyberpunkEasterEggTriggered = false;
+                }
+                if (typeof zeldaEasterEggTriggered !== 'undefined') {
+                    zeldaEasterEggTriggered = false;
+                }
+                if (typeof runawayEasterEggTriggered !== 'undefined') {
+                    runawayEasterEggTriggered = false;
+                }
+                if (typeof smellyCatEasterEggTriggered !== 'undefined') {
+                    smellyCatEasterEggTriggered = false;
+                }
+                if (typeof roseQuoteEasterEggTriggered !== 'undefined') {
+                    roseQuoteEasterEggTriggered = false;
+                }
+                if (typeof zoteEasterEggTriggered !== 'undefined') {
+                    zoteEasterEggTriggered = false;
+                }
+                
+                // 重置Phoebe彩蛋状态对象
+                if (typeof easterEggTriggered !== 'undefined') {
+                    Object.keys(easterEggTriggered).forEach(key => {
+                        easterEggTriggered[key] = false;
+                    });
+                }
+                
+                // 重置彩蛋触发计数
+                if (typeof easterEggTriggerCounts !== 'undefined') {
+                    Object.keys(easterEggTriggerCounts).forEach(key => {
+                        easterEggTriggerCounts[key] = 0;
+                    });
+                }
+                
+                console.log('✅ All easter egg states reset successfully');
+                
                 initializeQuotes();
                 adaptFontSizeResponsive();
                 adaptQuoteFontSize();
@@ -5355,11 +5404,19 @@ let zoteCycleCount = 0; // Track how many complete cycles through all 57 precept
                 // Fixed Zima Blue color: RGB(91, 194, 231) = #5BC2E7
                 square.style.background = "#5BC2E7";
 
-                // Add click event listener
-                square.addEventListener('click', function(e) {
+                // Add click and touch event listeners for mobile compatibility
+                function handleSquareInteraction(e) {
+                    e.preventDefault();
                     e.stopPropagation();
                     handleZimaSquareClick(square);
-                });
+                }
+                
+                square.addEventListener('click', handleSquareInteraction);
+                square.addEventListener('touchstart', handleSquareInteraction, { passive: false });
+                square.addEventListener('touchend', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }, { passive: false });
 
                 document.body.appendChild(square);
                 zimaSquares.push(square);
