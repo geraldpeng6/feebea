@@ -2331,13 +2331,16 @@
                 border-radius: 50%;
                 cursor: pointer;
                 transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-                width: 24px;
-                height: 24px;
+                width: 32px;
+                height: 32px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
                 box-shadow: 0 3px 8px rgba(254, 235, 234, 0.3);
                 flex-shrink: 0;
+                /* 增加触摸区域 */
+                -webkit-tap-highlight-color: transparent;
+                touch-action: manipulation;
             }
 
             .audio-control-btn:hover {
@@ -2351,8 +2354,8 @@
             }
 
             .audio-control-btn svg {
-                width: 10px;
-                height: 10px;
+                width: 14px;
+                height: 14px;
                 fill: currentColor;
                 transition: all 0.3s ease;
             }
@@ -2472,13 +2475,13 @@
                 }
 
                 .audio-control-btn {
-                    width: 36px;
-                    height: 36px;
+                    width: 44px;
+                    height: 44px;
                 }
 
                 .audio-control-btn svg {
-                    width: 14px;
-                    height: 14px;
+                    width: 18px;
+                    height: 18px;
                 }
 
                 .play-mode-btn {
@@ -2514,13 +2517,13 @@
                 }
 
                 .audio-control-btn {
-                    width: 32px;
-                    height: 32px;
+                    width: 40px;
+                    height: 40px;
                 }
 
                 .audio-control-btn svg {
-                    width: 12px;
-                    height: 12px;
+                    width: 16px;
+                    height: 16px;
                 }
 
                 .play-mode-btn {
@@ -2757,7 +2760,7 @@
                 z-index: 1000;
                 display: flex;
                 flex-direction: column;
-                gap: 1rem;
+                gap: 1.5rem;
                 opacity: 0.7;
                 transition: opacity 0.3s ease;
             }
@@ -2767,9 +2770,9 @@
             }
 
             .nav-dot {
-                width: 12px;
-                height: 12px;
-                border-radius: 50%;
+                width: 8px;
+                height: 24px;
+                border-radius: 12px;
                 background: rgba(254, 235, 234, 0.3);
                 border: 2px solid rgba(254, 235, 234, 0.5);
                 cursor: pointer;
@@ -2781,6 +2784,9 @@
                 -webkit-user-select: none;
                 -moz-user-select: none;
                 -ms-user-select: none;
+                /* 增加点击区域 */
+                padding: 4px;
+                margin: 2px 0;
             }
 
             .nav-dot:focus {
@@ -2865,12 +2871,15 @@
             @media (max-width: 768px) {
                 .navigation {
                     right: 1rem;
-                    gap: 0.8rem;
+                    gap: 2rem;
                 }
                 
                 .nav-dot {
-                    width: 10px;
-                    height: 10px;
+                    width: 12px;
+                    height: 32px;
+                    border-radius: 16px;
+                    padding: 6px;
+                    margin: 4px 0;
                 }
                 
                 .back-to-top {
@@ -5680,10 +5689,12 @@ let zoteCycleCount = 0; // Track how many complete cycles through all 57 precept
                         
                         document.body.appendChild(overlay);
                         
-                        // Add double-click listener to close
+                        // Add double-click/tap listener to close (support both mouse and touch)
                         let zeldaClickCount = 0;
                         let zeldaClickTimer = null;
-                        overlay.addEventListener('click', function(e) {
+                        
+                        const handleZeldaDoubleClick = function(e) {
+                            e.preventDefault();
                             zeldaClickCount++;
                             if (zeldaClickCount === 1) {
                                 zeldaClickTimer = setTimeout(() => {
@@ -5694,13 +5705,28 @@ let zoteCycleCount = 0; // Track how many complete cycles through all 57 precept
                                 zeldaClickCount = 0;
                                 closeZeldaOverlay(overlay);
                             }
-                        });
+                        };
                         
-                        // Show overlay and start audio
+                        // Add both click and touchend events for cross-platform support
+                        overlay.addEventListener('click', handleZeldaDoubleClick);
+                        overlay.addEventListener('touchend', handleZeldaDoubleClick);
+                        
+                        // Show overlay first
                         setTimeout(() => {
                             overlay.classList.add('show');
-                            // Start audio playback
-                            startRoseAudio();
+                            
+                            // Wait for GIF to fully load and start playing before starting audio
+                            const gifElement = overlay.querySelector('.zelda-image');
+                            if (gifElement) {
+                                // Add a small delay to ensure GIF starts playing
+                                setTimeout(() => {
+                                    console.log('🎮 Zelda GIF loaded and displayed, starting audio...');
+                                    startRoseAudio();
+                                }, 500); // 500ms delay to ensure GIF is playing
+                            } else {
+                                // Fallback if GIF element not found
+                                startRoseAudio();
+                            }
                         }, 100);
                         
                         // Auto-hide overlay after 20 seconds
@@ -5892,22 +5918,28 @@ let zoteCycleCount = 0; // Track how many complete cycles through all 57 precept
                 if (easterEgg) {
                     easterEgg.classList.add('show');
 
-                    // Add double-click listener to close
+                    // Add double-click/tap listener to close (support both mouse and touch)
                     let clickCount = 0;
                     let clickTimer = null;
-                    setTimeout(() => {
-                        easterEgg.addEventListener('click', function(e) {
-                            clickCount++;
-                            if (clickCount === 1) {
-                                clickTimer = setTimeout(() => {
-                                    clickCount = 0;
-                                }, 300); // Reset after 300ms
-                            } else if (clickCount === 2) {
-                                clearTimeout(clickTimer);
+                    
+                    const handleCyberpunkDoubleClick = function(e) {
+                        e.preventDefault();
+                        clickCount++;
+                        if (clickCount === 1) {
+                            clickTimer = setTimeout(() => {
                                 clickCount = 0;
-                                closeCyberpunkEasterEgg();
-                            }
-                        });
+                            }, 300); // Reset after 300ms
+                        } else if (clickCount === 2) {
+                            clearTimeout(clickTimer);
+                            clickCount = 0;
+                            closeCyberpunkEasterEgg();
+                        }
+                    };
+                    
+                    setTimeout(() => {
+                        // Add both click and touchend events for cross-platform support
+                        easterEgg.addEventListener('click', handleCyberpunkDoubleClick);
+                        easterEgg.addEventListener('touchend', handleCyberpunkDoubleClick);
                     }, 500);
                 }
 
@@ -5994,28 +6026,7 @@ let zoteCycleCount = 0; // Track how many complete cycles through all 57 precept
                     const existingIndex = audioPlaylist.findIndex(audio => 
                         audio.src === audioData.src || audio.name === audioData.name
                     );
-                    loadAudio(existingIndex);
-                    
-                    // Auto play the existing audio
-                    setTimeout(() => {
-                        cyberpunkAudio.play().then(() => {
-                            isAudioPlaying = true;
-                            updateAudioButton();
-                            console.log(`🎵 Auto-playing existing: ${audioData.name}`);
-                        }).catch(error => {
-                            console.log("❌ Auto-play failed:", error);
-                            // Try to play after user interaction
-                            document.addEventListener('click', function tryPlay() {
-                                cyberpunkAudio.play().then(() => {
-                                    isAudioPlaying = true;
-                                    updateAudioButton();
-                                    document.removeEventListener('click', tryPlay);
-                                }).catch(e => {
-                                    console.log("❌ Audio still failed:", e);
-                                });
-                            }, { once: true });
-                        });
-                    }, 100);
+                    loadAudio(existingIndex, true); // Auto-play existing audio
                     return;
                 }
                 
@@ -6024,31 +6035,10 @@ let zoteCycleCount = 0; // Track how many complete cycles through all 57 precept
                 
                 // Switch to the newly added audio and play it
                 const newIndex = audioPlaylist.length - 1;
-                loadAudio(newIndex);
-                
-                // Auto play the new audio
-                setTimeout(() => {
-                    cyberpunkAudio.play().then(() => {
-                        isAudioPlaying = true;
-                        updateAudioButton();
-                        console.log(`🎵 Auto-playing: ${audioData.name}`);
-                    }).catch(error => {
-                        console.log("❌ Auto-play failed:", error);
-                        // Try to play after user interaction
-                        document.addEventListener('click', function tryPlay() {
-                            cyberpunkAudio.play().then(() => {
-                                isAudioPlaying = true;
-                                updateAudioButton();
-                                document.removeEventListener('click', tryPlay);
-                            }).catch(e => {
-                                console.log("❌ Audio still failed:", e);
-                            });
-                        }, { once: true });
-                    });
-                }, 100);
+                loadAudio(newIndex, true); // Auto-play new audio
             }
             
-            function loadAudio(index) {
+            function loadAudio(index, autoPlay = false) {
                 // Ensure cyberpunkAudio element is initialized
                 if (!cyberpunkAudio) {
                     cyberpunkAudio = document.getElementById('cyberpunkAudio');
@@ -6062,34 +6052,60 @@ let zoteCycleCount = 0; // Track how many complete cycles through all 57 precept
                     const audioData = audioPlaylist[index];
                     currentAudioIndex = index;
                     
-                    // Update audio source
-                    const source = cyberpunkAudio.querySelector('source');
-                    if (source) {
-                        source.src = audioData.src;
-                        cyberpunkAudio.load();
-                        
-                        // Set start time when audio can play (only for first play)
-                        cyberpunkAudio.addEventListener('canplay', function setStartTime() {
-                            // Only set start time if this is the first play
-                            if (!audioData.hasPlayedBefore) {
-                                if (audioData.name === "Cyberpunk 2077") {
-                                    cyberpunkAudio.currentTime = 60; // Start at 1 minute
-                                } else if (audioData.name === "Runaway") {
-                                    cyberpunkAudio.currentTime = 38.5; // Start at 38.5 seconds
-                                } else if (audioData.name === "Who Is The Best") {
-                                    cyberpunkAudio.currentTime = 44; // Start at 43 seconds
-                                }
-                                // Mark as played
-                                audioData.hasPlayedBefore = true;
-                            }
-                            cyberpunkAudio.removeEventListener('canplay', setStartTime);
-                        }, { once: true });
-                    }
-                    
-                    // Update playlist UI
+                    // Update playlist UI immediately
                     updatePlaylistUI();
                     
-                    console.log(`🎵 Loaded: ${audioData.name}`);
+                    // Lazy loading: only load audio when needed
+                    if (autoPlay) {
+                        loadAndPlayAudio(audioData);
+                    } else {
+                        // Just update the current index, don't load audio yet
+                        console.log(`🎵 Selected: ${audioData.name} (will load when played)`);
+                    }
+                }
+            }
+            
+            function loadAndPlayAudio(audioData) {
+                const source = cyberpunkAudio.querySelector('source');
+                if (source && source.src !== audioData.src) {
+                    source.src = audioData.src;
+                    cyberpunkAudio.load();
+                    
+                    // Set start time when audio can play (only for first play)
+                    cyberpunkAudio.addEventListener('canplay', function setStartTime() {
+                        // Only set start time if this is the first play
+                        if (!audioData.hasPlayedBefore) {
+                            if (audioData.name === "Cyberpunk 2077") {
+                                cyberpunkAudio.currentTime = 60; // Start at 1 minute
+                            } else if (audioData.name === "Runaway") {
+                                cyberpunkAudio.currentTime = 38.5; // Start at 38.5 seconds
+                            } else if (audioData.name === "Who Is The Best") {
+                                cyberpunkAudio.currentTime = 44; // Start at 43 seconds
+                            }
+                            // Mark as played
+                            audioData.hasPlayedBefore = true;
+                        }
+                        
+                        // Auto play after loading
+                        cyberpunkAudio.play().then(() => {
+                            isAudioPlaying = true;
+                            updateAudioButton();
+                            console.log(`🎵 Lazy loaded and playing: ${audioData.name}`);
+                        }).catch(error => {
+                            console.log("❌ Auto-play failed:", error);
+                        });
+                        
+                        cyberpunkAudio.removeEventListener('canplay', setStartTime);
+                    }, { once: true });
+                } else if (source && source.src === audioData.src) {
+                    // Audio already loaded, just play
+                    cyberpunkAudio.play().then(() => {
+                        isAudioPlaying = true;
+                        updateAudioButton();
+                        console.log(`🎵 Playing cached: ${audioData.name}`);
+                    }).catch(error => {
+                        console.log("❌ Play failed:", error);
+                    });
                 }
             }
             
@@ -6110,27 +6126,13 @@ let zoteCycleCount = 0; // Track how many complete cycles through all 57 precept
                 } else if (playMode === 'repeat-one') {
                     // Repeat current track
                     console.log(`🔂 Repeating current track: ${audioPlaylist[currentAudioIndex].name}`);
-                    loadAudio(currentAudioIndex);
+                    loadAudio(currentAudioIndex, true); // Auto-play
                 } else {
                     // Repeat all (default behavior)
                     const nextIndex = (currentAudioIndex + 1) % audioPlaylist.length;
                     console.log(`🔄 Playing next track: ${nextIndex + 1}/${audioPlaylist.length}`);
-                    loadAudio(nextIndex);
+                    loadAudio(nextIndex, true); // Auto-play
                 }
-                
-                // Auto-play the track
-                setTimeout(() => {
-                    if (cyberpunkAudio) {
-                        cyberpunkAudio.play().then(() => {
-                            isAudioPlaying = true;
-                            updateAudioButton();
-                            const trackName = audioPlaylist[currentAudioIndex].name;
-                            console.log(`▶️ Auto-playing: ${trackName}`);
-                        }).catch(error => {
-                            console.log('❌ Auto-play failed:', error);
-                        });
-                    }
-                }, 100);
             }
             
             function initializePlaylist() {
@@ -6177,22 +6179,12 @@ let zoteCycleCount = 0; // Track how many complete cycles through all 57 precept
                             const wasPlaying = isAudioPlaying;
                             if (isAudioPlaying) {
                                 cyberpunkAudio.pause();
+                                isAudioPlaying = false;
+                                updateAudioButton();
                             }
                             
-                            loadAudio(index);
-                            
-                            if (wasPlaying) {
-                                setTimeout(() => {
-                                    cyberpunkAudio.play().then(() => {
-                                        isAudioPlaying = true;
-                                        updateAudioButton();
-                                    }).catch(error => {
-                                        console.log("❌ Audio play failed:", error);
-                                        isAudioPlaying = false;
-                                        updateAudioButton();
-                                    });
-                                }, 100);
-                            }
+                            // Load audio with auto-play if it was playing before
+                            loadAudio(index, wasPlaying);
                         }
                     };
                     
@@ -6345,9 +6337,9 @@ let zoteCycleCount = 0; // Track how many complete cycles through all 57 precept
                     leftTriggerZone.style.cssText = `
                         position: fixed;
                         left: 0;
-                        top: 40%;
-                        width: 80px;
-                        height: 20%;
+                        top: 35%;
+                        width: 100px;
+                        height: 30%;
                         z-index: 9998;
                         pointer-events: auto;
                     `;
@@ -6400,18 +6392,18 @@ let zoteCycleCount = 0; // Track how many complete cycles through all 57 precept
                             const deltaY = Math.abs(touchEndY - touchStartY);
                             
                             // Detect right swipe or tap
-                            if (deltaX > 30 && deltaY < 50) {
+                            if (deltaX > 20 && deltaY < 60) {
                                 // Right swipe
                                 audioPanel.classList.add('mobile-show');
                                 setTimeout(() => {
                                     audioPanel.classList.remove('mobile-show');
-                                }, 3000);
-                            } else if (Math.abs(deltaX) < 10 && deltaY < 10) {
+                                }, 4000);
+                            } else if (Math.abs(deltaX) < 15 && deltaY < 15) {
                                 // Tap
                                 audioPanel.classList.add('mobile-show');
                                 setTimeout(() => {
                                     audioPanel.classList.remove('mobile-show');
-                                }, 2000);
+                                }, 3000);
                             }
                         }
                     });
@@ -6635,13 +6627,25 @@ let zoteCycleCount = 0; // Track how many complete cycles through all 57 precept
                     console.log("⏸️ Audio paused");
                     updateAudioButton();
                 } else {
-                    cyberpunkAudio.play().then(() => {
-                        isAudioPlaying = true;
-                        console.log("▶️ Audio resumed");
-                        updateAudioButton();
-                    }).catch(error => {
-                        console.log("❌ Audio resume failed:", error);
-                    });
+                    // Check if we need to load audio first
+                    if (currentAudioIndex >= 0 && currentAudioIndex < audioPlaylist.length) {
+                        const currentAudio = audioPlaylist[currentAudioIndex];
+                        const source = cyberpunkAudio.querySelector('source');
+                        
+                        if (!source.src || source.src !== currentAudio.src) {
+                            // Need to load audio first
+                            loadAndPlayAudio(currentAudio);
+                        } else {
+                            // Audio already loaded, just play
+                            cyberpunkAudio.play().then(() => {
+                                isAudioPlaying = true;
+                                console.log("▶️ Audio resumed");
+                                updateAudioButton();
+                            }).catch(error => {
+                                console.log("❌ Audio resume failed:", error);
+                            });
+                        }
+                    }
                 }
             }
 
@@ -9525,13 +9529,52 @@ let zoteCycleCount = 0; // Track how many complete cycles through all 57 precept
                     `;
                 }
                 
-                // Trigger "LOOK AT YOU!" easter egg effect
-                triggerLookAtYouEffect();
+                // Setup audio event listener to trigger LOOK AT YOU effect after 3 seconds delay
+                setupRunawayAudioListener();
                 
                 // Remove all Zima Blue squares
                 removeAllZimaBlueSquares();
                 
                 console.log("✅ Content changed to Runaway mode!");
+            }
+            
+            function setupRunawayAudioListener() {
+                console.log("🎵 Setting up Runaway audio listener for LOOK AT YOU effect...");
+                
+                // Get the audio element
+                const audioElement = document.getElementById('cyberpunkAudio');
+                if (!audioElement) {
+                    console.log("❌ Audio element not found, triggering LOOK AT YOU effect immediately");
+                    triggerLookAtYouEffect();
+                    return;
+                }
+                
+                // Function to handle audio play event
+                const handleAudioPlay = () => {
+                    console.log("🎵 Runaway audio started playing, will trigger LOOK AT YOU effect in 3 seconds...");
+                    
+                    // Remove the event listener to avoid multiple triggers
+                    audioElement.removeEventListener('play', handleAudioPlay);
+                    
+                    // Trigger LOOK AT YOU effect after 3 seconds delay
+                    setTimeout(() => {
+                        console.log("👀 3 seconds passed, triggering LOOK AT YOU effect now!");
+                        triggerLookAtYouEffect();
+                    }, 3000);
+                };
+                
+                // Check if audio is already playing
+                if (!audioElement.paused && audioElement.currentTime > 0) {
+                    console.log("🎵 Audio is already playing, triggering LOOK AT YOU effect in 3 seconds...");
+                    setTimeout(() => {
+                        console.log("👀 3 seconds passed, triggering LOOK AT YOU effect now!");
+                        triggerLookAtYouEffect();
+                    }, 3000);
+                } else {
+                    // Add event listener for when audio starts playing
+                    audioElement.addEventListener('play', handleAudioPlay);
+                    console.log("🎵 Audio listener added, waiting for runaway1.mp3 to start playing...");
+                }
             }
             
             function triggerLookAtYouEffect() {
@@ -9605,9 +9648,29 @@ let zoteCycleCount = 0; // Track how many complete cycles through all 57 precept
                     const maxWidth = window.innerWidth - (marginX * 2);
                     const maxHeight = window.innerHeight - (marginY * 2);
                     
-                    // Random position (avoid edges with responsive margins)
-                    const randomX = Math.random() * (maxWidth - 100) + marginX;
-                    const randomY = Math.random() * (maxHeight - 60) + marginY;
+                    // Weighted random position - favor top, left, and right areas
+                    let randomX, randomY;
+                    
+                    // Generate weighted random position
+                    const positionType = Math.random();
+                    
+                    if (positionType < 0.4) {
+                        // 40% chance: Top area (upper 30% of screen)
+                        randomX = Math.random() * (maxWidth - 100) + marginX;
+                        randomY = Math.random() * (maxHeight * 0.3) + marginY;
+                    } else if (positionType < 0.7) {
+                        // 30% chance: Left area (left 35% of screen)
+                        randomX = Math.random() * (maxWidth * 0.35) + marginX;
+                        randomY = Math.random() * (maxHeight - 60) + marginY;
+                    } else if (positionType < 0.9) {
+                        // 20% chance: Right area (right 35% of screen)
+                        randomX = Math.random() * (maxWidth * 0.35) + (maxWidth * 0.65) + marginX;
+                        randomY = Math.random() * (maxHeight - 60) + marginY;
+                    } else {
+                        // 10% chance: Anywhere else (for variety)
+                        randomX = Math.random() * (maxWidth - 100) + marginX;
+                        randomY = Math.random() * (maxHeight - 60) + marginY;
+                    }
                     
                     // Responsive font size
                     let minSize, maxSize;
@@ -10146,8 +10209,8 @@ let zoteCycleCount = 0; // Track how many complete cycles through all 57 precept
         </div>
 
         <!-- Hidden Audio Element -->
-        <audio id="cyberpunkAudio" preload="auto">
-            <source src="https://eta.vgmtreasurechest.com/soundtracks/cyberpunk-2077-radio-vol.-2-original-soundtrack/liojiacuhf/05.%20I%20Really%20Want%20to%20Stay%20at%20Your%20House.mp3" type="audio/mpeg">
+        <audio id="cyberpunkAudio" preload="none">
+            <source src="" type="audio/mpeg">
         </audio>
 
         <!-- Virtual Keyboard for Mobile -->
@@ -10727,15 +10790,19 @@ let zoteCycleCount = 0; // Track how many complete cycles through all 57 precept
                         let secondJojoTextTriggered = false;
                         
                         cyberpunkAudio.addEventListener('timeupdate', () => {
-                            // First display at 18.5 seconds
-                            if (!firstJojoTextTriggered && cyberpunkAudio.currentTime >= 18.5) {
-                                firstJojoTextTriggered = true;
-                                showJojoTextEffects();
-                            }
-                            // Second display at 25.5 seconds
-                            if (!secondJojoTextTriggered && cyberpunkAudio.currentTime >= 25.5) {
-                                secondJojoTextTriggered = true;
-                                showJojoTextEffects();
+                            // Only trigger JOJO text effects when actually playing jojo.mp3
+                            const currentAudio = audioPlaylist[currentAudioIndex];
+                            if (currentAudio && currentAudio.src === "./phoebe/jojo.mp3") {
+                                // First display at 18.5 seconds
+                                if (!firstJojoTextTriggered && cyberpunkAudio.currentTime >= 18.5) {
+                                    firstJojoTextTriggered = true;
+                                    showJojoTextEffects();
+                                }
+                                // Second display at 25.5 seconds
+                                if (!secondJojoTextTriggered && cyberpunkAudio.currentTime >= 25.5) {
+                                    secondJojoTextTriggered = true;
+                                    showJojoTextEffects();
+                                }
                             }
                         });
                     }
