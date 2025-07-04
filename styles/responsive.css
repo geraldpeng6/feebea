@@ -1,0 +1,385 @@
+/* ===== RESPONSIVE DESIGN ===== */
+
+/* Tablet and smaller desktop screens */
+@media (max-width: 1024px) {
+    .container {
+        max-width: 100%;
+        padding: var(--spacing-md) var(--spacing-sm);
+    }
+
+    .main-title {
+        font-size: 3.5rem;
+    }
+
+    .color-circle {
+        width: 220px;
+        height: 220px;
+    }
+
+    .essence {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-sm);
+        padding: var(--spacing-sm);
+        width: 100%;
+        justify-items: stretch;
+    }
+
+    .essence-card {
+        width: 100%;
+        max-width: none;
+        height: 120px;
+    }
+
+    .essence-title {
+        font-size: clamp(1rem, 4vw, 1.3rem);
+    }
+
+    .essence-desc {
+        font-size: clamp(0.8rem, 3vw, 1.1rem);
+    }
+}
+
+/* Mobile devices */
+@media (max-width: 768px) {
+    .container {
+        padding: var(--spacing-sm) 0.8rem;
+    }
+
+    .main-title {
+        font-size: 3rem;
+    }
+
+    .subtitle {
+        font-size: 1.2rem;
+    }
+
+    .color-circle {
+        width: 180px;
+        height: 180px;
+    }
+
+    .meditation-text,
+    .quote-text {
+        font-size: 1.1rem;
+    }
+
+    .quote-section {
+        gap: 0.8rem;
+    }
+
+    .quote-section .quote-text {
+        min-width: 250px;
+    }
+
+    .meditation-text {
+        max-width: 90%;
+    }
+
+    .essence {
+        grid-template-columns: 1fr;
+        gap: 0.8rem;
+        padding: var(--spacing-xs);
+        width: 100%;
+        justify-items: stretch;
+    }
+
+    .essence-card {
+        padding: 0.8rem;
+        width: 100%;
+        max-width: none;
+        height: auto;
+        min-height: 110px;
+        margin-top: 0;
+    }
+
+    .essence-card:nth-child(n+4) {
+        display: none;
+    }
+
+    .essence-title {
+        font-size: clamp(0.9rem, 3.5vw, 1.1rem);
+    }
+
+    .essence-desc {
+        font-size: clamp(0.7rem, 2.8vw, 0.9rem);
+    }
+
+    .phoebe-title {
+        font-size: 1.6rem;
+    }
+
+    .phoebe-quote {
+        font-size: 1.1rem;
+    }
+
+    .final-text {
+        font-size: 1.6rem;
+    }
+
+    .lang-toggle {
+        padding: var(--spacing-xs) var(--spacing-sm);
+        font-size: 0.9rem;
+    }
+
+    .copy-notification {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.9rem;
+        max-width: 160px;
+    }
+
+    .quote-section::after {
+        content: 'Swipe left/right to navigate';
+        font-size: 0.6rem;
+    }
+    
+    .quote-section::before {
+        content: '← →';
+        font-size: 0.7rem;
+    }
+}
+
+/* Small mobile devices */
+@media (max-width: 480px) {
+    .main-title {
+        font-size: 2.5rem;
+    }
+
+    .color-circle {
+        width: 150px;
+        height: 150px;
+    }
+
+    .quote-section,
+    .phoebe-section {
+        padding: var(--spacing-md);
+        margin: var(--spacing-xl) 0;
+        flex-direction: column;
+        gap: var(--spacing-xs);
+    }
+
+    .quote-section .quote-text {
+        min-width: auto;
+        text-align: center;
+    }
+
+    .meditation-text,
+    .quote-text {
+        font-size: 1.1rem;
+    }
+
+    .essence {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-xs);
+        padding: var(--spacing-xs);
+    }
+
+    .essence-card {
+        padding: 0.6rem;
+        height: auto;
+        min-height: 100px;
+    }
+
+    .essence-card:nth-child(n+4) {
+        display: none;
+    }
+
+    .essence-title {
+        font-size: clamp(0.8rem, 3vw, 1rem);
+    }
+
+    .essence-desc {
+        font-size: clamp(0.6rem, 2.5vw, 0.8rem);
+    }
+
+    .rick-portal img {
+        width: 150px;
+        height: 150px;
+    }
+
+    .rick-message {
+        font-size: 1.2rem;
+    }
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+    /* Ensure minimum touch target size */
+    .lang-toggle, 
+    .essence-card, 
+    .email-icon, 
+    .wechat-icon {
+        min-height: 44px;
+        min-width: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    /* Touch feedback for interactive elements */
+    .lang-toggle:active {
+        background: rgba(254, 235, 234, 0.25);
+        transform: scale(0.95);
+    }
+    
+    .email-icon:active, 
+    .wechat-icon:active {
+        background: rgba(254, 235, 234, 0.1);
+        border-radius: 4px;
+        transform: scale(0.95);
+    }
+    
+    .final-text:active, 
+    .tribute:active {
+        background: rgba(254, 235, 234, 0.1);
+        border-radius: 4px;
+    }
+    
+    .code-item:active {
+        color: #fff;
+        text-shadow: 0 0 10px rgba(254, 235, 234, 0.5);
+    }
+
+    .essence-card:active {
+        background: rgba(254, 235, 234, 0.08);
+        transform: translateY(-2px);
+    }
+}
+
+/* High DPI displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .color-circle {
+        image-rendering: -webkit-optimize-contrast;
+        image-rendering: crisp-edges;
+    }
+}
+
+/* Landscape orientation on mobile */
+@media (max-width: 768px) and (orientation: landscape) {
+    .main-title {
+        font-size: 2.5rem;
+    }
+    
+    .color-circle {
+        width: 120px;
+        height: 120px;
+    }
+    
+    .essence-card {
+        height: 80px;
+        min-height: 80px;
+    }
+    
+    .quote-section {
+        height: 6rem;
+        min-height: 6rem;
+        max-height: 6rem;
+    }
+}
+
+/* Print styles */
+@media print {
+    * {
+        background: transparent !important;
+        color: black !important;
+        box-shadow: none !important;
+        text-shadow: none !important;
+    }
+    
+    .lang-toggle,
+    .copy-notification,
+    .navigation,
+    .back-to-top {
+        display: none !important;
+    }
+    
+    .container {
+        max-width: none;
+        margin: 0;
+        padding: 0;
+    }
+    
+    .color-circle {
+        border: 2px solid black;
+        background: white !important;
+    }
+    
+    .quote-section,
+    .phoebe-section,
+    .essence-card {
+        border: 1px solid black;
+        background: white !important;
+    }
+}
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+    
+    .color-circle::before {
+        animation: none;
+    }
+    
+    .rick-portal img {
+        animation: none;
+    }
+}
+
+/* Dark mode support (if system preference changes) */
+@media (prefers-color-scheme: light) {
+    :root {
+        --background-gradient: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 50%, #d0d0d0 100%);
+        --text-color: #333;
+        --border-color: rgba(51, 51, 51, 0.2);
+    }
+    
+    body {
+        background: var(--background-gradient);
+        color: var(--text-color);
+    }
+}
+
+/* Very large screens */
+@media (min-width: 1400px) {
+    .container {
+        max-width: 1200px;
+    }
+    
+    .main-title {
+        font-size: 5rem;
+    }
+    
+    .color-circle {
+        width: 300px;
+        height: 300px;
+    }
+    
+    .essence {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--spacing-xl);
+    }
+    
+    .essence-card {
+        height: 280px;
+        max-width: 500px;
+    }
+}
+
+/* Ultra-wide screens */
+@media (min-width: 1920px) {
+    .essence {
+        grid-template-columns: repeat(4, 1fr);
+        max-width: 1600px;
+        margin: var(--spacing-xl) auto;
+    }
+    
+    .essence-card {
+        max-width: 350px;
+    }
+}

@@ -1,0 +1,458 @@
+/* ===== KEYFRAME ANIMATIONS ===== */
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0%,
+    100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.02);
+    }
+}
+
+@keyframes rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes ripple {
+    to {
+        transform: scale(4);
+        opacity: 0;
+    }
+}
+
+@keyframes glow {
+    0% {
+        text-shadow:
+            0 0 20px rgba(254, 235, 234, 0.8),
+            0 0 40px rgba(254, 235, 234, 0.6),
+            0 0 80px rgba(254, 235, 234, 0.4),
+            0 0 120px rgba(254, 235, 234, 0.2);
+    }
+    100% {
+        text-shadow:
+            0 0 30px rgba(254, 235, 234, 1),
+            0 0 60px rgba(254, 235, 234, 0.8),
+            0 0 120px rgba(254, 235, 234, 0.6),
+            0 0 180px rgba(254, 235, 234, 0.4);
+    }
+}
+
+/* ===== ZIMA SQUARE ANIMATIONS ===== */
+.zima-square {
+    width: 12px;
+    height: 12px;
+    background: #5bc2e7;
+    position: fixed;
+    z-index: 9999;
+    box-shadow: 0 0 10px rgba(91, 194, 231, 0.5);
+    opacity: 0;
+    animation: zimaAppear 1s ease-out forwards;
+    pointer-events: auto;
+    border-radius: 0;
+    cursor: pointer;
+    transition: background-color var(--transition-normal);
+    touch-action: manipulation;
+    -webkit-touch-callout: none;
+    -webkit-tap-highlight-color: transparent;
+    min-width: 20px;
+    min-height: 20px;
+    padding: 4px;
+    margin: -4px;
+}
+
+.zima-square.feebea-flash {
+    background: var(--primary-color) !important;
+}
+
+.zima-square.warning-flash {
+    background: #d93c46 !important;
+}
+
+.zima-square-small {
+    width: 8px;
+    height: 8px;
+}
+
+.zima-square-large {
+    width: 16px;
+    height: 16px;
+}
+
+.zima-square-xl {
+    width: 20px;
+    height: 20px;
+}
+
+@keyframes zimaAppear {
+    0% {
+        opacity: 0;
+        transform: scale(0);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* ===== FALL ANIMATIONS ===== */
+@keyframes fallFromTop {
+    0% {
+        transform: translate(-50%, -150%);
+        opacity: 0;
+    }
+    100% {
+        transform: translate(-50%, -50%);
+        opacity: 1;
+    }
+}
+
+@keyframes fallFromTopLeft {
+    0% {
+        transform: translate(-150%, -150%);
+        opacity: 0;
+    }
+    100% {
+        transform: translate(-50%, -50%);
+        opacity: 1;
+    }
+}
+
+@keyframes fallFromTopRight {
+    0% {
+        transform: translate(50%, -150%);
+        opacity: 0;
+    }
+    100% {
+        transform: translate(-50%, -50%);
+        opacity: 1;
+    }
+}
+
+@keyframes fallAndBounce {
+    0% {
+        transform: translate(-50%, -150%);
+        opacity: 0;
+    }
+    70% {
+        transform: translate(-50%, -45%);
+        opacity: 1;
+    }
+    85% {
+        transform: translate(-50%, -52%);
+    }
+    100% {
+        transform: translate(-50%, -50%);
+        opacity: 1;
+    }
+}
+
+/* ===== PORTAL EFFECTS ===== */
+.rick-portal {
+    position: fixed;
+    transform: translate(-50%, -50%);
+    z-index: 5000;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+    pointer-events: none;
+    will-change: opacity;
+    text-align: center;
+}
+
+.rick-portal.show {
+    opacity: 1;
+}
+
+.rick-portal img {
+    width: 300px;
+    height: 300px;
+    animation:
+        portal-fast-spin 20s ease-in-out forwards,
+        portal-glow 20s ease-in-out forwards;
+    will-change: transform, opacity, filter, box-shadow;
+    transform: translateZ(0);
+    position: relative;
+    z-index: 5;
+    border-radius: var(--radius-circle);
+}
+
+.rick-message {
+    font-family: var(--font-primary);
+    font-size: 2rem;
+    color: var(--primary-color);
+    font-weight: 600;
+    text-shadow: 0 0 20px rgba(254, 235, 234, 0.8);
+    margin-top: var(--spacing-lg);
+    min-height: 3rem;
+    z-index: 10;
+    position: relative;
+}
+
+@keyframes portal-fast-spin {
+    0% {
+        transform: rotate3d(0, 0, 1, 0deg) scale3d(1, 1, 1);
+        opacity: 1;
+        animation-timing-function: ease-out;
+    }
+    25% {
+        transform: rotate3d(0, 0, 1, 360deg) scale3d(1.4, 1.4, 1);
+        opacity: 1;
+        animation-timing-function: ease-out;
+    }
+    50% {
+        transform: rotate3d(0, 0, 1, 720deg) scale3d(1.8, 1.8, 1);
+        opacity: 1;
+        animation-timing-function: ease-out;
+    }
+    75% {
+        transform: rotate3d(0, 0, 1, 1080deg) scale3d(2, 2, 1);
+        opacity: 1;
+        animation-timing-function: linear;
+    }
+    85% {
+        transform: rotate3d(0, 0, 1, 1440deg) scale3d(2, 2, 1);
+        opacity: 1;
+        animation-timing-function: linear;
+    }
+    90% {
+        transform: rotate3d(0, 0, 1, 2160deg) scale3d(1.5, 1.5, 1);
+        opacity: 0.8;
+        animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
+    }
+    95% {
+        transform: rotate3d(0, 0, 1, 3600deg) scale3d(0.5, 0.5, 1);
+        opacity: 0.3;
+        animation-timing-function: cubic-bezier(0.95, 0.05, 0.795, 0.035);
+    }
+    98% {
+        transform: rotate3d(0, 0, 1, 4680deg) scale3d(0.1, 0.1, 1);
+        opacity: 0.1;
+        animation-timing-function: cubic-bezier(0.98, 0.02, 0.82, 0.01);
+    }
+    100% {
+        transform: rotate3d(0, 0, 1, 5400deg) scale3d(0, 0, 1);
+        opacity: 0;
+    }
+}
+
+@keyframes portal-glow {
+    0% {
+        box-shadow:
+            0 0 20px #00ff88,
+            0 0 40px #00ff88,
+            0 0 60px #00ff88,
+            inset 0 0 20px rgba(0, 255, 136, 0.3);
+        filter: brightness(1.2) saturate(1.5);
+    }
+    25% {
+        box-shadow:
+            0 0 50px #00ff88,
+            0 0 100px #00ff88,
+            0 0 150px #00ff88,
+            inset 0 0 50px rgba(0, 255, 136, 0.4);
+        filter: brightness(1.6) saturate(2);
+    }
+    50% {
+        box-shadow:
+            0 0 80px #00ccff,
+            0 0 160px #00ccff,
+            0 0 240px #00ccff,
+            inset 0 0 80px rgba(0, 204, 255, 0.5);
+        filter: brightness(1.8) saturate(2.2);
+    }
+    75% {
+        box-shadow:
+            0 0 100px #8800ff,
+            0 0 200px #8800ff,
+            0 0 300px #8800ff,
+            inset 0 0 100px rgba(136, 0, 255, 0.6);
+        filter: brightness(2) saturate(2.5);
+    }
+    85% {
+        box-shadow:
+            0 0 120px #ff0088,
+            0 0 240px #ff0088,
+            0 0 360px #ff0088,
+            inset 0 0 120px rgba(255, 0, 136, 0.7);
+        filter: brightness(2.2) saturate(3);
+    }
+    90% {
+        box-shadow:
+            0 0 60px #ffaa00,
+            0 0 120px #ffaa00,
+            0 0 180px #ffaa00,
+            inset 0 0 60px rgba(255, 170, 0, 0.5);
+        filter: brightness(1.8) saturate(2);
+    }
+    95% {
+        box-shadow:
+            0 0 20px #ffffff,
+            0 0 40px #ffffff,
+            0 0 60px #ffffff,
+            inset 0 0 20px rgba(255, 255, 255, 0.3);
+        filter: brightness(1.2) saturate(1.2);
+    }
+    98% {
+        box-shadow:
+            0 0 5px #ffffff,
+            0 0 10px #ffffff,
+            0 0 15px #ffffff,
+            inset 0 0 5px rgba(255, 255, 255, 0.1);
+        filter: brightness(0.6) saturate(0.8);
+    }
+    100% {
+        box-shadow: none;
+        filter: brightness(0.2) saturate(0.3);
+    }
+}
+
+/* ===== LETTER EXPLOSION EFFECTS ===== */
+.letter-particle {
+    display: inline-block;
+    position: relative;
+    will-change: transform, opacity;
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+    transform: translateZ(0);
+}
+
+.letter-exploding {
+    animation: letter-explode var(--duration, 2s) var(--delay, 0s) ease-out forwards;
+}
+
+@keyframes letter-explode {
+    0% {
+        transform: translate3d(0, 0, 0) rotate3d(0, 0, 1, 0deg) scale3d(1, 1, 1) skew(0deg, 0deg);
+        opacity: 1;
+        filter: blur(0px);
+        animation-timing-function: ease-in;
+    }
+    15% {
+        transform: translate3d(calc(var(--dx) * 0.01), calc(var(--dy) * 0.01), 0)
+            rotate3d(0, 0, 1, calc(var(--rotation) * 8deg))
+            scale3d(1.02, 0.98, 1) skew(2deg, 1deg);
+        opacity: 0.99;
+        filter: blur(0.1px);
+        animation-timing-function: ease-in;
+    }
+    25% {
+        transform: translate3d(calc(var(--dx) * 0.03), calc(var(--dy) * 0.03), 0)
+            rotate3d(0, 0, 1, calc(var(--rotation) * 20deg))
+            scale3d(1.05, 0.95, 1) skew(5deg, 3deg);
+        opacity: 0.96;
+        filter: blur(0.3px);
+        animation-timing-function: ease-out;
+    }
+    100% {
+        transform: translate3d(var(--dx), var(--dy), 0)
+            rotate3d(0, 0, 1, calc(var(--rotation) * 1800deg))
+            scale3d(0, 0, 1) skew(90deg, 75deg);
+        opacity: 0;
+        filter: blur(5px);
+    }
+}
+
+/* ===== ELEMENT SUCKING EFFECTS ===== */
+.element-sucking {
+    animation: element-suck var(--duration, 2s) var(--delay, 0s)
+        cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    will-change: transform, opacity;
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+}
+
+@keyframes element-suck {
+    0% {
+        transform: translate3d(0, 0, 0) scale3d(1, 1, 1) rotate3d(0, 0, 1, 0deg);
+        opacity: 1;
+        border-radius: 0;
+        clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+        filter: blur(0px);
+    }
+    100% {
+        transform: translate3d(var(--dx), var(--dy), 0)
+            scale3d(0, 0, 1)
+            rotate3d(0, 0, 1, calc(var(--rotation, 1) * 1440deg));
+        opacity: 0;
+        border-radius: 50px;
+        clip-path: polygon(50% 50%, 50% 50%, 50% 50%, 50% 50%);
+        filter: blur(5px);
+    }
+}
+
+/* ===== FINAL BACKGROUND TRANSITION ===== */
+.final-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: var(--primary-color);
+    z-index: 4000;
+    opacity: 0;
+    transition: opacity 4s ease-in;
+    will-change: opacity;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    border: none;
+    outline: none;
+}
+
+.final-background.show {
+    opacity: 1;
+}
+
+/* ===== PORTAL MODE STYLES ===== */
+body.portal-mode {
+    overflow: hidden !important;
+    height: 100vh !important;
+    width: 100vw !important;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+}
+
+html.portal-mode {
+    overflow: hidden !important;
+    height: 100% !important;
+    width: 100% !important;
+}
+
+body.portal-mode * {
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+}
+
+body.portal-mode *::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+}
