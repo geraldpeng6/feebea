@@ -71,11 +71,21 @@ class FeebeeApp {
             this.components.audio = new window.AudioManager();
         }
 
+        // Initialize easter egg manager
+        if (window.EasterEggManager) {
+            this.components.easterEggs = new window.EasterEggManager();
+        }
+
+        // Initialize essence manager
+        if (window.EssenceManager) {
+            this.components.essence = new window.EssenceManager();
+        }
+
         // Initialize color circle
         this.initializeColorCircle();
-        
-        // Initialize essence cards
-        this.initializeEssenceCards();
+
+        // Setup additional interactions
+        this.setupAdditionalInteractions();
     }
 
     initializeColorCircle() {
@@ -223,24 +233,50 @@ class FeebeeApp {
         }, 10000);
     }
 
-    initializeEssenceCards() {
-        const essenceCards = document.querySelectorAll('.essence-card');
-        
-        essenceCards.forEach((card, index) => {
-            const handleCardClick = () => {
-                if (window.changeQuote) {
-                    window.changeQuote(index);
-                }
-            };
+    setupAdditionalInteractions() {
+        // Setup code item click handlers for copying color codes
+        this.setupColorCodeCopying();
 
-            card.addEventListener('click', handleCardClick);
-            
-            // Touch support
-            card.addEventListener('touchend', (e) => {
+        // Setup responsive font adaptation
+        this.setupResponsiveFontAdaptation();
+
+        // Initialize touch events for quotes
+        this.initializeQuoteTouchEvents();
+    }
+
+    setupColorCodeCopying() {
+        const codeItems = document.querySelectorAll('.code-item');
+
+        codeItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const text = item.textContent.trim();
+                Utils.copyToClipboard(text);
+            });
+
+            item.addEventListener('touchend', (e) => {
                 e.preventDefault();
-                handleCardClick();
+                const text = item.textContent.trim();
+                Utils.copyToClipboard(text);
             });
         });
+    }
+
+    setupResponsiveFontAdaptation() {
+        // Expose global function for backward compatibility
+        window.adaptFontSizeResponsive = () => {
+            if (this.components.essence) {
+                this.components.essence.adaptAllCardFontSizes();
+            }
+        };
+    }
+
+    initializeQuoteTouchEvents() {
+        // This is handled by QuoteManager, but we expose it globally for compatibility
+        window.initializeQuoteTouchEvents = () => {
+            if (this.components.quotes) {
+                this.components.quotes.setupQuoteInteractions();
+            }
+        };
     }
 
     setupEventListeners() {

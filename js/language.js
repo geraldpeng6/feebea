@@ -144,19 +144,31 @@ class LanguageManager {
             chineseContent.classList.remove('hidden');
         }
 
-        // Re-adapt font sizes after language change
+        // Re-adapt font sizes and update content after language change
         setTimeout(() => {
+            // Update quote section content for new language
+            if (window.app && window.app.components.quotes) {
+                window.app.components.quotes.updateQuoteSection();
+                window.app.components.quotes.adaptQuoteFontSize();
+            }
+
+            // Refresh essence cards for new language
+            if (window.app && window.app.components.essence) {
+                window.app.components.essence.refreshCards();
+            }
+
+            // Re-adapt font sizes
             if (window.adaptFontSizeResponsive) {
                 window.adaptFontSizeResponsive();
             }
+
+            // Legacy compatibility
             if (window.adaptQuoteFontSize) {
                 window.adaptQuoteFontSize();
             }
-            // Update quote section content for new language
             if (window.updateQuoteSection) {
                 window.updateQuoteSection();
             }
-            // Reinitialize touch events for the new language
             if (window.initializeQuoteTouchEvents) {
                 window.initializeQuoteTouchEvents();
             }
