@@ -34,28 +34,33 @@ class LanguageManager {
         // Handle cumulative click easter egg
         if (window.clickCounters) {
             window.clickCounters.langToggle++;
-            
+
             // Sync language toggle state globally
             if (window.StateSyncManager) {
                 window.StateSyncManager.syncEasterEggState('langToggle', window.clickCounters.langToggle);
             }
-            
+
             console.log(`Language toggle clicked, cumulative count: ${window.clickCounters.langToggle}`);
             console.log("Current language:", this.isEnglish ? "English" : "Chinese");
-            
+
             if (window.clickCounters.langToggle === 3) {
                 // Check if this easter egg has reached its trigger limit (3 times)
                 if (window.easterEggTriggerCounts && window.easterEggTriggerCounts.langToggle >= 3) {
                     console.log("Language toggle easter egg has reached maximum triggers (3/3)");
                     window.clickCounters.langToggle = 0;
-                    
+
                     // Sync reset state globally
                     if (window.StateSyncManager) {
                         window.StateSyncManager.syncEasterEggState('langToggle', 0);
                     }
+
+                    // Still switch language even if easter egg is maxed out
+                    this.switchLanguage();
+                    this.updateUI();
+                    this.updateContent();
                     return;
                 }
-                
+
                 console.log("Language toggle easter egg triggered!");
                 if (window.easterEggTriggered) {
                     window.easterEggTriggered.langToggle = true;
@@ -63,7 +68,7 @@ class LanguageManager {
                 if (window.easterEggTriggerCounts) {
                     window.easterEggTriggerCounts.langToggle++;
                 }
-                
+
                 setTimeout(() => {
                     console.log("About to play they-dont-know.mp3");
                     if (window.playAudio) {
@@ -77,9 +82,9 @@ class LanguageManager {
                         );
                     }
                 }, 500);
-                
+
                 window.clickCounters.langToggle = 0; // Reset counter after triggering
-                
+
                 // Sync reset state globally
                 if (window.StateSyncManager) {
                     window.StateSyncManager.syncEasterEggState('langToggle', 0);

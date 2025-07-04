@@ -81,6 +81,11 @@ class FeebeeApp {
             this.components.essence = new window.EssenceManager();
         }
 
+        // Initialize special effects manager
+        if (window.SpecialEffectsManager) {
+            this.components.specialEffects = new window.SpecialEffectsManager();
+        }
+
         // Initialize color circle
         this.initializeColorCircle();
 
@@ -97,9 +102,11 @@ class FeebeeApp {
 
         const handleColorCircleClick = Utils.throttle(async (event) => {
             if (processing) return;
-            
+
             processing = true;
             eventCount++;
+
+            console.log(`🎨 Color circle clicked, count: ${eventCount}`);
 
             // Sync state globally
             if (window.StateSyncManager) {
@@ -112,16 +119,27 @@ class FeebeeApp {
             try {
                 // Add ripple effect
                 this.createRippleEffect(event);
-                
-                // Handle special click counts
-                if (eventCount === 5) {
-                    await this.handleColorCircleEasterEgg();
-                } else if (eventCount === 10) {
-                    await this.handleAdvancedColorEasterEgg();
-                }
 
-                // Reset counter after 20 clicks
-                if (eventCount >= 20) {
+                // Handle special click counts with different easter eggs
+                if (eventCount === 5) {
+                    console.log("🟦 Triggering Zima squares easter egg");
+                    await this.handleZimaSquaresEasterEgg();
+                } else if (eventCount === 10) {
+                    console.log("🌈 Triggering advanced color easter egg");
+                    await this.handleAdvancedColorEasterEgg();
+                } else if (eventCount === 15) {
+                    console.log("🎵 Triggering random loser audio");
+                    if (this.components.specialEffects) {
+                        this.components.specialEffects.playRandomLoser();
+                    }
+                } else if (eventCount === 20) {
+                    console.log("🌀 Triggering Rick Portal!");
+                    if (this.components.specialEffects) {
+                        this.components.specialEffects.triggerRickPortal();
+                    }
+                    eventCount = 0; // Reset after portal
+                } else if (eventCount >= 25) {
+                    // Reset counter after 25 clicks if portal wasn't triggered
                     eventCount = 0;
                 }
 
@@ -137,7 +155,7 @@ class FeebeeApp {
         }, 200);
 
         colorCircle.addEventListener('click', handleColorCircleClick);
-        
+
         // Touch support
         if (Utils.isTouchDevice()) {
             colorCircle.addEventListener('touchend', (e) => {
@@ -179,58 +197,45 @@ class FeebeeApp {
         }, 600);
     }
 
-    async handleColorCircleEasterEgg() {
-        console.log('🎨 Color circle easter egg triggered!');
-        
-        // Create zima squares
-        for (let i = 0; i < 10; i++) {
-            setTimeout(() => {
-                this.createZimaSquare();
-            }, i * 100);
+    async handleZimaSquaresEasterEgg() {
+        console.log('🟦 Zima squares easter egg triggered!');
+
+        if (this.components.specialEffects) {
+            this.components.specialEffects.createZimaSquares(10);
+        }
+
+        // Play Zima Blue audio
+        if (window.playAudio) {
+            window.playAudio("zima-blue.mp3");
         }
     }
 
     async handleAdvancedColorEasterEgg() {
         console.log('🌈 Advanced color easter egg triggered!');
-        
-        // More complex easter egg behavior
+
+        // Glow effect on color circle
         const colorCircle = document.querySelector('.color-circle');
         if (colorCircle) {
             colorCircle.style.animation = 'glow 2s ease-in-out infinite alternate';
-            
+
             setTimeout(() => {
                 colorCircle.style.animation = '';
             }, 4000);
         }
-    }
 
-    createZimaSquare() {
-        const square = Utils.createElement('div', {
-            className: 'zima-square',
-            style: `
-                left: ${Utils.randomBetween(10, window.innerWidth - 30)}px;
-                top: ${Utils.randomBetween(10, window.innerHeight - 30)}px;
-            `
-        });
+        // Play cyberpunk audio
+        if (window.playAudio) {
+            window.playAudio("cyberpunk.mp3");
+        }
 
-        document.body.appendChild(square);
-
-        // Add click handler
-        square.addEventListener('click', () => {
-            square.classList.add('feebea-flash');
-            setTimeout(() => {
-                if (square.parentNode) {
-                    square.parentNode.removeChild(square);
-                }
-            }, 200);
-        });
-
-        // Auto-remove after 10 seconds
-        setTimeout(() => {
-            if (square.parentNode) {
-                square.parentNode.removeChild(square);
-            }
-        }, 10000);
+        // Show notification
+        if (this.components.easterEggs) {
+            this.components.easterEggs.showEasterEggNotification(
+                window.languageManager && window.languageManager.getCurrentLanguage() === 'zh'
+                    ? "赛博朋克2077"
+                    : "Cyberpunk 2077"
+            );
+        }
     }
 
     setupAdditionalInteractions() {
