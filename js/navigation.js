@@ -1,14 +1,24 @@
 /**
  * Navigation Manager Module
- * Handles navigation dots and back-to-top functionality
+ * Handles navigation dots, back-to-top functionality, and special navigation logic
  */
 
 class NavigationManager {
     constructor() {
         this.navDots = [];
         this.backToTopBtn = null;
-        this.sections = [];
+        this.sections = ['header', 'color-display', 'quote-section', 'meditation', 'essence', 'phoebe-section'];
         this.currentActiveSection = null;
+        this.infiniteScrollManager = null;
+        
+        // Meditation click tracker for JOJO easter egg (4th dot)
+        this.meditationClickTracker = {
+            clicks: [],
+            requiredClicks: 4,
+            delayTime: 2000, // 2 seconds
+            delayTimer: null,
+            isJojoPlaying: false
+        };
         
         this.init();
     }
@@ -18,229 +28,337 @@ class NavigationManager {
         this.setupBackToTop();
         this.bindEvents();
         this.updateActiveSection();
+        
+        // Get reference to infinite scroll manager
+        setTimeout(() => {
+            this.infiniteScrollManager = window.infiniteScrollManager;
+        }, 100);
+        
+        console.log('🧭 Navigation manager initialized');
     }
 
     setupNavigationDots() {
         this.navDots = Array.from(document.querySelectorAll('.nav-dot'));
-        this.sections = this.navDots.map(dot => {
-            const sectionId = dot.dataset.section;
-            return {
-                id: sectionId,
-                element: document.getElementById(sectionId),
-                dot: dot
-            };
-        }).filter(section => section.element);
-
-        // Add click handlers to navigation dots
-        this.navDots.forEach(dot => {
-            dot.addEventListener('click', (e) => {
-                e.preventDefault();
-                this.navigateToSection(dot.dataset.section);
-            });
-
-            // Add keyboard support
-            dot.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
+        
+        this.navDots.forEach((dot, index) => {
+            const sectionId = dot.getAttribute('data-section');
+            if (sectionId) {
+                // Add click event
+                dot.addEventListener('click', (e) => {
                     e.preventDefault();
-                    this.navigateToSection(dot.dataset.section);
-                }
-            });
-
-            // Make focusable
-            dot.setAttribute('tabindex', '0');
-            dot.setAttribute('role', 'button');
+                    this.handleNavDotClick(sectionId, index);
+                });
+                
+                // Add touch event for mobile
+                dot.addEventListener('touchend', (e) => {
+                    e.preventDefault();
+                    this.handleNavDotClick(sectionId, index);
+                });
+                
+                // Add keyboard support
+                dot.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        this.handleNavDotClick(sectionId, index);
+                    }
+                });
+                
+                // Make focusable
+                dot.setAttribute('tabindex', '0');
+            }
         });
+        
+        console.log(`🎯 Setup ${this.navDots.length} navigation dots`);
+    }
+
+    handleNavDotClick(sectionId, index) {
+        // Special handling for meditation dot (4th dot, index 3)
+        if (sectionId === 'meditation') {
+            this.handleMeditationClick();
+        } else {
+            this.scrollToSection(sectionId);
+        }
+    }
+
+    handleMeditationClick() {
+        const now = Date.now();
+        this.meditationClickTracker.clicks.push(now);
+        
+        console.log(`🧘 Meditation dot clicked, count: ${this.meditationClickTracker.clicks.length}`);
+        
+        // Remove clicks older than delayTime
+        this.meditationClickTracker.clicks = this.meditationClickTracker.clicks.filter(
+            clickTime => now - clickTime <= this.meditationClickTracker.delayTime
+        );
+        
+        // Clear existing timer
+        if (this.meditationClickTracker.delayTimer) {
+            clearTimeout(this.meditationClickTracker.delayTimer);
+            this.meditationClickTracker.delayTimer = null;
+        }
+        
+        // Check if we have exactly 4 clicks within the time window
+        if (this.meditationClickTracker.clicks.length === this.meditationClickTracker.requiredClicks) {
+            console.log('🎵 4 clicks detected! Triggering JOJO easter egg');
+            this.triggerJojoEasterEgg();
+            
+            // Reset clicks
+            this.meditationClickTracker.clicks = [];
+        } else if (this.meditationClickTracker.clicks.length > this.meditationClickTracker.requiredClicks) {
+            // Reset if more than 4 clicks
+            this.meditationClickTracker.clicks = [];
+            console.log('Too many clicks, resetting meditation click tracker');
+        } else {
+            // Set timer to reset clicks and scroll normally if no more clicks
+            this.meditationClickTracker.delayTimer = setTimeout(() => {
+                console.log('🧘 Meditation click timer expired, scrolling to section');
+                this.scrollToSection('meditation');
+                this.meditationClickTracker.clicks = [];
+                this.meditationClickTracker.delayTimer = null;
+            }, this.meditationClickTracker.delayTime);
+        }
+    }
+
+    triggerJojoEasterEgg() {
+        this.meditationClickTracker.isJojoPlaying = true;
+        
+        // Add JOJO audio to playlist
+        const jojoAudioData = {
+            name: "JOJO's Bizarre Adventure",
+            src: "./phoebe/jojo.mp3",
+            type: "Easter Egg"
+        };
+        
+        try {
+            if (window.addAudioToPlaylist) {
+                window.addAudioToPlaylist(jojoAudioData);
+                console.log('🎵 JOJO audio added to playlist');
+            }
+            
+            // Show notification
+            if (window.showEasterEggNotification) {
+                const message = window.languageManager && window.languageManager.getCurrentLanguage() === 'zh'
+                    ? "🎵 JOJO的奇妙冒险！"
+                    : "🎵 JOJO's Bizarre Adventure!";
+                window.showEasterEggNotification(message);
+            }
+            
+            // Setup JOJO text effects
+            this.setupJojoTextEffects();
+            
+        } catch (error) {
+            console.error('Failed to trigger JOJO easter egg:', error);
+        }
+    }
+
+    setupJojoTextEffects() {
+        // Get audio element and setup time-based text effects
+        const audioElement = document.getElementById('cyberpunkAudio');
+        if (!audioElement) return;
+        
+        let firstJojoTextTriggered = false;
+        let secondJojoTextTriggered = false;
+        
+        const timeUpdateHandler = () => {
+            // Only trigger JOJO text effects when actually playing jojo.mp3
+            const currentAudio = window.audioPlaylist && window.audioPlaylist[window.currentAudioIndex];
+            if (currentAudio && currentAudio.src === "./phoebe/jojo.mp3") {
+                // First display at 18.5 seconds
+                if (!firstJojoTextTriggered && audioElement.currentTime >= 18.5) {
+                    firstJojoTextTriggered = true;
+                    this.showJojoTextEffects();
+                }
+                // Second display at 25.5 seconds
+                if (!secondJojoTextTriggered && audioElement.currentTime >= 25.5) {
+                    secondJojoTextTriggered = true;
+                    this.showJojoTextEffects();
+                }
+            }
+        };
+        
+        const endedHandler = () => {
+            this.meditationClickTracker.isJojoPlaying = false;
+            firstJojoTextTriggered = false;
+            secondJojoTextTriggered = false;
+            audioElement.removeEventListener('timeupdate', timeUpdateHandler);
+            audioElement.removeEventListener('ended', endedHandler);
+        };
+        
+        audioElement.addEventListener('timeupdate', timeUpdateHandler);
+        audioElement.addEventListener('ended', endedHandler);
+    }
+
+    showJojoTextEffects() {
+        // Create JOJO text overlay
+        const jojoOverlay = Utils.createElement('div', {
+            className: 'jojo-text-overlay',
+            style: `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100vw;
+                height: 100vh;
+                background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #ffeaa7);
+                background-size: 400% 400%;
+                animation: jojoGradient 2s ease infinite;
+                z-index: 15000;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                pointer-events: none;
+            `
+        });
+        
+        const jojoText = Utils.createElement('div', {
+            className: 'jojo-text',
+            style: `
+                font-family: 'Arial Black', sans-serif;
+                font-size: 4rem;
+                font-weight: 900;
+                color: #fff;
+                text-shadow: 
+                    3px 3px 0 #000,
+                    -3px -3px 0 #000,
+                    3px -3px 0 #000,
+                    -3px 3px 0 #000,
+                    0 0 20px rgba(255, 255, 255, 0.8);
+                text-align: center;
+                transform: scale(0);
+                animation: jojoTextAppear 1.5s ease-out forwards;
+            `
+        }, "ジョジョの奇妙な冒険");
+        
+        jojoOverlay.appendChild(jojoText);
+        document.body.appendChild(jojoOverlay);
+        
+        // Remove after animation
+        setTimeout(() => {
+            if (jojoOverlay.parentNode) {
+                jojoOverlay.parentNode.removeChild(jojoOverlay);
+            }
+        }, 2000);
+        
+        console.log('🌟 JOJO text effects displayed');
+    }
+
+    scrollToSection(sectionId) {
+        if (this.infiniteScrollManager) {
+            this.infiniteScrollManager.scrollToSection(sectionId);
+        } else {
+            // Fallback to regular scrolling
+            this.fallbackScrollToSection(sectionId);
+        }
+    }
+
+    fallbackScrollToSection(sectionId) {
+        const section = document.getElementById(sectionId);
+        if (!section) return;
+        
+        section.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+        });
+        
+        console.log(`🎯 Scrolled to section: ${sectionId}`);
     }
 
     setupBackToTop() {
         this.backToTopBtn = document.getElementById('backToTopBtn');
+        if (!this.backToTopBtn) return;
         
-        if (this.backToTopBtn) {
-            this.backToTopBtn.addEventListener('click', () => {
+        this.backToTopBtn.addEventListener('click', () => {
+            this.scrollToTop();
+        });
+        
+        this.backToTopBtn.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            this.scrollToTop();
+        });
+        
+        // Keyboard support
+        this.backToTopBtn.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
                 this.scrollToTop();
-            });
-
-            // Add keyboard support
-            this.backToTopBtn.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    this.scrollToTop();
-                }
-            });
-        }
-    }
-
-    bindEvents() {
-        // Scroll event listener for updating active section and back-to-top visibility
-        const scrollHandler = Utils.throttle(() => {
-            this.updateActiveSection();
-            this.updateBackToTopVisibility();
-        }, 100);
-
-        window.addEventListener('scroll', scrollHandler);
-
-        // Handle infinite scroll container if it exists
-        const infiniteScrollContainer = document.getElementById('infinite-scroll-container');
-        if (infiniteScrollContainer) {
-            infiniteScrollContainer.addEventListener('scroll', scrollHandler);
-        }
-    }
-
-    navigateToSection(sectionId) {
-        const targetElement = document.getElementById(sectionId);
-        if (!targetElement) {
-            console.warn(`Section with id "${sectionId}" not found`);
-            return;
-        }
-
-        // Calculate offset for better positioning
-        const offset = this.calculateScrollOffset();
-        
-        Utils.scrollToElement(targetElement, offset);
-
-        // Update active state immediately for better UX
-        this.setActiveSection(sectionId);
-
-        // Announce navigation for screen readers
-        this.announceNavigation(sectionId);
-    }
-
-    calculateScrollOffset() {
-        // Account for fixed headers or other elements
-        const langToggle = document.querySelector('.lang-toggle');
-        const langToggleHeight = langToggle ? langToggle.offsetHeight : 0;
-        
-        return langToggleHeight + 20; // Add some padding
-    }
-
-    updateActiveSection() {
-        if (this.sections.length === 0) return;
-
-        const scrollContainer = document.getElementById('infinite-scroll-container') || window;
-        const scrollTop = scrollContainer === window ? 
-            window.pageYOffset : 
-            scrollContainer.scrollTop;
-
-        const viewportHeight = window.innerHeight;
-        const threshold = viewportHeight * 0.3; // 30% of viewport height
-
-        let activeSection = null;
-        let minDistance = Infinity;
-
-        // Find the section closest to the top of the viewport
-        this.sections.forEach(section => {
-            if (!section.element) return;
-
-            const rect = section.element.getBoundingClientRect();
-            const elementTop = rect.top;
-            const elementCenter = elementTop + (rect.height / 2);
-
-            // Calculate distance from viewport center
-            const viewportCenter = viewportHeight / 2;
-            const distance = Math.abs(elementCenter - viewportCenter);
-
-            // Check if element is in viewport
-            const isInViewport = elementTop < viewportHeight && (elementTop + rect.height) > 0;
-
-            if (isInViewport && distance < minDistance) {
-                minDistance = distance;
-                activeSection = section;
             }
         });
-
-        // Update active section if changed
-        if (activeSection && activeSection.id !== this.currentActiveSection) {
-            this.setActiveSection(activeSection.id);
-        }
-    }
-
-    setActiveSection(sectionId) {
-        // Remove active class from all dots
-        this.navDots.forEach(dot => {
-            dot.classList.remove('active');
-            dot.setAttribute('aria-current', 'false');
-        });
-
-        // Add active class to current section's dot
-        const activeDot = this.navDots.find(dot => dot.dataset.section === sectionId);
-        if (activeDot) {
-            activeDot.classList.add('active');
-            activeDot.setAttribute('aria-current', 'true');
-        }
-
-        this.currentActiveSection = sectionId;
-    }
-
-    updateBackToTopVisibility() {
-        if (!this.backToTopBtn) return;
-
-        const scrollContainer = document.getElementById('infinite-scroll-container') || window;
-        const scrollTop = scrollContainer === window ? 
-            window.pageYOffset : 
-            scrollContainer.scrollTop;
-
-        const showThreshold = 300; // Show after scrolling 300px
-
-        if (scrollTop > showThreshold) {
-            this.backToTopBtn.classList.add('show');
-            this.backToTopBtn.setAttribute('aria-hidden', 'false');
-        } else {
-            this.backToTopBtn.classList.remove('show');
-            this.backToTopBtn.setAttribute('aria-hidden', 'true');
-        }
     }
 
     scrollToTop() {
-        const scrollContainer = document.getElementById('infinite-scroll-container');
-        
-        if (scrollContainer) {
-            scrollContainer.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
+        if (this.infiniteScrollManager) {
+            this.infiniteScrollManager.scrollToTop();
         } else {
             window.scrollTo({
                 top: 0,
                 behavior: 'smooth'
             });
         }
-
-        // Update navigation state
-        setTimeout(() => {
-            this.updateActiveSection();
-        }, 100);
-
-        // Announce action for screen readers
-        this.announceNavigation('top');
+        
+        console.log('⬆️ Scrolled to top');
     }
 
-    announceNavigation(sectionId) {
-        // Create or update live region for screen reader announcements
-        let liveRegion = document.getElementById('nav-live-region');
+    bindEvents() {
+        // Scroll listener for updating active section and back-to-top visibility
+        const scrollContainer = document.getElementById('infinite-scroll-container') || window;
         
-        if (!liveRegion) {
-            liveRegion = Utils.createElement('div', {
-                id: 'nav-live-region',
-                'aria-live': 'polite',
-                'aria-atomic': 'true',
-                style: 'position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden;'
-            });
-            document.body.appendChild(liveRegion);
+        scrollContainer.addEventListener('scroll', Utils.throttle(() => {
+            this.updateActiveSection();
+            this.updateBackToTopVisibility();
+        }, 100));
+    }
+
+    updateActiveSection() {
+        let currentSection = '';
+        
+        this.sections.forEach(sectionId => {
+            const section = this.findSectionElement(sectionId);
+            if (section) {
+                const rect = section.getBoundingClientRect();
+                if (rect.top <= 100 && rect.bottom >= 100) {
+                    currentSection = sectionId;
+                }
+            }
+        });
+        
+        // Update nav dots
+        this.navDots.forEach((dot, index) => {
+            if (this.sections[index] === currentSection) {
+                dot.classList.add('active');
+            } else {
+                dot.classList.remove('active');
+            }
+        });
+        
+        this.currentActiveSection = currentSection;
+    }
+
+    findSectionElement(sectionId) {
+        // Try to find in the current visible content
+        let section = document.getElementById(sectionId);
+        
+        // If not found or not visible, try to find in the middle container
+        if (!section) {
+            const containers = document.querySelectorAll('.container');
+            const middleContainer = containers[1]; // Second container is usually the middle one
+            if (middleContainer) {
+                section = middleContainer.querySelector(`#${sectionId}`);
+            }
         }
+        
+        return section;
+    }
 
-        // Get section name for announcement
-        const sectionNames = {
-            'header': 'Top of page',
-            'color-display': 'Color display section',
-            'quote-section': 'Quote section',
-            'meditation': 'Meditation section',
-            'essence': 'Essence cards section',
-            'phoebe-section': 'Phoebe\'s wisdom section',
-            'top': 'Top of page'
-        };
-
-        const sectionName = sectionNames[sectionId] || sectionId;
-        liveRegion.textContent = `Navigated to ${sectionName}`;
+    updateBackToTopVisibility() {
+        if (!this.backToTopBtn) return;
+        
+        const scrollContainer = document.getElementById('infinite-scroll-container');
+        const scrollTop = scrollContainer ? scrollContainer.scrollTop : window.pageYOffset;
+        
+        if (scrollTop > 300) {
+            this.backToTopBtn.classList.add('show');
+        } else {
+            this.backToTopBtn.classList.remove('show');
+        }
     }
 
     // Public API methods
@@ -248,91 +366,12 @@ class NavigationManager {
         return this.currentActiveSection;
     }
 
-    getSections() {
-        return this.sections.map(section => ({
-            id: section.id,
-            element: section.element
-        }));
+    setActiveSection(sectionId) {
+        this.scrollToSection(sectionId);
     }
 
-    // Programmatically navigate to a section
-    goToSection(sectionId) {
-        this.navigateToSection(sectionId);
-    }
-
-    // Add new section dynamically
-    addSection(sectionId, tooltip) {
-        const element = document.getElementById(sectionId);
-        if (!element) {
-            console.warn(`Element with id "${sectionId}" not found`);
-            return;
-        }
-
-        // Check if section already exists
-        const existingSection = this.sections.find(s => s.id === sectionId);
-        if (existingSection) {
-            console.warn(`Section "${sectionId}" already exists`);
-            return;
-        }
-
-        // Create navigation dot
-        const dot = Utils.createElement('div', {
-            className: 'nav-dot',
-            'data-tooltip': tooltip || sectionId,
-            'data-section': sectionId,
-            tabindex: '0',
-            role: 'button'
-        });
-
-        // Add event listeners
-        dot.addEventListener('click', (e) => {
-            e.preventDefault();
-            this.navigateToSection(sectionId);
-        });
-
-        dot.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                this.navigateToSection(sectionId);
-            }
-        });
-
-        // Add to navigation container
-        const navigation = document.querySelector('.navigation');
-        if (navigation) {
-            navigation.appendChild(dot);
-        }
-
-        // Update internal arrays
-        this.navDots.push(dot);
-        this.sections.push({
-            id: sectionId,
-            element: element,
-            dot: dot
-        });
-    }
-
-    // Remove section
-    removeSection(sectionId) {
-        const sectionIndex = this.sections.findIndex(s => s.id === sectionId);
-        if (sectionIndex === -1) {
-            console.warn(`Section "${sectionId}" not found`);
-            return;
-        }
-
-        const section = this.sections[sectionIndex];
-        
-        // Remove dot from DOM
-        if (section.dot && section.dot.parentNode) {
-            section.dot.parentNode.removeChild(section.dot);
-        }
-
-        // Remove from arrays
-        this.sections.splice(sectionIndex, 1);
-        const dotIndex = this.navDots.indexOf(section.dot);
-        if (dotIndex > -1) {
-            this.navDots.splice(dotIndex, 1);
-        }
+    isJojoPlaying() {
+        return this.meditationClickTracker.isJojoPlaying;
     }
 }
 

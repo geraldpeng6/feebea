@@ -59,6 +59,21 @@
             </nav>
 
             <!-- Back to Top Button -->
+            <button class="back-to-top" id="backToTopBtn" aria-label="回到顶部">
+                ↑
+            </button>
+
+            <!-- Navigation Menu -->
+            <nav class="navigation">
+                <div class="nav-dot" data-tooltip="Top" data-section="header"></div>
+                <div class="nav-dot" data-tooltip="Color" data-section="color-display"></div>
+                <div class="nav-dot" data-tooltip="Quote" data-section="quote-section"></div>
+                <div class="nav-dot" data-tooltip="Meditation" data-section="meditation"></div>
+                <div class="nav-dot" data-tooltip="Essence" data-section="essence"></div>
+                <div class="nav-dot" data-tooltip="Phoebe" data-section="phoebe-section"></div>
+            </nav>
+
+            <!-- Back to Top Button -->
             <button class="back-to-top" id="backToTopBtn" aria-label="Back to top">
                 ↑
             </button>
@@ -278,17 +293,81 @@
             </div>
         </div>
 
+            <!-- Audio Control Panel -->
+            <div id="audioControlPanel" class="audio-control-panel">
+                <!-- Audio Playlist Sidebar -->
+                <div id="audioPlaylistSidebar" class="audio-playlist-sidebar">
+                    <div id="playlistItems" class="playlist-items">
+                        <!-- Playlist items will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <button id="audioControlBtn" class="audio-control-btn">
+                    <svg class="play-icon" viewBox="0 0 24 24">
+                        <path d="M8 5v14l11-7z"/>
+                    </svg>
+                    <svg class="pause-icon" viewBox="0 0 24 24" style="display: none;">
+                        <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                    </svg>
+                </button>
+
+                <!-- Play Mode Control Button -->
+                <button id="playModeBtn" class="audio-control-btn play-mode-btn" title="播放模式" data-mode="stop">
+                    <svg class="mode-icon" viewBox="0 0 24 24">
+                        <path d="M6 6h12v12H6z"/>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Hidden Audio Element -->
+            <audio id="cyberpunkAudio" preload="none">
+                <source src="" type="audio/mpeg">
+            </audio>
+
+            <!-- Debug Panel -->
+            <button id="debugToggle" class="debug-toggle"><span id="debugButton">Debug</span></button>
+            <div id="debugPanel" class="debug-panel">
+                <h4>Debug Panel</h4>
+                <p><strong>Target:</strong> Match all 3 cards</p>
+                <div class="easter-egg-hint">
+                    Tip: Click cards to change quotes
+                </div>
+
+                <div class="quick-set-buttons">
+                    <button id="setCyberpunkBtn" class="quick-set-btn" title="Set all cards to Cyberpunk content">Set Cyberpunk</button>
+                    <button id="setRoseBtn" class="quick-set-btn" title="Set all cards to Rose quote content">Set Rose Quote</button>
+                    <button id="triggerRunawayBtn" class="quick-set-btn" title="Trigger Runaway effect">Trigger Runaway</button>
+                    <button id="triggerJojoBtn" class="quick-set-btn" title="Trigger Jojo easter egg">Trigger Jojo</button>
+                </div>
+
+                <div class="current-quotes" id="quotesList">
+                    <!-- Current quotes will be populated by JavaScript -->
+                </div>
+
+                <div class="easter-egg-controls">
+                    <h5>Easter Egg Controls</h5>
+                    <div class="egg-state-buttons">
+                        <button id="resetAllBtn" class="state-btn reset-btn">Reset All</button>
+                        <button id="triggerAllBtn" class="state-btn trigger-btn">Trigger All</button>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- Close infinite-scroll-container -->
+
         <!-- JavaScript Modules -->
         <script src="state-sync.js"></script>
         <script src="js/config.js"></script>
         <script src="js/utils.js"></script>
         <script src="js/language.js"></script>
+        <script src="js/infinite-scroll.js"></script>
         <script src="js/navigation.js"></script>
         <script src="js/quote-manager.js"></script>
         <script src="js/audio-manager.js"></script>
+        <script src="js/music-player.js"></script>
         <script src="js/easter-egg-manager.js"></script>
         <script src="js/essence-manager.js"></script>
         <script src="js/special-effects.js"></script>
+        <script src="js/debug-manager.js"></script>
         <script src="js/app.js"></script>
         
         <script>

@@ -1,3 +1,119 @@
+/* ===== INFINITE SCROLL & NAVIGATION ===== */
+
+/* Infinite Scroll Container */
+#infinite-scroll-container {
+    height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+}
+
+/* Navigation Menu */
+.navigation {
+    position: fixed;
+    top: 50%;
+    right: 2rem;
+    transform: translateY(-50%);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    opacity: 0.7;
+    transition: opacity 0.3s ease;
+}
+
+.navigation:hover {
+    opacity: 1;
+}
+
+.nav-dot {
+    width: 8px;
+    height: 24px;
+    border-radius: 12px;
+    background: rgba(254, 235, 234, 0.3);
+    border: 2px solid rgba(254, 235, 234, 0.5);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    padding: 4px;
+    margin: 2px 0;
+}
+
+.nav-dot:hover,
+.nav-dot.active {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+    box-shadow: 0 0 15px rgba(254, 235, 234, 0.5);
+}
+
+.nav-dot:focus {
+    outline: 2px solid #feebea;
+    outline-offset: 2px;
+}
+
+.nav-dot::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    right: 25px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: #feebea;
+    padding: 0.3rem 0.6rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(254, 235, 234, 0.2);
+}
+
+.nav-dot:hover::after {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Back to Top Button */
+.back-to-top {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 50px;
+    height: 50px;
+    background: rgba(254, 235, 234, 0.1);
+    border: 2px solid rgba(254, 235, 234, 0.3);
+    border-radius: 50%;
+    color: #feebea;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
+    z-index: 999;
+}
+
+.back-to-top.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.back-to-top:hover {
+    background: rgba(254, 235, 234, 0.2);
+    border-color: #feebea;
+    transform: scale(1.1);
+    box-shadow: 0 0 20px rgba(254, 235, 234, 0.3);
+}
+
 /* ===== LANGUAGE TOGGLE COMPONENT ===== */
 .lang-toggle {
     position: fixed;
@@ -520,4 +636,335 @@
 
 .back-to-top:active {
     transform: translateY(0) scale(0.95);
+}
+
+/* ===== AUDIO CONTROL PANEL ===== */
+
+.audio-control-panel {
+    position: fixed;
+    left: -60px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+}
+
+.audio-control-panel.show {
+    opacity: 1;
+    visibility: visible;
+    left: 1rem;
+}
+
+.audio-control-panel:hover {
+    left: 1rem;
+}
+
+.audio-control-panel.mobile-show {
+    opacity: 1;
+    visibility: visible;
+    left: 1rem;
+}
+
+.audio-playlist-sidebar {
+    position: absolute;
+    left: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 200px;
+    background: rgba(0, 0, 0, 0.9);
+    border: 1px solid rgba(254, 235, 234, 0.3);
+    border-radius: 8px;
+    padding: 8px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-50%) translateX(-10px);
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 20px rgba(254, 235, 234, 0.2);
+}
+
+.audio-control-panel:hover .audio-playlist-sidebar {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(-50%) translateX(0);
+}
+
+.playlist-items {
+    max-height: 300px;
+    overflow-y: auto;
+    padding: 8px 0;
+    border-radius: 8px;
+}
+
+.playlist-item {
+    padding: 8px 12px;
+    margin: 4px 0;
+    background: rgba(254, 235, 234, 0.05);
+    border: 1px solid rgba(254, 235, 234, 0.1);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.playlist-item:hover {
+    background: rgba(254, 235, 234, 0.1);
+    border-color: rgba(254, 235, 234, 0.3);
+}
+
+.playlist-item.active {
+    background: rgba(254, 235, 234, 0.15);
+    border-color: rgba(254, 235, 234, 0.4);
+}
+
+.playlist-item-name {
+    color: #feebea;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.playlist-item-type {
+    color: rgba(254, 235, 234, 0.7);
+    font-size: 10px;
+    opacity: 0.7;
+    margin-left: 8px;
+}
+
+.audio-control-btn {
+    background: #feebea;
+    border: none;
+    color: #333;
+    padding: 0;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+}
+
+.audio-control-btn:hover {
+    background: #feebea;
+    box-shadow: 0 4px 12px rgba(254, 235, 234, 0.5);
+    transform: scale(1.05);
+}
+
+.audio-control-btn:active {
+    transform: scale(0.98);
+}
+
+.audio-control-btn svg {
+    width: 14px;
+    height: 14px;
+    fill: currentColor;
+    transition: all 0.3s ease;
+}
+
+.play-mode-btn {
+    position: absolute;
+    top: -32px;
+    left: 0;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    width: 20px;
+    height: 20px;
+}
+
+.audio-control-panel:hover .play-mode-btn {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.play-mode-btn .mode-icon {
+    width: 8px;
+    height: 8px;
+}
+
+/* ===== DEBUG PANEL ===== */
+
+.debug-panel {
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    background: rgba(0, 0, 0, 0.95);
+    border: 1px solid rgba(254, 237, 234, 0.3);
+    border-radius: 8px;
+    padding: 0.8rem;
+    color: #feedea;
+    font-family: "Arial", sans-serif;
+    font-size: 0.7rem;
+    max-width: 280px;
+    min-width: 200px;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    z-index: 10000;
+}
+
+.debug-panel.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.debug-panel h4 {
+    color: #feedea;
+    margin-bottom: 0.4rem;
+    font-size: 0.8rem;
+    font-weight: normal;
+}
+
+.debug-panel p {
+    margin-bottom: 0.2rem;
+    line-height: 1.2;
+    font-size: 0.65rem;
+    color: #feedea;
+}
+
+.debug-panel .easter-egg-hint {
+    color: rgba(254, 237, 234, 0.8);
+    font-weight: normal;
+    margin-top: 0.3rem;
+    font-size: 0.65rem;
+}
+
+.debug-panel .current-quotes {
+    background: rgba(254, 237, 234, 0.1);
+    padding: 0.4rem;
+    border-radius: 4px;
+    margin-top: 0.3rem;
+    font-size: 0.6rem;
+    border: 1px solid rgba(254, 237, 234, 0.2);
+}
+
+.quick-set-btn {
+    background: rgba(254, 237, 234, 0.1);
+    color: #feedea;
+    border: 1px solid rgba(254, 237, 234, 0.3);
+    border-radius: 3px;
+    padding: 0.3rem 0.5rem;
+    margin: 0.1rem;
+    cursor: pointer;
+    font-size: 0.6rem;
+    transition: all 0.2s ease;
+    font-family: "Arial", sans-serif;
+}
+
+.quick-set-btn:hover {
+    background: rgba(254, 237, 234, 0.2);
+    border-color: rgba(254, 237, 234, 0.5);
+}
+
+.quick-set-btn:active {
+    transform: scale(0.98);
+}
+
+.debug-toggle {
+    position: fixed;
+    top: 5rem;
+    left: 1rem;
+    z-index: 1000;
+    background: rgba(254, 235, 234, 0.1);
+    border-radius: 20px;
+    padding: 0.5rem 1rem;
+    font-family: "Dancing Script", cursive;
+    font-size: 1.1rem;
+    cursor: pointer;
+    border: 1px solid rgba(254, 235, 234, 0.3);
+    transition: all 0.3s ease;
+    display: none;
+    align-items: center;
+    gap: 0.3rem;
+    color: #feebea;
+}
+
+.debug-toggle.show {
+    display: flex;
+}
+
+.debug-toggle:hover {
+    background: rgba(254, 235, 234, 0.15);
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(254, 235, 234, 0.2);
+}
+
+.debug-panel .easter-egg-controls {
+    margin-top: 0.5rem;
+    padding: 0.4rem;
+    background: rgba(254, 237, 234, 0.05);
+    border-radius: 4px;
+    border: 1px solid rgba(254, 237, 234, 0.2);
+}
+
+.debug-panel .easter-egg-controls h5 {
+    margin: 0 0 0.3rem 0;
+    color: #feedea;
+    font-size: 0.7rem;
+    text-align: center;
+    font-weight: normal;
+}
+
+.debug-panel .egg-state-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.2rem;
+    margin-bottom: 0.3rem;
+}
+
+.debug-panel .state-btn {
+    padding: 0.2rem 0.3rem;
+    background: rgba(254, 237, 234, 0.1);
+    color: #feedea;
+    border: 1px solid rgba(254, 237, 234, 0.3);
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 0.6rem;
+    transition: all 0.2s ease;
+    font-family: "Arial", sans-serif;
+    text-align: center;
+}
+
+.debug-panel .state-btn:hover {
+    background: rgba(254, 237, 234, 0.2);
+    border-color: rgba(254, 237, 234, 0.5);
+}
+
+.debug-panel .state-btn.active {
+    background: rgba(254, 237, 234, 0.25);
+    border-color: rgba(254, 237, 234, 0.6);
+    color: #feedea;
+}
+
+.debug-panel .state-btn.reset-btn {
+    background: rgba(254, 237, 234, 0.08);
+    border-color: rgba(254, 237, 234, 0.25);
+    grid-column: 1;
+}
+
+.debug-panel .state-btn.reset-btn:hover {
+    background: rgba(254, 237, 234, 0.15);
+}
+
+.debug-panel .state-btn.trigger-btn {
+    background: rgba(254, 237, 234, 0.12);
+    border-color: rgba(254, 237, 234, 0.3);
+    grid-column: 2;
+}
+
+.debug-panel .state-btn.trigger-btn:hover {
+    background: rgba(254, 237, 234, 0.2);
 }

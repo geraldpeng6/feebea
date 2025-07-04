@@ -86,6 +86,22 @@ class FeebeeApp {
             this.components.specialEffects = new window.SpecialEffectsManager();
         }
 
+        // Initialize infinite scroll manager
+        if (window.InfiniteScrollManager) {
+            this.components.infiniteScroll = new window.InfiniteScrollManager();
+            window.infiniteScrollManager = this.components.infiniteScroll;
+        }
+
+        // Initialize music player manager
+        if (window.MusicPlayerManager) {
+            this.components.musicPlayer = new window.MusicPlayerManager();
+        }
+
+        // Initialize debug manager
+        if (window.DebugManager) {
+            this.components.debug = new window.DebugManager();
+        }
+
         // Initialize color circle
         this.initializeColorCircle();
 
@@ -247,6 +263,65 @@ class FeebeeApp {
 
         // Initialize touch events for quotes
         this.initializeQuoteTouchEvents();
+
+        // Setup global audio functions for backward compatibility
+        this.setupGlobalAudioFunctions();
+
+        // Setup keyboard navigation
+        this.setupKeyboardNavigation();
+    }
+
+    setupGlobalAudioFunctions() {
+        // Expose global functions for backward compatibility with original HTML
+        window.addAudioToPlaylist = (audioData) => {
+            if (this.components.musicPlayer) {
+                this.components.musicPlayer.addToPlaylist(audioData);
+            }
+        };
+
+        window.playAudio = (filename) => {
+            if (this.components.musicPlayer) {
+                this.components.musicPlayer.playAudioFile(filename);
+            }
+        };
+
+        window.toggleAudio = () => {
+            if (this.components.musicPlayer) {
+                this.components.musicPlayer.toggleAudio();
+            }
+        };
+
+        window.showEasterEggNotification = (message) => {
+            if (this.components.easterEggs) {
+                this.components.easterEggs.showEasterEggNotification(message);
+            }
+        };
+
+        // Expose component references
+        window.navigationManager = this.components.navigation;
+        window.infiniteScrollManager = this.components.infiniteScroll;
+        window.musicPlayerManager = this.components.musicPlayer;
+        window.debugManager = this.components.debug;
+
+        console.log('🌐 Global audio functions setup complete');
+    }
+
+    setupKeyboardNavigation() {
+        // Setup keyboard navigation for quotes
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+                e.preventDefault();
+                if (this.components.quotes) {
+                    if (e.key === 'ArrowLeft') {
+                        this.components.quotes.previousQuote();
+                    } else {
+                        this.components.quotes.nextQuote();
+                    }
+                }
+            }
+        });
+
+        console.log('⌨️ Keyboard navigation setup complete');
     }
 
     setupColorCodeCopying() {
