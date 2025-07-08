@@ -147,7 +147,6 @@ const StateSyncManager = {
         try {
             return parent ? parent.querySelector(selector) : null;
         } catch (error) {
-            console.error(`🔴 Error querying selector "${selector}":`, error);
             return null;
         }
     },
@@ -156,31 +155,14 @@ const StateSyncManager = {
         try {
             return parent ? parent.querySelectorAll(selector) : [];
         } catch (error) {
-            console.error(`🔴 Error querying all "${selector}":`, error);
             return [];
         }
     },
     
     // Log wrapper with level control
     log: function(message, level = 'info') {
-        // 可以根据需要禁用日志
-        const debugMode = true;
-        if (!debugMode && level !== 'error') return;
-        
-        switch(level) {
-            case 'error':
-                console.error(`🔴 [StateSyncManager] ${message}`);
-                break;
-            case 'warn':
-                console.warn(`🟠 [StateSyncManager] ${message}`);
-                break;
-            case 'info':
-                console.log(`🔵 [StateSyncManager] ${message}`);
-                break;
-            case 'debug':
-                console.log(`🟢 [StateSyncManager] ${message}`);
-                break;
-        }
+        // 日志已禁用
+        return;
     },
     
     // 批量更新处理，限制DOM操作频率
@@ -318,35 +300,77 @@ const StateSyncManager = {
             const dondaState = window.globalState.dondaWisdom;
             
             // 获取所有的Phoebe's Wisdom区域
-            const wisdomSections = this.safeQuerySelectorAll('.phoebe-quote');
-            
+            const wisdomSections = this.safeQuerySelectorAll('.phoebe-section');
+
             wisdomSections.forEach(section => {
                 // 获取相关的DOM元素
                 const title = this.safeQuerySelector('.phoebe-title', section);
-                const quote = this.safeQuerySelector('.phoebe-quote-text', section);
+                const quote = this.safeQuerySelector('.phoebe-quote', section);
                 const author = this.safeQuerySelector('.phoebe-author', section);
                 
                 // 处理不同的模式
                 if (zoteState.triggered) {
-                    // 左特戒律模式
-                    if (title) title.textContent = 'Zote\'s 57 Precepts';
-                    if (quote && zoteState.currentPrecept <= 57) {
-                        const preceptNumber = zoteState.currentPrecept || 1;
-                        quote.textContent = `Precept ${preceptNumber}: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."`;
+                    // 左特戒律模式 - 获取真实的戒律内容，支持中英文切换
+                    const preceptNumber = zoteState.currentPrecept || 1;
+                    const cycleCount = zoteState.cycleCount || 0;
+                    const isEnglish = window.isEnglish;
+
+                    // 获取戒律标题
+                    const zoteTitle = this.getZoteTitle(cycleCount);
+                    if (title) {
+                        title.textContent = isEnglish ?
+                            `${zoteTitle.en}'s Precepts` :
+                            `${zoteTitle.zh}的戒律`;
                     }
-                    if (author) author.textContent = 'Zote the Mighty';
+
+                    // 获取戒律内容
+                    const preceptContent = this.getZotePreceptContent(preceptNumber, isEnglish);
+                    if (quote && preceptContent) {
+                        const authorName = isEnglish ? zoteTitle.en : zoteTitle.zh;
+                        quote.innerHTML = `"${preceptContent.title}<br><br>${preceptContent.content}" <br><br>- ${authorName}`;
+                        quote.style.cursor = 'pointer';
+                        // 设置点击事件来循环戒律
+                        quote.onclick = () => {
+                            if (typeof window.cycleZotePrecept === 'function') {
+                                window.cycleZotePrecept();
+                            }
+                        };
+                    }
+                    if (author) {
+                        author.textContent = isEnglish ? 'Zote the Mighty' : '强大的左特';
+                    }
                 } else if (dondaState.isActive) {
-                    // Donda's Wisdom模式
-                    const isEnglish = section.closest('#englishContent') !== null;
-                    
-                    if (title) title.textContent = isEnglish ? dondaState.englishTitle : dondaState.chineseTitle;
-                    if (quote) quote.textContent = isEnglish ? dondaState.englishQuote : dondaState.chineseQuote;
+                    // Donda's Wisdom模式（仅英文）
+                    if (title) title.textContent = "Donda's Wisdom";
+                    if (quote) quote.textContent = dondaState.englishQuote || "… you got a lot of confidence that come off a little arrogant even though you're humble and everything –– but it be important to remember that the giant looks himself in the mirror and sees nothing…";
                     if (author) author.textContent = 'Donda West';
                 } else {
-                    // 正常Phoebe's Wisdom模式
-                    if (title && state.currentTitle) title.textContent = state.currentTitle;
-                    if (quote && state.currentQuote) quote.textContent = state.currentQuote;
-                    if (author && state.currentAuthor) author.textContent = state.currentAuthor;
+                    // 正常Phoebe's Wisdom模式 - 支持双语显示
+                    const isEnglish = window.isEnglish;
+
+                    // 如果有自定义的状态内容，使用它
+                    if (state.currentTitle || state.currentQuote || state.currentAuthor) {
+                        if (title && state.currentTitle) {
+                            title.textContent = isEnglish ? state.currentTitle : (state.currentTitleZh || state.currentTitle);
+                        }
+                        if (quote && state.currentQuote) {
+                            quote.textContent = isEnglish ? state.currentQuote : (state.currentQuoteZh || state.currentQuote);
+                        }
+                        if (author && state.currentAuthor) {
+                            author.textContent = isEnglish ? state.currentAuthor : (state.currentAuthorZh || state.currentAuthor);
+                        }
+                    } else {
+                        // 否则使用默认的Phoebe语录（双语支持）
+                        if (title) {
+                            title.textContent = isEnglish ? "Phoebe's Wisdom" : "菲比的智慧";
+                        }
+                        if (quote) {
+                            quote.textContent = isEnglish ? "NO, YOU ARE THE BOSS OF YOU!" : "你才是你自己的老板!";
+                        }
+                        if (author) {
+                            author.textContent = isEnglish ? "Phoebe Buffay" : "菲比·布菲";
+                        }
+                    }
                 }
             });
             
@@ -355,7 +379,49 @@ const StateSyncManager = {
             this.log(`Error updating Phoebe's Wisdom sections: ${error.message}`, 'error');
         }
     },
-    
+
+    // Helper function to get Zote title based on cycle count
+    getZoteTitle: function(cycleCount) {
+        // 使用与index.html中getZoteTitle相同的逻辑
+        if (typeof window.getZoteTitle === 'function') {
+            return window.getZoteTitle(cycleCount);
+        }
+
+        // 如果无法访问全局函数，使用简化版本
+        const titles = [
+            { english: "Zote", chinese: "左特" },
+            { english: "Terrifying, Beautiful, Powerful, Grey Prince Zote the Mighty", chinese: "可怕的，漂亮的，强大的灰色王子左特" },
+            { english: "Gorgeous, Passionate, Terrifying, Beautiful, Powerful, Grey Prince Zote the Mighty", chinese: "华丽的，激情的，可怕的，漂亮的，强大的灰色王子左特" }
+        ];
+
+        const index = Math.min(cycleCount, titles.length - 1);
+        return { en: titles[index].english, zh: titles[index].chinese };
+    },
+
+    // Helper function to get Zote precept content with language support
+    getZotePreceptContent: function(preceptNumber, isEnglish = true) {
+        // 从全局的zotePrecepts数组获取戒律内容
+        if (typeof window.zotePrecepts !== 'undefined' && window.zotePrecepts) {
+            const arrayIndex = preceptNumber - 1; // Convert to 0-based index
+            if (arrayIndex >= 0 && arrayIndex < window.zotePrecepts.length) {
+                const precept = window.zotePrecepts[arrayIndex];
+                const lang = isEnglish ? 'en' : 'zh';
+                return {
+                    title: precept[lang].title,
+                    content: precept[lang].content
+                };
+            }
+        }
+
+        // 如果无法获取到戒律数据，返回默认内容
+        return {
+            title: isEnglish ? `Precept ${preceptNumber}:` : `戒律 ${preceptNumber}:`,
+            content: isEnglish ?
+                "The wisdom of Zote the Mighty is beyond comprehension." :
+                "强大的左特的智慧超越了理解。"
+        };
+    },
+
     // Sync essence cards state
     syncEssenceState: function(newState, updateUI = true) {
         try {
@@ -505,30 +571,91 @@ const StateSyncManager = {
         }
     },
     
+    // 初始化meditation内容为中英文双语内容
+    initializeMeditationContent: function() {
+        try {
+            // 设置原始的英文meditation内容
+            const originalEnglishContent = `
+                "Sometimes, it's difficult even for me<br />
+                to understand what I've become.<br />
+                And harder still to remember what I once was.<br />
+                The blue of the tiles...<br />
+                Zima Blue, the manufacturer called it.<br />
+                The first thing I ever saw.<br />
+                This was where I began.<br />
+                A crude little machine with<br />
+                barely enough intelligence to steer itself.<br />
+                But it was my world.<br />
+                It was all I knew, all I needed to know.<br />
+                And now?<br />
+                I will immerse myself.<br />
+                And as I do, I will slowly shut down my higher brain functions...<br />
+                un-making myself...<br />
+                leaving just enough to appreciate my surroundings...<br />
+                to extract some simple pleasure<br />
+                from the execution of a task well done.<br />
+                My search for truth is finished at last.<br />
+                I'm going home."
+            `;
+
+            // 设置中文meditation内容
+            const originalChineseContent = `
+                "有时候，即使对我来说<br />
+                也很难理解我变成了什么样子。<br />
+                更难的是记起我曾经是什么样子。<br />
+                瓷砖的蓝色...<br />
+                制造商称之为齐马蓝。<br />
+                这是我见过的第一样东西。<br />
+                这就是我开始的地方。<br />
+                一台粗糙的小机器<br />
+                几乎没有足够的智能来控制自己。<br />
+                但这就是我的世界。<br />
+                这是我所知道的一切，我需要知道的一切。<br />
+                而现在？<br />
+                我将沉浸其中。<br />
+                当我这样做时，我会慢慢关闭我的高级大脑功能...<br />
+                解构我自己...<br />
+                只留下足够的部分来欣赏我的周围环境...<br />
+                从完成一项任务中<br />
+                提取一些简单的快乐。<br />
+                我对真相的探索终于结束了。<br />
+                我要回家了。"
+            `;
+
+            // 初始化全局状态 - 中英文使用不同的内容
+            window.globalState.meditation = {
+                isRunawayMode: false,
+                englishContent: originalEnglishContent,
+                chineseContent: originalChineseContent
+            };
+
+            this.log('Meditation content initialized with bilingual content', 'info');
+        } catch (error) {
+            this.log(`Error initializing meditation content: ${error.message}`, 'error');
+        }
+    },
+
     // 更新所有冥想区域
     updateAllMeditations: function() {
         try {
             const state = window.globalState.meditation;
-            
-            // 获取所有冥想文本元素
-            const englishMeditations = this.safeQuerySelectorAll('#englishContent .meditation-text');
-            const chineseMeditations = this.safeQuerySelectorAll('#chineseContent .meditation-text');
-            
-            // 更新所有英文冥想文本
-            if (state.englishContent) {
-                englishMeditations.forEach(meditation => {
-                    meditation.innerHTML = state.englishContent;
+            const isEnglish = window.isEnglish;
+
+            // 获取所有冥想文本元素（包括无限滚动中的所有实例）
+            const allMeditations = this.safeQuerySelectorAll('.meditation-text');
+
+            // 根据当前语言状态决定显示的内容
+            const contentToShow = isEnglish ? state.englishContent : state.chineseContent;
+
+            // 更新所有冥想文本元素
+            if (contentToShow) {
+                allMeditations.forEach((meditation, index) => {
+                    meditation.innerHTML = contentToShow;
+                    this.log(`Updated meditation text ${index + 1}`, 'debug');
                 });
             }
-            
-            // 更新所有中文冥想文本
-            if (state.chineseContent) {
-                chineseMeditations.forEach(meditation => {
-                    meditation.innerHTML = state.chineseContent;
-                });
-            }
-            
-            this.log('Updated all meditation texts', 'debug');
+
+            this.log(`Updated all meditation texts to ${isEnglish ? 'English' : 'Chinese'} content`, 'info');
         } catch (error) {
             this.log(`Error updating meditations: ${error.message}`, 'error');
         }
@@ -539,33 +666,48 @@ const StateSyncManager = {
         try {
             // 频率限制检查，避免短时间内多次触发
             const now = Date.now();
-            if (now - window.globalState.easterEggs.lastTriggerTime < 500) {
+            const timeSinceLastTrigger = now - window.globalState.easterEggs.lastTriggerTime;
+
+            if (timeSinceLastTrigger < 500) {
                 return false;
             }
-            
+
             // 检查此卡片是否已经是彩蛋源
             const isSource = window.globalState.easterEggs.triggerSourceIndex.cardEasterEgg === cardIndex;
-            
-            // 如果触发条件满足且此卡片是彩蛋源或尚未设置彩蛋源
-            if (triggerCondition() && (isSource || window.globalState.easterEggs.triggerSourceIndex.cardEasterEgg === -1)) {
+            const currentSource = window.globalState.easterEggs.triggerSourceIndex.cardEasterEgg;
+
+            // 检查触发条件
+            const conditionResult = triggerCondition();
+
+            // 对于玫瑰彩蛋，简化触发逻辑 - 只要条件满足就触发
+            let shouldTrigger;
+            if (cardType === 'rose') {
+                shouldTrigger = conditionResult;
+            } else {
+                // 其他彩蛋使用原有逻辑
+                shouldTrigger = conditionResult && (isSource || currentSource === -1);
+            }
+
+            if (shouldTrigger) {
                 // 设置彩蛋源索引
                 window.globalState.easterEggs.triggerSourceIndex.cardEasterEgg = cardIndex;
                 window.globalState.easterEggs.lastTriggerTime = now;
-                
+
                 // 标记对应类型的彩蛋已触发
                 if (cardType && window.globalState.easterEggs.triggers) {
                     window.globalState.easterEggs.triggers[cardType] = true;
                 }
-                
+
                 this.log(`Card easter egg triggered: ${cardType} at index ${cardIndex}`, 'info');
-                
+
                 // 返回true表示应该在此卡片上显示彩蛋内容
                 return true;
             }
-            
+
             // 如果不是彩蛋源卡片，则不触发彩蛋内容
             return false;
         } catch (error) {
+
             this.log(`Error handling card easter egg: ${error.message}`, 'error');
             return false;
         }
@@ -904,6 +1046,210 @@ const StateSyncManager = {
         }
     },
     
+    // 同步语言切换状态 - 确保所有内容都能正确切换语言
+    syncLanguageState: function(isEnglish) {
+        try {
+            // 更新全局语言状态
+            window.isEnglish = isEnglish;
+
+            // 同步所有需要语言切换的内容
+            this.scheduleBatchUpdate('languageSync', () => {
+                // 更新所有Phoebe's Wisdom内容
+                this.updateAllPhoebeWisdom();
+
+                // 更新所有冥想文本
+                this.updateAllMeditations();
+
+                // 更新所有quote sections
+                if (typeof window.updateQuoteSection === 'function') {
+                    window.updateQuoteSection();
+                }
+
+                // 更新所有essence cards
+                if (typeof window.updateAllEssenceCardsLanguage === 'function') {
+                    window.updateAllEssenceCardsLanguage();
+                }
+
+                // 更新其他可能需要语言同步的内容
+                this.updateLanguageDependentContent();
+
+                // 统一适配所有字体大小，确保语言切换后字体大小一致
+                if (this.fontManager) {
+                    setTimeout(() => {
+                        this.fontManager.adaptAllFontSizes();
+                    }, 100); // 延迟执行，确保内容更新完成
+                }
+            });
+
+            this.log(`Language state synced to: ${isEnglish ? 'English' : 'Chinese'}`, 'info');
+        } catch (error) {
+            this.log(`Error syncing language state: ${error.message}`, 'error');
+        }
+    },
+
+    // 更新所有依赖语言的内容
+    updateLanguageDependentContent: function() {
+        try {
+            const isEnglish = window.isEnglish;
+
+            // 更新所有容器中的语言相关元素
+            const containers = this.safeQuerySelectorAll('#infinite-scroll-container > .container');
+
+            containers.forEach(container => {
+                // 更新调试按钮文本
+                const debugButtons = this.safeQuerySelectorAll('#debugButton, .debug-button', container);
+                debugButtons.forEach(btn => {
+                    if (btn) btn.textContent = isEnglish ? "Debug" : "调试";
+                });
+
+                // 更新复制提示文本
+                const copyTexts = this.safeQuerySelectorAll('#copyText, .copy-text', container);
+                copyTexts.forEach(text => {
+                    if (text) text.textContent = isEnglish ? "Copied to clipboard" : "已复制到剪贴板";
+                });
+
+                // 更新其他可能的语言相关文本
+                const languageElements = this.safeQuerySelectorAll('[data-en][data-zh]', container);
+                languageElements.forEach(el => {
+                    const enText = el.getAttribute('data-en');
+                    const zhText = el.getAttribute('data-zh');
+                    if (enText && zhText) {
+                        el.textContent = isEnglish ? enText : zhText;
+                    }
+                });
+            });
+
+            this.log('Updated all language-dependent content', 'debug');
+        } catch (error) {
+            this.log(`Error updating language-dependent content: ${error.message}`, 'error');
+        }
+    },
+
+    // 统一字体大小适配管理器
+    fontManager: {
+        // 统一的字体大小适配函数
+        adaptAllFontSizes: function() {
+            try {
+                // 适配essence卡片字体
+                this.adaptEssenceFontSizes();
+
+                // 适配quote字体
+                this.adaptQuoteFontSizes();
+
+                StateSyncManager.log('All font sizes adapted', 'debug');
+            } catch (error) {
+                StateSyncManager.log(`Error adapting font sizes: ${error.message}`, 'error');
+            }
+        },
+
+        // 适配essence卡片字体大小 - 已禁用，使用CSS固定字体大小
+        adaptEssenceFontSizes: function() {
+            // 不再执行任何字体调整，完全依赖CSS固定字体大小
+            StateSyncManager.log('adaptEssenceFontSizes called but disabled - using fixed CSS font sizes', 'debug');
+        },
+
+        // 适配quote字体大小
+        adaptQuoteFontSizes: function() {
+            try {
+                // 获取所有quote元素，不仅仅是当前可见的
+                const allQuoteTexts = StateSyncManager.safeQuerySelectorAll('.quote-text');
+                const allQuoteAuthors = StateSyncManager.safeQuerySelectorAll('.quote-author');
+                const isMobile = window.innerWidth <= 768;
+                const isSmallMobile = window.innerWidth <= 480;
+
+                allQuoteTexts.forEach(quoteText => {
+                    const textLength = quoteText.textContent.length;
+                    let fontSize;
+
+                    if (isSmallMobile) {
+                        if (textLength <= 30) {
+                            fontSize = "1rem";
+                        } else if (textLength <= 60) {
+                            fontSize = "0.9rem";
+                        } else if (textLength <= 100) {
+                            fontSize = "0.8rem";
+                        } else if (textLength <= 150) {
+                            fontSize = "0.7rem";
+                        } else if (textLength <= 200) {
+                            fontSize = "0.6rem";
+                        } else {
+                            fontSize = "0.55rem";
+                        }
+                    } else if (isMobile) {
+                        if (textLength <= 30) {
+                            fontSize = "1.1rem";
+                        } else if (textLength <= 60) {
+                            fontSize = "1rem";
+                        } else if (textLength <= 100) {
+                            fontSize = "0.9rem";
+                        } else if (textLength <= 150) {
+                            fontSize = "0.8rem";
+                        } else if (textLength <= 200) {
+                            fontSize = "0.7rem";
+                        } else {
+                            fontSize = "0.6rem";
+                        }
+                    } else {
+                        // Desktop sizes
+                        if (textLength <= 50) {
+                            fontSize = "1.3rem";
+                        } else if (textLength <= 100) {
+                            fontSize = "1.1rem";
+                        } else if (textLength <= 150) {
+                            fontSize = "0.9rem";
+                        } else if (textLength <= 200) {
+                            fontSize = "0.8rem";
+                        } else if (textLength <= 300) {
+                            fontSize = "0.7rem";
+                        } else {
+                            fontSize = "0.6rem";
+                        }
+                    }
+
+                    quoteText.style.fontSize = fontSize;
+                });
+
+                allQuoteAuthors.forEach(quoteAuthor => {
+                    const authorLength = quoteAuthor.textContent.length;
+                    let fontSize;
+
+                    if (isSmallMobile) {
+                        if (authorLength <= 10) {
+                            fontSize = "0.7rem";
+                        } else if (authorLength <= 20) {
+                            fontSize = "0.6rem";
+                        } else {
+                            fontSize = "0.55rem";
+                        }
+                    } else if (isMobile) {
+                        if (authorLength <= 10) {
+                            fontSize = "0.75rem";
+                        } else if (authorLength <= 20) {
+                            fontSize = "0.7rem";
+                        } else {
+                            fontSize = "0.6rem";
+                        }
+                    } else {
+                        // Desktop sizes
+                        if (authorLength <= 10) {
+                            fontSize = "1rem";
+                        } else if (authorLength <= 20) {
+                            fontSize = "0.9rem";
+                        } else {
+                            fontSize = "0.8rem";
+                        }
+                    }
+
+                    quoteAuthor.style.fontSize = fontSize;
+                });
+
+                StateSyncManager.log('Quote font sizes adapted', 'debug');
+            } catch (error) {
+                StateSyncManager.log(`Error adapting quote font sizes: ${error.message}`, 'error');
+            }
+        }
+    },
+
     // 同步彩蛋状态 - 修复彩蛋触发问题
     syncEasterEggState: function(eggType, clickCount) {
         try {
@@ -911,17 +1257,17 @@ const StateSyncManager = {
             if (!window.globalState.easterEggs.clickCounters) {
                 window.globalState.easterEggs.clickCounters = {};
             }
-            
+
             // 更新点击计数
             window.globalState.easterEggs.clickCounters[eggType] = clickCount;
-            
+
             // 同步到全局变量，确保兼容旧代码
             if (window.clickCounters && typeof window.clickCounters === 'object') {
                 window.clickCounters[eggType] = clickCount;
             }
-            
+
             this.log(`Easter egg state synced: ${eggType} = ${clickCount}`, 'debug');
-            
+
             // 检查是否需要触发彩蛋
             this.checkEasterEggTrigger(eggType, clickCount);
         } catch (error) {
@@ -950,25 +1296,36 @@ const StateSyncManager = {
                 // 根据彩蛋类型执行特定操作
                 switch(eggType) {
                     case 'phoebeWisdom':
-                        // 更新Phoebe's Wisdom内容
+                        // 更新Phoebe's Wisdom内容（双语支持）
                         this.syncPhoebeWisdomState({
-                            currentQuote: window.isEnglish 
-                                ? "Oh, I wish I could, but I don't want to." 
-                                : "哦，我希望我能去帮忙，但我不想去。"
+                            currentQuote: "Oh, I wish I could, but I don't want to.",
+                            currentQuoteZh: "噢,我希望我能去帮忙,但我不想去."
                         });
                         break;
-                        
+
                     case 'phoebeWisdomBoss':
-                        // 更新Phoebe's Wisdom Boss内容
+                        // 更新Phoebe's Wisdom Boss内容（双语支持）
                         this.syncPhoebeWisdomState({
-                            currentQuote: window.isEnglish 
-                                ? "You are the boss of you!" 
-                                : "你是你自己的老板！"
+                            currentQuote: "NO, YOU ARE THE BOSS OF YOU!",
+                            currentQuoteZh: "你才是你自己的老板!"
                         });
                         break;
-                        
+
                     case 'langToggle':
                         // 语言切换彩蛋已在toggleLanguage函数中处理
+                        break;
+
+                    case 'essenceCard':
+                        // 小王子essence卡片彩蛋 - 触发特殊的essence内容
+                        this.syncEssenceState({
+                            easterEggTriggered: true,
+                            easterEggContent: {
+                                title: "It is the time you have wasted for your rose that makes your rose so important",
+                                desc: "The Little Prince",
+                                titleChinese: "正是你为你的玫瑰花费的时光使你的玫瑰变得如此重要",
+                                descChinese: "小王子"
+                            }
+                        });
                         break;
                 }
             }
@@ -1057,8 +1414,16 @@ const StateSyncManager = {
             
             // 初始化时同步所有元素状态
             this.updateAllPhoebeWisdom();
+
+            // 初始化meditation内容为原始的双语内容
+            this.initializeMeditationContent();
             this.updateAllMeditations();
             this.updateVirtualKeyboardUI();
+
+            // 同步当前语言状态
+            if (typeof window.isEnglish !== 'undefined') {
+                this.syncLanguageState(window.isEnglish);
+            }
             
             // 添加DOM变化观察器，确保无缝滚动时复制的元素保持同步
             this.setupMutationObserver();
@@ -1129,9 +1494,14 @@ const StateSyncManager = {
                     this.updateAllPhoebeWisdom();
                     this.updateAllMeditations();
                     this.updateVirtualKeyboardUI();
-                    
+
+                    // 同步当前语言状态到新容器
+                    if (typeof window.isEnglish !== 'undefined') {
+                        this.syncLanguageState(window.isEnglish);
+                    }
+
                     // 如果essence有状态，也同步更新
-                    if (window.globalState.essence && 
+                    if (window.globalState.essence &&
                         typeof window.globalState.essence.currentIndex !== 'undefined') {
                         this.updateAllEssenceCards(window.globalState.essence.currentIndex);
                     }
@@ -1168,57 +1538,38 @@ const StateSyncManager = {
     diagnostics: {
         // 运行全面诊断
         runFullDiagnosis: function() {
-            console.group('📊 无缝滚动状态同步系统诊断');
-            
             // 检查容器情况
             this.checkContainerStructure();
-            
+
             // 检查状态同步情况
             this.checkStateSync();
-            
+
             // 检查资源加载情况
             this.checkResourceLoading();
-            
+
             // 检查事件处理器
             this.checkEventHandlers();
-            
-            console.groupEnd();
-            
-            return '✅ 诊断已完成，详情请查看控制台输出';
+
+            return '诊断已完成';
         },
         
         // 检查容器结构
         checkContainerStructure: function() {
-            console.group('1. 容器结构检查');
-            
             const container = document.getElementById('infinite-scroll-container');
             if (!container) {
-                console.error('❌ 无缝滚动容器未找到！');
-                console.groupEnd();
                 return;
             }
-            
+
             const childContainers = StateSyncManager.safeQuerySelectorAll('.container', container);
-            console.log(`📦 检测到 ${childContainers.length} 个内容容器`);
-            
-            if (childContainers.length !== 3) {
-                console.warn(`⚠️ 预期有3个内容容器，实际有 ${childContainers.length} 个`);
-            }
-            
+
             // 检查容器大小一致性
             const heights = Array.from(childContainers).map(c => c.offsetHeight);
             const allSameHeight = heights.every((h, i, arr) => i === 0 || Math.abs(h - arr[0]) < 10);
             
-            if (!allSameHeight) {
-                console.warn('⚠️ 容器高度不一致，可能影响无缝滚动：', heights);
-            } else {
-                console.log('✅ 容器高度一致性检查通过');
-            }
-            
             // 检查ID重复问题
             const ids = new Map();
             let duplicateFound = false;
-            
+
             childContainers.forEach((container, index) => {
                 const elements = container.querySelectorAll('[id]');
                 elements.forEach(el => {
@@ -1228,76 +1579,44 @@ const StateSyncManager = {
                     ids.get(el.id).push({containerIndex: index, element: el});
                 });
             });
-            
+
             ids.forEach((instances, id) => {
                 if (instances.length > 1) {
                     duplicateFound = true;
-                    console.warn(`⚠️ ID "${id}" 在多个容器中重复出现 ${instances.length} 次`);
                 }
             });
-            
-            if (!duplicateFound) {
-                console.log('✅ 没有检测到ID重复问题');
-            } else {
-                console.log('ℹ️ ID重复可能会导致事件处理器和样式应用问题');
-            }
-            
-            console.groupEnd();
         },
         
         // 检查状态同步
         checkStateSync: function() {
-            console.group('2. 状态同步检查');
-            
             // 检查智慧语录同步
-            const wisdomSections = StateSyncManager.safeQuerySelectorAll('.phoebe-quote');
+            const wisdomSections = StateSyncManager.safeQuerySelectorAll('.phoebe-section');
             if (wisdomSections.length > 0) {
                 const quotes = Array.from(wisdomSections).map(s => {
-                    const text = StateSyncManager.safeQuerySelector('.phoebe-quote-text', s);
+                    const text = StateSyncManager.safeQuerySelector('.phoebe-quote', s);
                     return text ? text.textContent : 'N/A';
                 });
-                
+
                 const allSameQuote = quotes.every((q, i, arr) => i === 0 || q === arr[0]);
-                
-                if (!allSameQuote) {
-                    console.warn('⚠️ 智慧语录内容不同步：', quotes);
-                } else {
-                    console.log('✅ 智慧语录同步检查通过');
-                }
-            } else {
-                console.log('ℹ️ 未找到智慧语录元素，跳过检查');
             }
-            
+
             // 检查冥想文本同步
             const englishMeditations = StateSyncManager.safeQuerySelectorAll('#englishContent .meditation-text');
             if (englishMeditations.length > 0) {
                 const meditationTexts = Array.from(englishMeditations).map(m => m.innerHTML);
                 const allSameMeditation = meditationTexts.every((m, i, arr) => i === 0 || m === arr[0]);
-                
-                if (!allSameMeditation) {
-                    console.warn('⚠️ 冥想文本内容不同步');
-                } else {
-                    console.log('✅ 冥想文本同步检查通过');
-                }
-            } else {
-                console.log('ℹ️ 未找到冥想文本元素，跳过检查');
             }
-            
-            console.groupEnd();
         },
         
         // 检查资源加载情况
         checkResourceLoading: function() {
-            console.group('3. 资源加载检查');
-            
             // 检查图片加载
             const allImages = document.querySelectorAll('img');
-            console.log(`📷 总计 ${allImages.length} 张图片`);
-            
+
             let brokenImages = 0;
             let loadingImages = 0;
             let loadedImages = 0;
-            
+
             allImages.forEach(img => {
                 if (img.complete) {
                     if (img.naturalWidth === 0 || img.naturalHeight === 0) {
@@ -1309,26 +1628,16 @@ const StateSyncManager = {
                     loadingImages++;
                 }
             });
-            
-            console.log(`✅ 已加载: ${loadedImages} | ⏳ 加载中: ${loadingImages} | ❌ 加载失败: ${brokenImages}`);
-            
+
             // 检查已知失败资源
             const failedResources = window.globalState.resources.failedResources;
-            if (failedResources.size > 0) {
-                console.warn(`⚠️ ${failedResources.size} 个资源加载失败:`);
-                console.log([...failedResources]);
-            }
-            
-            console.groupEnd();
         },
         
         // 检查事件处理器
         checkEventHandlers: function() {
-            console.group('4. 事件处理检查');
-            
             // 检查滚动事件
             const container = document.getElementById('infinite-scroll-container');
-            
+
             if (container) {
                 // 使用getEventListeners需要Chrome开发者工具环境
                 let scrollHandlerCount = 'Unknown';
@@ -1341,36 +1650,25 @@ const StateSyncManager = {
                 } catch (e) {
                     scrollHandlerCount = 'Unknown (仅在DevTools中可查询)';
                 }
-                
-                console.log(`📜 无缝滚动容器滚动监听器: ${scrollHandlerCount}`);
-            } else {
-                console.warn('⚠️ 未找到无缝滚动容器，无法检查滚动事件');
             }
-            
+
             // 检查MutationObserver状态
             if (StateSyncManager._observer) {
-                console.log('✅ DOM变化观察器正在运行');
+                // DOM变化观察器正在运行
             } else {
-                console.warn('⚠️ DOM变化观察器未运行');
+                // DOM变化观察器未运行
             }
-            
-            console.groupEnd();
         },
         
         // 运行一个简单测试，修改一个元素状态并检查是否同步
         runSyncTest: function() {
-            console.group('🧪 状态同步测试');
-            
             // 生成一个随机测试ID
             const testId = 'sync_test_' + Math.floor(Math.random() * 10000);
-            console.log(`ℹ️ 测试ID: ${testId}`);
-            
+
             try {
                 // 获取所有Container容器
                 const containers = StateSyncManager.safeQuerySelectorAll('#infinite-scroll-container > .container');
                 if (containers.length <= 1) {
-                    console.warn('⚠️ 容器数量不足，无法测试同步');
-                    console.groupEnd();
                     return '容器数量不足，无法测试同步';
                 }
                 
@@ -1378,13 +1676,13 @@ const StateSyncManager = {
                 let testElements = [];
                 
                 // 首先尝试使用智慧语录
-                const firstWisdom = containers[0].querySelector('.phoebe-quote-text');
+                const firstWisdom = containers[0].querySelector('.phoebe-section .phoebe-quote');
                 if (firstWisdom) {
                     testElements.push(firstWisdom);
-                    
+
                     // 查找其他容器中对应元素
                     for (let i = 1; i < containers.length; i++) {
-                        const wisdom = containers[i].querySelector('.phoebe-quote-text');
+                        const wisdom = containers[i].querySelector('.phoebe-section .phoebe-quote');
                         if (wisdom) {
                             testElements.push(wisdom);
                         }
@@ -1405,40 +1703,25 @@ const StateSyncManager = {
                         
                         // 检查状态同步
                         setTimeout(() => {
-                            console.log('测试同步结果:');
-                            
                             let syncSuccess = true;
                             testElements.forEach((el, i) => {
                                 const isSynced = el.textContent === testText;
-                                console.log(`容器 ${i}: ${isSynced ? '✓' : '✗'}`);
                                 if (!isSynced) syncSuccess = false;
                             });
-                            
+
                             // 恢复原始内容
                             StateSyncManager.syncPhoebeWisdomState({
                                 currentQuote: originalText
                             });
-                            
-                            if (syncSuccess) {
-                                console.log('✅ 测试成功: 所有元素已同步');
-                            } else {
-                                console.error('❌ 测试失败: 部分元素未同步');
-                            }
-                            
-                            console.groupEnd();
                         }, 500);
-                        
-                        return '测试中... 请查看控制台结果';
+
+                        return '测试中...';
                     }
                 }
-                
-                console.warn('⚠️ 未找到合适的测试元素');
-                console.groupEnd();
+
                 return '未找到合适的测试元素';
-                
+
             } catch (error) {
-                console.error('❌ 测试过程中出错:', error);
-                console.groupEnd();
                 return '测试过程中出错';
             }
         }
@@ -1460,10 +1743,9 @@ window.StateSyncManager = StateSyncManager;
 // 设置全局错误处理以捕获与状态同步相关的错误
 window.addEventListener('error', function(event) {
     if (event.error && (
-        event.error.message.includes('StateSyncManager') || 
+        event.error.message.includes('StateSyncManager') ||
         event.error.stack && event.error.stack.includes('state-sync.js')
     )) {
-        console.error('🔴 [状态同步错误]', event.error);
         // 尝试恢复状态
         if (window.StateSyncManager) {
             window.StateSyncManager.log('尝试恢复状态同步', 'warn');
@@ -1472,11 +1754,11 @@ window.addEventListener('error', function(event) {
                     // 重新初始化状态管理
                     window.StateSyncManager.init();
                 } catch (e) {
-                    console.error('🔴 无法恢复状态同步:', e);
+                    // 无法恢复状态同步
                 }
             }, 1000);
         }
-        
+
         // 阻止错误冒泡
         event.preventDefault();
     }
@@ -1493,7 +1775,6 @@ window.testInfiniteScrollSync = function() {
 
 // 在页面加载完成后显示友好提示
 document.addEventListener('DOMContentLoaded', () => {
-    console.info('ℹ️ 无缝滚动状态同步系统已启用');
-    console.info('ℹ️ 使用 window.checkInfiniteScrollSync() 运行系统诊断');
-    console.info('ℹ️ 使用 window.testInfiniteScrollSync() 测试状态同步');
+    // 标记StateSyncManager已准备好
+    window.StateSyncManagerReady = true;
 });
