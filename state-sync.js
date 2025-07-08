@@ -1316,16 +1316,34 @@ const StateSyncManager = {
                         break;
 
                     case 'essenceCard':
-                        // 小王子essence卡片彩蛋 - 触发特殊的essence内容
-                        this.syncEssenceState({
-                            easterEggTriggered: true,
-                            easterEggContent: {
-                                title: "It is the time you have wasted for your rose that makes your rose so important",
-                                desc: "The Little Prince",
-                                titleChinese: "正是你为你的玫瑰花费的时光使你的玫瑰变得如此重要",
-                                descChinese: "小王子"
-                            }
-                        });
+                        // 小王子essence卡片彩蛋 - 只有在cyberpunk彩蛋触发后才显示玫瑰引用
+                        // 检查cyberpunk彩蛋是否已触发
+                        const cyberpunkTriggered = window.globalState.easterEggs.triggers.cyberpunk ||
+                                                 (typeof window.cyberpunkEasterEggTriggered !== 'undefined' && window.cyberpunkEasterEggTriggered);
+
+                        if (cyberpunkTriggered) {
+                            // cyberpunk彩蛋已触发，显示玫瑰引用
+                            this.syncEssenceState({
+                                easterEggTriggered: true,
+                                easterEggContent: {
+                                    title: "It is the time you have wasted for your rose that makes your rose so important",
+                                    desc: "The Little Prince",
+                                    titleChinese: "正是你为你的玫瑰花费的时光使你的玫瑰变得如此重要",
+                                    descChinese: "小王子"
+                                }
+                            });
+                        } else {
+                            // cyberpunk彩蛋未触发，显示普通的小王子内容
+                            this.syncEssenceState({
+                                easterEggTriggered: true,
+                                easterEggContent: {
+                                    title: "What is essential is invisible to the eye",
+                                    desc: "The Little Prince",
+                                    titleChinese: "真正重要的东西是看不见的",
+                                    descChinese: "小王子"
+                                }
+                            });
+                        }
                         break;
                 }
             }

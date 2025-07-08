@@ -4,18 +4,12 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>FEEBEA - A Color Story</title>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-        <link
-            href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&family=Pacifico&family=Great+Vibes&family=Cinzel:wght@400;600&family=Zhi+Mang+Xing&family=Long+Cang&family=Noto+Serif+SC:wght@400;600;700&display=swap"
-            rel="stylesheet"
-        />
 
-        <!-- Backup Friends-style font -->
-        <link
-            href="https://fonts.googleapis.com/css2?family=Fredoka+One:wght@400&display=swap"
-            rel="stylesheet"
-        />
+        <!-- 简化的 CSP meta 标签 - 只允许本地资源 -->
+        <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; media-src 'self' blob: data:; script-src 'self' 'unsafe-inline' 'unsafe-eval'; connect-src 'self';">
+
+        <!-- 使用本地字体文件 -->
+        <link rel="stylesheet" href="./phoebe/fonts/local-fonts.css" />
         <style>
             * {
                 margin: 0;
@@ -785,6 +779,24 @@
                 text-decoration: none;
             }
 
+            /* 备案号样式 */
+            .icp-filing {
+                margin-top: 1rem;
+                text-align: center;
+            }
+
+            .icp-filing a {
+                font-size: 0.8rem;
+                color: #feebea;
+                opacity: 0.6;
+                text-decoration: none;
+                transition: opacity 0.2s ease;
+            }
+
+            .icp-filing a:hover {
+                opacity: 0.8;
+            }
+
             .email-icon:hover,
             .wechat-icon:hover {
                 opacity: 0.8;
@@ -930,6 +942,13 @@
                 box-shadow: 0 4px 15px rgba(254, 235, 234, 0.3);
                 outline: none;
                 user-select: none;
+                /* 移动端触摸优化 */
+                touch-action: manipulation;
+                -webkit-touch-callout: none;
+                -webkit-tap-highlight-color: transparent;
+                /* 增加触摸区域 */
+                min-width: 120px;
+                min-height: 44px;
             }
 
             .audio-warning-button:hover {
@@ -3294,6 +3313,9 @@
                             </span>
                         </div>
                     </div>
+                    <div class="icp-filing">
+                        <a href="https://beian.miit.gov.cn/" target="_blank" rel="nofollow">赣ICP备2025065678号</a>
+                    </div>
                 </footer>
             </div>
 
@@ -3417,6 +3439,9 @@
                                 wx3dot1415926
                             </span>
                         </div>
+                    </div>
+                    <div class="icp-filing">
+                        <a href="https://beian.miit.gov.cn/" target="_blank" rel="nofollow">赣ICP备2025065678号</a>
                     </div>
                 </footer>
             </div>
@@ -5943,12 +5968,12 @@ let zoteCycleCount = 0; // Track how many complete cycles through all 57 precept
                 // 使用指数递减函数，让方块出现得越来越快
                 // 初始间隔较长，随着方块数量增加，间隔呈指数递减
                 const squareCount = zimaSquares.length;
-                const maxInterval = 12000; // 最大间隔12秒
+                const maxInterval = 36000; // 最大间隔36秒 (原12秒的3倍，前期频率放慢三倍)
                 const minInterval = 200;   // 最小间隔0.2秒
 
                 // 使用指数衰减函数: interval = maxInterval * e^(-k * squareCount)
-                // k值控制衰减速度，值越大衰减越快
-                const decayRate = 0.08;
+                // k值控制衰减速度，调整为更慢的衰减以配合更长的初始间隔
+                const decayRate = 0.06; // 从0.08降低到0.06，让衰减更慢
                 const baseInterval = Math.max(
                     minInterval,
                     maxInterval * Math.exp(-decayRate * squareCount)
@@ -5968,7 +5993,7 @@ let zoteCycleCount = 0; // Track how many complete cycles through all 57 precept
                 }
 
                 // Start the first square after a longer delay - 让第一个方块出现得更晚
-                const initialDelay = Math.random() * 15000 + 20000; // 20-35 seconds
+                const initialDelay = Math.random() * 30000 + 45000; // 45-75 seconds (推后第一个方块出现时间)
                 zimaTimer = setTimeout(createZimaSquare, initialDelay);
             }
 
@@ -6122,7 +6147,7 @@ let zoteCycleCount = 0; // Track how many complete cycles through all 57 precept
             let zimaSquareClickable = false;
             let roseAudio = null;
             let isRoseAudioPlaying = false;
-            let isListeningForSinger = false;
+            // let isListeningForSinger = false; // 已删除，不再需要
 
             // 彩蛋触发条件检查函数
             function checkCyberpunkConditions() {
@@ -6172,7 +6197,12 @@ let zoteCycleCount = 0; // Track how many complete cycles through all 57 precept
             }
             
             function checkRoseQuoteConditions() {
-                // 检查是否满足触发玫瑰引用彩蛋的条件 - 复用赛博朋克匹配逻辑
+                // 检查是否满足触发玫瑰引用彩蛋的条件 - 需要先触发cyberpunk彩蛋
+                // 首先检查cyberpunk彩蛋是否已触发
+                if (!cyberpunkEasterEggTriggered) {
+                    return false; // cyberpunk彩蛋未触发，不能触发玫瑰彩蛋
+                }
+
                 const currentCards = document.querySelectorAll(
                     isEnglish
                         ? "#englishContent .essence-card"
@@ -6338,6 +6368,11 @@ let zoteCycleCount = 0; // Track how many complete cycles through all 57 precept
                     // Rose easter egg is active - play sequence note immediately and square disappears after feebea flash
                     square.classList.add('feebea-flash');
 
+                    // 在第一个齐马蓝方块消失时预加载runaway.mp3音频
+                    if (successfulClicks === 0) {
+                        preloadRunawayAudio();
+                    }
+
                     // Play the next note in the sequence immediately
                     playSequenceNote();
 
@@ -6397,8 +6432,8 @@ let zoteCycleCount = 0; // Track how many complete cycles through all 57 precept
                 'G': 830.61
             };
             
-            // Rose easter egg piano sequence
-            const roseSequence = ['E', 'E', 'E', 'e', 'D', 'D', 'D', 'd', 'C', 'C', 'C', 'c', 'A', 'A', 'G', 'E'];
+            // Rose easter egg piano sequence (删除最后一个音符，从16个减少到15个)
+            const roseSequence = ['E', 'E', 'E', 'e', 'D', 'D', 'D', 'd', 'C', 'C', 'C', 'c', 'A', 'A', 'G'];
             let sequenceIndex = 0;
             let successfulClicks = 0;
             
@@ -6457,6 +6492,18 @@ let zoteCycleCount = 0; // Track how many complete cycles through all 57 precept
             function playDefaultPianoNote() {
                 playPianoNote(pianoNotes.E, 1.2);
             }
+
+            // 预加载runaway.mp3音频（在第一个齐马蓝方块消失时调用）
+            function preloadRunawayAudio() {
+                try {
+                    const audio = new Audio('./phoebe/runaway.mp3');
+                    audio.preload = 'auto';
+                    audio.load(); // 开始加载音频但不播放
+                    console.log('Runaway audio preloaded');
+                } catch (error) {
+                    console.log('Failed to preload runaway audio:', error);
+                }
+            }
             
             // Play sequence note for rose easter egg
             function playSequenceNote() {
@@ -6467,8 +6514,8 @@ let zoteCycleCount = 0; // Track how many complete cycles through all 57 precept
                     sequenceIndex++;
                     successfulClicks++;
                     
-                    // Check if sequence is complete
-                    if (successfulClicks === 16) {
+                    // Check if sequence is complete (修改为15个方块触发)
+                    if (successfulClicks === 15) {
                         // Add runaway.mp3 to playlist after completing the sequence
                         setTimeout(() => {
                             try {
@@ -6597,10 +6644,10 @@ let zoteCycleCount = 0; // Track how many complete cycles through all 57 precept
                         stopMergeDetection();
                     }
 
-                    // Check if all squares are removed
-                    if (zimaSquares.length === 0 && !zimaSystemDisabled) {
-                        triggerFinalEasterEgg();
-                    }
+                    // Check if all squares are removed - 不再触发"谁在唱歌"彩蛋
+                    // if (zimaSquares.length === 0 && !zimaSystemDisabled) {
+                    //     triggerFinalEasterEgg();
+                    // }
                 }
             }
 
@@ -6836,8 +6883,8 @@ let zoteCycleCount = 0; // Track how many complete cycles through all 57 precept
                 // Add Zelda audio to playlist and auto-play
                 const zeldaAudioData = {
                     name: "塞尔达传说 - 开场",
-                    src: "https://kappa.vgmsite.com/soundtracks/the-legend-of-zelda-breath-of-the-wild/rauxgqyims/1-04.%20Opening.mp3",
-                    type: "remote"
+                    src: "./phoebe/zelda.gif", // 使用本地文件，如果没有音频就用占位符
+                    type: "local"
                 };
                 addAudioToPlaylist(zeldaAudioData);
                 zeldaEasterEggTriggered = true;
@@ -6847,55 +6894,8 @@ let zoteCycleCount = 0; // Track how many complete cycles through all 57 precept
             }
             */
 
-            // Final easter egg when all zima squares are removed
-            function triggerFinalEasterEgg() {
-
-                isListeningForSinger = true;
-                
-                // Show notification
-                const message = isEnglish ? "Who's singing?" : "谁在唱歌？";
-                showEasterEggNotification(message + " (Click to activate input)");
-                
-                // Add click listener to activate input
-                document.addEventListener('click', activateSingerInput, { once: true });
-            }
-
-            // Activate singer input
-            function activateSingerInput() {
-                const input = prompt(isEnglish ? "Who's singing?" : "谁在唱歌？");
-                if (input) {
-                    const lowerInput = input.toLowerCase().trim();
-                    if (lowerInput === 'xiaop') {
-                        // Play tearsicantholdback.mp3
-                        playAudio('tearsicantholdback.mp3');
-                        showEasterEggNotification(isEnglish ? "Playing tears I can't hold back..." : "播放眼泪止不住...");
-                    } else if (lowerInput === 'me') {
-                        // Add whenyou.mp3 to playlist
-                        const whenyouAudioData = {
-                            name: "When You",
-                            src: "./phoebe/whenyou.mp3",
-                            type: "Singer Response"
-                        };
-                        addAudioToPlaylist(whenyouAudioData);
-                        showEasterEggNotification(isEnglish ? "Playing when you..." : "播放当你...");
-                    } else if (lowerInput === 'you') {
-                        // Keep original behavior - trigger smelly cat + friends
-                        showSmellyCatContent();
-                    } else if (lowerInput === 'peng') {
-                        // Add badmood.mp3 to playlist
-                        const badmoodAudioData = {
-                            name: "Bad Mood",
-                            src: "./phoebe/badmood.mp3",
-                            type: "Singer Response"
-                        };
-                        addAudioToPlaylist(badmoodAudioData);
-                        showEasterEggNotification(isEnglish ? "Playing bad mood..." : "播放坏心情...");
-                    } else {
-                        showEasterEggNotification(isEnglish ? "Wrong answer!" : "答案错误！");
-                    }
-                }
-                isListeningForSinger = false;
-            }
+            // 已删除triggerFinalEasterEgg和activateSingerInput函数
+            // 齐马蓝方块被移除后不再触发"谁在唱歌"彩蛋
 
             // Cyberpunk 2077 Easter Egg functions
             function checkCyberpunkEasterEgg() {
@@ -7025,9 +7025,9 @@ let zoteCycleCount = 0; // Track how many complete cycles through all 57 precept
                 
                 // Add Cyberpunk 2077 audio to playlist and auto-play
                 const cyberpunkAudioData = {
-                    name: "Cyberpunk 2077",
-                    src: "https://eta.vgmtreasurechest.com/soundtracks/cyberpunk-2077-radio-vol.-2-original-soundtrack/liojiacuhf/05.%20I%20Really%20Want%20to%20Stay%20at%20Your%20House.mp3",
-                    type: "remote"
+                    name: "Cyberpunk 2077 - I Really Want to Stay at Your House",
+                    src: "./phoebe/i-really-want-to-stay-at-your-house.mp3",
+                    type: "local"
                 };
                 addAudioToPlaylist(cyberpunkAudioData);
 
@@ -7987,9 +7987,9 @@ let zoteCycleCount = 0; // Track how many complete cycles through all 57 precept
             function toggleEasterEggState(eggType, buttonElement) {
                 if (!debugPermission) {
                     showEasterEggNotification(
-                        isEnglish 
-                            ? "No permission! Use Morse code on Pickle Rick first."
-                            : "无权限！请先在Pickle Rick上使用摩尔斯电码。"
+                        isEnglish
+                            ? "No permission!"
+                            : "无权限！"
                     );
                     return;
                 }
@@ -8005,9 +8005,9 @@ let zoteCycleCount = 0; // Track how many complete cycles through all 57 precept
             function toggleOtherEasterEgg(eggType, buttonElement) {
                 if (!debugPermission) {
                     showEasterEggNotification(
-                        isEnglish 
-                            ? "No permission! Use Morse code on Pickle Rick first."
-                            : "无权限！请先在Pickle Rick上使用摩尔斯电码。"
+                        isEnglish
+                            ? "No permission!"
+                            : "无权限！"
                     );
                     return;
                 }
@@ -8061,9 +8061,9 @@ let zoteCycleCount = 0; // Track how many complete cycles through all 57 precept
             function resetAllEasterEggs() {
                 if (!debugPermission) {
                     showEasterEggNotification(
-                        isEnglish 
-                            ? "No permission! Use Morse code on Pickle Rick first."
-                            : "无权限！请先在Pickle Rick上使用摩尔斯电码。"
+                        isEnglish
+                            ? "No permission!"
+                            : "无权限！"
                     );
                     return;
                 }
@@ -8094,9 +8094,9 @@ let zoteCycleCount = 0; // Track how many complete cycles through all 57 precept
             function triggerAllEasterEggs() {
                 if (!debugPermission) {
                     showEasterEggNotification(
-                        isEnglish 
-                            ? "No permission! Use Morse code on Pickle Rick first."
-                            : "无权限！请先在Pickle Rick上使用摩尔斯电码。"
+                        isEnglish
+                            ? "No permission!"
+                            : "无权限！"
                     );
                     return;
                 }
@@ -9393,9 +9393,9 @@ let zoteCycleCount = 0; // Track how many complete cycles through all 57 precept
                         }
                         
                         showEasterEggNotification(
-                            isEnglish 
-                                ? "🎮 Debug Panel Unlocked! (No permission - use Morse code on Pickle Rick)" 
-                                : "🎮 调试面板已解锁！（无权限 - 请在Pickle Rick上使用摩尔斯电码）"
+                            isEnglish
+                                ? "🎮 Debug Panel Unlocked! (No permission)"
+                                : "🎮 调试面板已解锁！（无权限）"
                         );
                     }
                 }
@@ -10501,9 +10501,9 @@ let zoteCycleCount = 0; // Track how many complete cycles through all 57 precept
             function setCyberpunkContent() {
                 if (!debugPermission) {
                     showEasterEggNotification(
-                        isEnglish 
-                            ? "No permission! Use Morse code on Pickle Rick first."
-                            : "无权限！请先在Pickle Rick上使用摩尔斯电码。"
+                        isEnglish
+                            ? "No permission!"
+                            : "无权限！"
                     );
                     return;
                 }
@@ -10539,9 +10539,9 @@ let zoteCycleCount = 0; // Track how many complete cycles through all 57 precept
             function setRoseContent() {
                 if (!debugPermission) {
                     showEasterEggNotification(
-                        isEnglish 
-                            ? "No permission! Use Morse code on Pickle Rick first."
-                            : "无权限！请先在Pickle Rick上使用摩尔斯电码。"
+                        isEnglish
+                            ? "No permission!"
+                            : "无权限！"
                     );
                     return;
                 }
@@ -10577,9 +10577,9 @@ let zoteCycleCount = 0; // Track how many complete cycles through all 57 precept
             function triggerRunawayEffect() {
                 if (!debugPermission) {
                     showEasterEggNotification(
-                        isEnglish 
-                            ? "No permission! Use Morse code on Pickle Rick first."
-                            : "无权限！请先在Pickle Rick上使用摩尔斯电码。"
+                        isEnglish
+                            ? "No permission!"
+                            : "无权限！"
                     );
                     return;
                 }
@@ -12288,8 +12288,8 @@ let zoteCycleCount = 0; // Track how many complete cycles through all 57 precept
                     modal.classList.remove('hidden');
                 }, 100);
 
-                // 点击按钮关闭弹窗
-                button.addEventListener('click', () => {
+                // 关闭弹窗的统一处理函数
+                const closeModal = () => {
                     modal.style.opacity = '0';
                     modal.style.pointerEvents = 'none';
 
@@ -12298,19 +12298,36 @@ let zoteCycleCount = 0; // Track how many complete cycles through all 57 precept
                         // 记住用户已经看过警告
                         localStorage.setItem('audioWarningShown', 'true');
                     }, 300);
+                };
+
+                // 点击按钮关闭弹窗 - 支持桌面端
+                button.addEventListener('click', closeModal);
+
+                // 触摸事件关闭弹窗 - 支持移动端
+                button.addEventListener('touchend', (e) => {
+                    e.preventDefault(); // 防止触发click事件
+                    closeModal();
                 });
 
                 // 点击背景关闭弹窗
                 modal.addEventListener('click', (e) => {
                     if (e.target === modal) {
-                        button.click();
+                        closeModal();
+                    }
+                });
+
+                // 触摸背景关闭弹窗 - 移动端支持
+                modal.addEventListener('touchend', (e) => {
+                    if (e.target === modal) {
+                        e.preventDefault();
+                        closeModal();
                     }
                 });
 
                 // ESC键关闭弹窗
                 document.addEventListener('keydown', (e) => {
                     if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
-                        button.click();
+                        closeModal();
                     }
                 });
             }
